@@ -7,15 +7,13 @@
 
 package frc.robot.components;
 
+import frc.robot.utility.Transform3D;
+
 /**
- * An interface representing gyros. It is an extension of
- * {@link IAngleGetterComponent}, where {@link IGyroComponent#getAngle()}
- * usually returns the yaw of the gyro.
+ * An interface for any component which calculates the position and rotation of
+ * the robot.
  */
-public interface IGyroComponent extends IAngleGetterComponent {
-    /**
-     * Recalibrates the current angle of the gyro. In otherwords, the current angle
-     * becomes zero, and future angles are computed based on this new zero.
-     */
-    void reset();
+public interface I3DSupplierComponent {
+
+    Transform3D getTransform();
 }

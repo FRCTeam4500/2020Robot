@@ -8,14 +8,8 @@
 package frc.robot.components;
 
 /**
- * An interface representing gyros. It is an extension of
- * {@link IAngleGetterComponent}, where {@link IGyroComponent#getAngle()}
- * usually returns the yaw of the gyro.
+ * Add your docs here.
  */
-public interface IGyroComponent extends IAngleGetterComponent {
-    /**
-     * Recalibrates the current angle of the gyro. In otherwords, the current angle
-     * becomes zero, and future angles are computed based on this new zero.
-     */
-    void reset();
+public interface ISpeedGetterComponent {
+    double getSpeed();
 }
