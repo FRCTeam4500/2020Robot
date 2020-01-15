@@ -8,8 +8,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.tank.ITankOI;
+import frc.robot.subsystems.tank.Tank;
+import frc.robot.subsystems.tank.command.DriveCommand;
+import frc.robot.subsystems.tank.factory.DefaultTankFactory;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -17,12 +22,16 @@ import edu.wpi.first.wpilibj2.command.Command;
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
-public class RobotContainer {
+public class RobotContainer implements ITankOI{
 
+  Tank tank = new DefaultTankFactory().createTank();
+  Joystick joystick = new Joystick(0);
+  DriveCommand command;
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    command = new DriveCommand(tank, this);
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -45,5 +54,15 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return null;
+  }
+
+  @Override
+  public double getX() {
+    return joystick.getX();
+  }
+
+  @Override
+  public double getZ() {
+    return joystick.getZ();
   }
 }
