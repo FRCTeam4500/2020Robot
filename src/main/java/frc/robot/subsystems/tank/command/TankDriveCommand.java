@@ -34,7 +34,7 @@ public class TankDriveCommand extends CommandBase {
   @Override
   public void execute() {
       double drive = oi.getY();
-      double turn = 0.5*oi.getZ();
+      double turn = 0.5*oi.getX();
       double leftSpeed = drive + turn;
       double rightSpeed = -drive + turn;
       tank.drive(leftSpeed, rightSpeed);

@@ -72,8 +72,8 @@ public class RobotContainer implements ITankOI {
     return null;
   }
 
-  public double getZ(){
-    return joystick.getZ();
+  public double getX(){
+    return joystick.getX();
   }
   
   public double getY(){

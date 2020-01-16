@@ -8,7 +8,7 @@
 package frc.robot.subsystems.tank.command;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.ITankOI;
+import frc.robot.subsystems.tank.ITankOI;
 import frc.robot.subsystems.tank.Tank;
 
 public class TankSpinCommand extends CommandBase {
