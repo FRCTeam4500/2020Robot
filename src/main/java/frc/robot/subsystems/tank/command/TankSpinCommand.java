@@ -21,7 +21,7 @@ public class TankSpinCommand extends CommandBase {
   public TankSpinCommand(Tank tank, ITankOI oi) {
     this.tank = tank;
     this.oi = oi;
-    this.addRequirements(tank);
+    addRequirements(tank);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
