@@ -17,6 +17,7 @@ public class TankSpinCommand extends CommandBase {
    */
   Tank tank;
   ITankOI oi;
+
   public TankSpinCommand(Tank tank, ITankOI oi) {
     this.tank = tank;
     this.oi = oi;
@@ -32,7 +33,7 @@ public class TankSpinCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    tank.drive(1.0,0.0);
+    tank.drive(0.5,0.0);
   }
 
   // Called once the command ends or is interrupted.
