@@ -33,8 +33,8 @@ public class TankDriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      double drive = oi.getX();
-      double turn = 0.5*oi.getY();
+      double drive = oi.getY();
+      double turn = 0.5*oi.getZ();
       double leftSpeed = drive + turn;
       double rightSpeed = -drive + turn;
       tank.drive(leftSpeed, rightSpeed);
