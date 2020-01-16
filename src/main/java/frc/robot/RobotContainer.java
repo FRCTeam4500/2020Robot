@@ -11,8 +11,10 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.tank.Tank;
 import frc.robot.subsystems.tank.command.TankDriveCommand;
+import frc.robot.subsystems.tank.command.TankSpinCommand;
 import frc.robot.subsystems.tank.factory.TankFactory;
 import frc.robot.subsystems.tank.ITankOI;
 
@@ -30,13 +32,16 @@ public class RobotContainer implements ITankOI {
   TankFactory tankFactory;
   Tank tank;
   TankDriveCommand tankDriveCommand;
+  TankSpinCommand tankSpinCommand;
   Joystick joystick;
+  JoystickButton button1;
 
 
   public RobotContainer() {
     this.tankFactory = new TankFactory();
     this.tank = tankFactory.makeTank();
     this.tankDriveCommand = new TankDriveCommand(tank, this);
+    this.tankSpinCommand = new TankSpinCommand(tank, this);
     this.joystick = new Joystick(0);
     tank.setDefaultCommand(tankDriveCommand);
     
@@ -52,6 +57,8 @@ public class RobotContainer implements ITankOI {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    this.button1 = new JoystickButton(joystick, 0);
+    button1.whenPressed(tankSpinCommand);
   }
 
 

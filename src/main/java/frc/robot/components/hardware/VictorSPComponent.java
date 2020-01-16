@@ -9,9 +9,4 @@ public class VictorSPComponent extends VictorSP implements ISpeedSetterComponent
         super(deviceNumber);
     }
 
-    @Override
-    public void setSpeed(double speed) {
-        set(-speed);
-    }
-
 }
