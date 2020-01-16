@@ -32,6 +32,7 @@ public class RobotContainer implements ITankOI{
    */
   public RobotContainer() {
     command = new DriveCommand(tank, this);
+    tank.setDefaultCommand(command);
     // Configure the button bindings
     configureButtonBindings();
   }
