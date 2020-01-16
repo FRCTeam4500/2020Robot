@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.tank.Tank;
 import frc.robot.subsystems.tank.command.TankDriveCommand;
 import frc.robot.subsystems.tank.factory.TankFactory;
+import frc.robot.subsystems.tank.ITankOI;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -21,7 +22,7 @@ import frc.robot.subsystems.tank.factory.TankFactory;
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
-public class RobotContainer {
+public class RobotContainer implements ITankOI {
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.

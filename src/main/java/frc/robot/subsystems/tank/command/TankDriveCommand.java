@@ -10,17 +10,18 @@ package frc.robot.subsystems.tank.command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.tank.Tank;
+import frc.robot.subsystems.tank.ITankOI;
 
 public class TankDriveCommand extends CommandBase {
   /**
    * Creates a new TankDriveCommand.
    */
   Tank tank;
-  RobotContainer container;
+  ITankOI oi;
 
-  public TankDriveCommand(Tank tank, RobotContainer container) {
+  public TankDriveCommand(Tank tank, ITankOI oi) {
     this.tank = tank;
-    this.container = container;
+    this.oi = oi;
     addRequirements(tank);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -33,8 +34,8 @@ public class TankDriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      double drive = container.getX();
-      double turn = container.getZ();
+      double drive = oi.getX();
+      double turn = oi.getZ();
       double leftSpeed = drive + turn;
       double rightSpeed = -drive + turn;
       tank.drive(leftSpeed, rightSpeed);
