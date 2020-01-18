@@ -40,7 +40,6 @@ public class RobotContainer implements ITankOI {
     this.tankFactory = new TankFactory();
     this.tank = tankFactory.makeTank();
     this.tankDriveCommand = new TankDriveCommand(tank, this);
-    this.tankSpinCommand = new TankSpinCommand(tank, this);
     this.joystick = new Joystick(0);
     tank.setDefaultCommand(tankDriveCommand);
     
@@ -57,7 +56,6 @@ public class RobotContainer implements ITankOI {
    */
   private void configureButtonBindings() {
     this.button1 = new JoystickButton(joystick, 1);
-    button1.whenPressed(tankSpinCommand);
   }
 
 
