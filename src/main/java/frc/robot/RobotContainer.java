@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.tank.Tank;
 import frc.robot.subsystems.tank.command.TankDriveCommand;
-import frc.robot.subsystems.tank.command.TankSpinCommand;
 import frc.robot.subsystems.tank.factory.TankFactory;
 import frc.robot.subsystems.tank.ITankOI;
 /**
@@ -31,7 +30,6 @@ public class RobotContainer implements ITankOI {
   TankFactory tankFactory;
   Tank tank;
   TankDriveCommand tankDriveCommand;
-  TankSpinCommand tankSpinCommand;
   Joystick joystick;
   JoystickButton button1;
 
