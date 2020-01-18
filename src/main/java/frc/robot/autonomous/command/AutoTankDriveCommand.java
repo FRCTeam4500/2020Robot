@@ -22,7 +22,7 @@ public class AutoTankDriveCommand extends CommandBase {
      */
     @Override
     public void initialize() {
-    tank.drive(0.2*lSpeed,0.2*rSpeed);
+    tank.drive(0.2*lSpeed,0.15*rSpeed);
     }
 
     /**
@@ -51,8 +51,8 @@ public class AutoTankDriveCommand extends CommandBase {
      */
     @Override
     public boolean isFinished() {
+        return true;
         // TODO: Make this return true when this Command no longer needs to run execute()
-        return false;
     }
 
     /**
