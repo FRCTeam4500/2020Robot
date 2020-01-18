@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.autonomous.command.AutoCommandGroup;
 import frc.robot.subsystems.tank.Tank;
 import frc.robot.subsystems.tank.command.TankDriveCommand;
 import frc.robot.subsystems.tank.factory.TankFactory;
@@ -64,7 +65,7 @@ public class RobotContainer implements ITankOI {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    return new AutoCommandGroup(tank);
   }
 
   public double getX(){
