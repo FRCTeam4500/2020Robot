@@ -1,9 +1,9 @@
-package frc.robot.subsystems.swerve;
+package frc.robot.subsystems.swerve.normal;
 
 /**
  * contains constants used by the swerve subsystem
  */
-public class SwerveMap {
+public class NormalSwerveMap {
     public static final double ANGLE_P = 1.03858;
     public static final double ANGLE_I = 0.004;
     public static final double ANGLE_D = 8;
