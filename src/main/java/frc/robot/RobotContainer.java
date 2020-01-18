@@ -56,7 +56,7 @@ public class RobotContainer implements ITankOI {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    this.button1 = new JoystickButton(joystick, 0);
+    this.button1 = new JoystickButton(joystick, 1);
     button1.whenPressed(tankSpinCommand);
   }
 
