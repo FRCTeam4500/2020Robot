@@ -16,10 +16,11 @@ import frc.robot.components.IGyroComponent;
 
 public class KinematicSwerve extends SubsystemBase {
 
-  private SwerveDriveKinematics kinematics;
-  private KinematicWheelModule[] wheelModules;
-  private double lowestMaximumWheelSpeed;
-  IGyroComponent gyro;
+  protected SwerveDriveKinematics kinematics;
+  protected KinematicWheelModule[] wheelModules;
+  protected double lowestMaximumWheelSpeed;
+
+  protected IGyroComponent gyro;
   /**
    * Creates a new KinematicSwerve.
    */
@@ -30,6 +31,7 @@ public class KinematicSwerve extends SubsystemBase {
     kinematics = new SwerveDriveKinematics(getTranslations(wheelModules));
 
     lowestMaximumWheelSpeed = getLowestMaximumWheelModuleSpeeds(wheelModules);
+
   }
 
   @Override
