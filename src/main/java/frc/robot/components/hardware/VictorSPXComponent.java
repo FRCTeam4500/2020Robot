@@ -9,12 +9,12 @@ package frc.robot.components.hardware;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import frc.robot.components.ISpeedSetterComponent;
+import frc.robot.components.IOutputSetterComponent;
 
 /**
- * An {@link ISpeedSetterComponent} wrapper for {@link VictorSPX}.
+ * An {@link IOutputSetterComponent} wrapper for {@link VictorSPX}.
  */
-public class VictorSPXComponent extends VictorSPX implements ISpeedSetterComponent {
+public class VictorSPXComponent extends VictorSPX implements IOutputSetterComponent {
 
     /**
      * @see VictorSPX#VictorSPX(int)
@@ -24,7 +24,7 @@ public class VictorSPXComponent extends VictorSPX implements ISpeedSetterCompone
     }
 
     @Override
-    public void setSpeed(double speed) {
+    public void setOutput(double speed) {
         set(ControlMode.PercentOutput, -speed);
     }
 

@@ -11,15 +11,32 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.subsystems.swerve.kinematic.KinematicSwerve;
-import frc.robot.subsystems.swerve.kinematic.factory.ThirteenWheelSwerveFactory;
+import frc.robot.subsystems.swerve.odometric.factory.GertrudeOdometricSwerveFactory;
 
 /**
  * Add your docs here.
  */
 public class XboxTestRobotContainer implements IRobotContainer{
     private XboxController controller = new XboxController(0);
-    private KinematicSwerve swerve = new ThirteenWheelSwerveFactory().makeSwerve();
+    private KinematicSwerve swerve = new GertrudeOdometricSwerveFactory().makeSwerve();
     public XboxTestRobotContainer(){
-        swerve.setDefaultCommand(new RunCommand(() -> swerve.moveRobotCentric(controller.getY(Hand.kLeft),controller.getX(Hand.kLeft), controller.getX(Hand.kRight)), swerve));
+        swerve.setDefaultCommand(
+            new RunCommand(//() -> 
+                //swerve.moveRobotCentric(
+                  //  withDeadzone(controller.getY(Hand.kLeft),0.2),
+                    //withDeadzone(controller.getX(Hand.kLeft),0.2), 
+                    //withDeadzone(controller.getX(Hand.kRight),0.2)
+                //)
+                () -> swerve.moveRobotCentric(0,0,0), 
+                swerve
+            )
+        );
+    }
+    private double withDeadzone(double value, double deadzone){
+        if(Math.abs(value) < deadzone){
+            return 0;
+        }else{
+            return value;
+        }
     }
 }

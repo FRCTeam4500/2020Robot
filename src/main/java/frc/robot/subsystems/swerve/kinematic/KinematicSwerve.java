@@ -38,10 +38,21 @@ public class KinematicSwerve extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+  /**
+   * A wrapper for {@link #moveRobotCentric(ChassisSpeeds)}.
+   * @param xSpeed Forward speed in meters/second
+   * @param ySpeed Leftward speed in meters/second
+   * @param wSpeed Counterclockwise rotational speed in radians/second
+   */
   public void moveRobotCentric(double xSpeed, double ySpeed, double wSpeed){
     var chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, wSpeed);  
     moveRobotCentric(chassisSpeeds);
   }
+  /**
+   * Move the swerve drive relative to itself using the desired {@link ChassisSpeeds}.
+   * @param chassisSpeeds the target chassis speeds for the swerve drive.
+   * @see #moveRobotCentric(double, double, double)
+   */
   public void moveRobotCentric(ChassisSpeeds chassisSpeeds){
     var states = kinematics.toSwerveModuleStates(chassisSpeeds);
     SwerveDriveKinematics.normalizeWheelSpeeds(states, lowestMaximumWheelSpeed);
@@ -50,9 +61,19 @@ public class KinematicSwerve extends SubsystemBase {
       wheelModules[i].drive(states[i]);
     }  
   }
+  /**
+   * A wrapper for {@link #moveAngleCentric(double, double, double, Rotation2d)}
+   */
   public void moveAngleCentric(double xSpeed, double ySpeed, double wSpeed, double robotAngle){
     moveAngleCentric(xSpeed, ySpeed, wSpeed, new Rotation2d(robotAngle));
   }
+  /**
+   * Move the swerve drive relative to an angle. This angle is usually the gyroscope reading. When the angle is zero, the swerve drive is assumed to face the positive X direction, and positive Y is directly to the left of the swerve drive.
+   * @param xSpeed the forward speed to move when angle is zero in meters/second
+   * @param ySpeed the leftward speed to move when angle is zero in meters/second
+   * @param wSpeed the counterclockward speed to rotate in radians/second
+   * @param robotAngle the angle of the robot relative to the described coordinate system
+   */
   public void moveAngleCentric(double xSpeed, double ySpeed, double wSpeed, Rotation2d robotAngle){
     
     var chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, wSpeed, robotAngle);

@@ -8,6 +8,7 @@
 package frc.robot.subsystems.swerve.kinematic.factory;
 
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import frc.robot.components.IAngularVelocitySetterComponent;
 import frc.robot.components.fptsimulation.SmartMotorSimulationComponent;
 import frc.robot.components.virtual.VirtualGyroComponent;
 import frc.robot.subsystems.swerve.kinematic.KinematicSwerve;
@@ -17,6 +18,18 @@ import frc.robot.subsystems.swerve.kinematic.KinematicWheelModule;
  * Add your docs here.
  */
 public class ThirteenWheelSwerveFactory {
+    private class ShoehornedAngularVelocitySetter extends SmartMotorSimulationComponent implements IAngularVelocitySetterComponent{
+
+        public ShoehornedAngularVelocitySetter(int motorId) {
+            super(motorId);
+        }
+
+        @Override
+        public void setAngularVelocity(double velocity) {
+            setOutput(velocity);
+        }
+
+    }
     public KinematicSwerve makeSwerve(){
         return new KinematicSwerve(
             new VirtualGyroComponent(),
@@ -37,8 +50,8 @@ public class ThirteenWheelSwerveFactory {
     }
     private KinematicWheelModule makeWheelModule(int sid, int aid, double x, double y ){
         return new KinematicWheelModule(
-            new SmartMotorSimulationComponent(aid), 
-            new SmartMotorSimulationComponent(sid), 
+            new ShoehornedAngularVelocitySetter(aid), 
+            new ShoehornedAngularVelocitySetter(sid), 
             new Translation2d(x, y), 
             1);
     }

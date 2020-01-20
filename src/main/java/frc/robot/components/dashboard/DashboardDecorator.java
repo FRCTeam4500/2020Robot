@@ -8,7 +8,9 @@
 package frc.robot.components.dashboard;
 
 import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The base decorator for all dashboard decorator components. By extending this class, a decorator
@@ -27,7 +29,9 @@ public abstract class DashboardDecorator implements Sendable {
      * @param subsystem the subsystem which the component is part of
      */
     public DashboardDecorator(String name, String subsystem) {
-        SendableRegistry.setName(this, name);
-        SendableRegistry.setSubsystem(this, subsystem);
+        SendableRegistry.add(this, subsystem, name);
+    }
+    public void send(){
+        SendableRegistry.enableLiveWindow(this);
     }
 }

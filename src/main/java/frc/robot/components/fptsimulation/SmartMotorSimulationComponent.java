@@ -10,13 +10,13 @@ package frc.robot.components.fptsimulation;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import frc.robot.components.IAngleGetterComponent;
 import frc.robot.components.IAngleSetterComponent;
-import frc.robot.components.ISpeedSetterComponent;
+import frc.robot.components.IOutputSetterComponent;
 
 /**
  * Add your docs here.
  */
 public class SmartMotorSimulationComponent extends FptSimulationComponent
-        implements IAngleGetterComponent, IAngleSetterComponent, ISpeedSetterComponent {
+        implements IAngleGetterComponent, IAngleSetterComponent, IOutputSetterComponent {
     public final String MOTOR_TABLES_KEY = "SmartMotors";
     public final String ANGLE_GETTER_COMPONENT_KEY = "AngleGetterComponent";
     public final String ANGLE_SETTER_COMPONENT_KEY = "AngleSetterComponent";
@@ -38,7 +38,7 @@ public class SmartMotorSimulationComponent extends FptSimulationComponent
     }
 
     @Override
-    public void setSpeed(double speed) {
+    public void setOutput(double speed) {
         speedSetterEntry.setNumber(speed);
         motorModeEntry.setString("Speed");
     }

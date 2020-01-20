@@ -11,24 +11,25 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.components.IAngleSetterComponent;
-import frc.robot.components.ISpeedSetterComponent;
+import frc.robot.components.IAngularVelocitySetterComponent;
+import frc.robot.components.IOutputSetterComponent;
 
 public class KinematicWheelModule extends SubsystemBase {
 
 
   private IAngleSetterComponent angleSetterComponent;
-  private ISpeedSetterComponent speedSetterComponent;
+  private IAngularVelocitySetterComponent angularVelocitySetterComponent;
   private Translation2d translationFromSwerveCenter;
   private double maxSurfaceSpeed;
-  public KinematicWheelModule(IAngleSetterComponent angleSetterComponent, ISpeedSetterComponent speedSetterComponent, Translation2d translationFromSwerveCenter, double maxSurfaceSpeed) {
+  public KinematicWheelModule(IAngleSetterComponent angleSetterComponent, IAngularVelocitySetterComponent angularVelocitySetterComponent, Translation2d translationFromSwerveCenter, double maxSurfaceSpeed) {
     this.angleSetterComponent = angleSetterComponent;
-    this.speedSetterComponent = speedSetterComponent;
+    this.angularVelocitySetterComponent = angularVelocitySetterComponent;
     this.translationFromSwerveCenter = translationFromSwerveCenter;
     this.maxSurfaceSpeed = maxSurfaceSpeed;
   }
   public void drive(SwerveModuleState state){
     angleSetterComponent.setAngle(state.angle.getRadians());
-    speedSetterComponent.setSpeed(state.speedMetersPerSecond/maxSurfaceSpeed);
+    angularVelocitySetterComponent.setAngularVelocity(state.speedMetersPerSecond);
   }
   public Translation2d getTranslationFromSwerveCenter(){
     return translationFromSwerveCenter;

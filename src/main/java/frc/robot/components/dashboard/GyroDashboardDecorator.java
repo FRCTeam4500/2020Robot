@@ -27,6 +27,7 @@ public class GyroDashboardDecorator extends DashboardDecorator implements IGyroC
     public GyroDashboardDecorator(String name, String subsystem, IGyroComponent gyro) {
         super(name, subsystem);
         this.gyro = gyro;
+        send();
     }
 
     @Override

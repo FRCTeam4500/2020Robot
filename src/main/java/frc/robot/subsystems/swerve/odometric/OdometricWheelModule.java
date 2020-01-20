@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import frc.robot.components.IAngleGetterComponent;
 import frc.robot.components.IAngleSetterComponent;
-import frc.robot.components.ISpeedGetterComponent;
-import frc.robot.components.ISpeedSetterComponent;
+import frc.robot.components.IAngularVelocityGetterComponent;
+import frc.robot.components.IAngularVelocitySetterComponent;
 import frc.robot.subsystems.swerve.kinematic.KinematicWheelModule;
 
 /**
@@ -22,14 +22,16 @@ import frc.robot.subsystems.swerve.kinematic.KinematicWheelModule;
 public class OdometricWheelModule extends KinematicWheelModule {
 
     protected IAngleGetterComponent angleGetterComponent;
-    protected ISpeedGetterComponent speedGetterComponent;
-    public OdometricWheelModule(IAngleSetterComponent angleSetterComponent, ISpeedSetterComponent speedSetterComponent,
-            Translation2d translationFromSwerveCenter, double maxSurfaceSpeed, IAngleGetterComponent angleGetterComponent, ISpeedGetterComponent speedGetterComponent) {
-        super(angleSetterComponent, speedSetterComponent, translationFromSwerveCenter, maxSurfaceSpeed);
+    protected IAngularVelocityGetterComponent angularVelocityGetterComponent;
+    protected double wheelDiameter;
+    public OdometricWheelModule(IAngleSetterComponent angleSetterComponent, IAngularVelocitySetterComponent angularVelocitySetterComponent,
+            Translation2d translationFromSwerveCenter, double maxSurfaceSpeed, IAngleGetterComponent angleGetterComponent, IAngularVelocityGetterComponent angularVelocityGetterComponent,double wheelDiameter) {
+        super(angleSetterComponent, angularVelocitySetterComponent, translationFromSwerveCenter, maxSurfaceSpeed);
         this.angleGetterComponent = angleGetterComponent;
-        this.speedGetterComponent = speedGetterComponent;
+        this.angularVelocityGetterComponent = angularVelocityGetterComponent;
+        this.wheelDiameter = wheelDiameter;
     }
     public SwerveModuleState getState(){
-        return new SwerveModuleState(speedGetterComponent.getSpeed()*getMaxSurfaceSpeed(), new Rotation2d(angleGetterComponent.getAngle()));
+        return new SwerveModuleState(angularVelocityGetterComponent.getAngularVelocity() / 2 / Math.PI * Math.PI *wheelDiameter, new Rotation2d(angleGetterComponent.getAngle()));
     }
 }

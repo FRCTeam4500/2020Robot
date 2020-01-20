@@ -27,6 +27,7 @@ public class VisionDashboardDecorator extends DashboardDecorator implements IVis
     public VisionDashboardDecorator(String name, String subsystem, IVisionComponent vision) {
         super(name, subsystem);
         this.vision = vision;
+        send();
     }
 
     private IVisionComponent vision;
