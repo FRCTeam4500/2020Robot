@@ -22,8 +22,9 @@ import frc.robot.subsystems.swerve.odometric.OdometricSwerve;
 import frc.robot.subsystems.swerve.odometric.OdometricWheelModule;
 
 /**
- * Add your docs here.
+ * @deprecated Gertrude's front left drive encoder is currently broken and this whole thing goes to hell. Do not use.
  */
+@Deprecated
 public class GertrudeOdometricSwerveFactory {
     public static final int TIMEOUT = 0;
     public static final double ANGLE_P = 1.03858;
