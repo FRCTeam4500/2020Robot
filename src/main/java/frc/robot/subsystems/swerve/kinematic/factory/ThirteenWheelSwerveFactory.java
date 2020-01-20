@@ -23,7 +23,7 @@ public class ThirteenWheelSwerveFactory {
             makeWheelModule(1, 2, 0, 0),
             makeWheelModule(3, 4, -0.237, 0.432),
             makeWheelModule(5, 6, -0.331, 0.194),
-            makeWheelModule(7,8, -0.475, -471),
+            makeWheelModule(7,8, -0.475, -0.471),
             makeWheelModule(7+2, 8+2, -0.076, -0.444),
             makeWheelModule(9+2, 10+2, 0.356, -0.381),
             makeWheelModule(11+2, 12+2, 0.617, -0.023),
@@ -35,7 +35,7 @@ public class ThirteenWheelSwerveFactory {
             makeWheelModule(23+2, 24+2, 0.232, 0.195)
             );
     }
-    private KinematicWheelModule makeWheelModule(int aid, int sid, double x, double y ){
+    private KinematicWheelModule makeWheelModule(int sid, int aid, double x, double y ){
         return new KinematicWheelModule(
             new SmartMotorSimulationComponent(aid), 
             new SmartMotorSimulationComponent(sid), 
