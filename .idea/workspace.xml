@@ -42,8 +42,8 @@
         <option value="FRC v2 CommandGroup" />
         <option value="FRC v2 Subsystem" />
         <option value="Class" />
-        <option value="FRC v2 Command" />
         <option value="Interface" />
+        <option value="FRC v2 Command" />
       </list>
     </option>
     <option name="SCHEME" value="Project" />
