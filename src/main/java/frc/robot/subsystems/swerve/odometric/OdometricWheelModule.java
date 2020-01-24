@@ -23,13 +23,12 @@ public class OdometricWheelModule extends KinematicWheelModule {
 
     protected IAngleGetterComponent angleGetterComponent;
     protected IAngularVelocityGetterComponent angularVelocityGetterComponent;
-    protected double wheelDiameter;
+    
     public OdometricWheelModule(IAngleSetterComponent angleSetterComponent, IAngularVelocitySetterComponent angularVelocitySetterComponent,
             Translation2d translationFromSwerveCenter, double maxSurfaceSpeed, IAngleGetterComponent angleGetterComponent, IAngularVelocityGetterComponent angularVelocityGetterComponent,double wheelDiameter) {
-        super(angleSetterComponent, angularVelocitySetterComponent, translationFromSwerveCenter, maxSurfaceSpeed);
+        super(angleSetterComponent, angularVelocitySetterComponent, translationFromSwerveCenter, maxSurfaceSpeed, wheelDiameter);
         this.angleGetterComponent = angleGetterComponent;
         this.angularVelocityGetterComponent = angularVelocityGetterComponent;
-        this.wheelDiameter = wheelDiameter;
     }
     public SwerveModuleState getState(){
         return new SwerveModuleState(angularVelocityGetterComponent.getAngularVelocity() / 2 / Math.PI * Math.PI *wheelDiameter, new Rotation2d(angleGetterComponent.getAngle()));
