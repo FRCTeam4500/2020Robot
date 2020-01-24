@@ -8,8 +8,8 @@
 package frc.robot.subsystems.swerve.odometric.factory;
 
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import frc.robot.components.fptsimulation.GyroSimulationComponent;
 import frc.robot.components.fptsimulation.SmarterSmartMotorSimulationComponent;
-import frc.robot.components.virtual.VirtualGyroComponent;
 import frc.robot.subsystems.swerve.odometric.OdometricSwerve;
 import frc.robot.subsystems.swerve.odometric.OdometricWheelModule;
 
@@ -17,11 +17,11 @@ import frc.robot.subsystems.swerve.odometric.OdometricWheelModule;
  * Add your docs here.
  */
 public class OdometricSimulatedSwerveFactory {
-    private final double MAX_SURFACE_SPEED = 0.0; // m/s
-    private final double WHEEL_DIAMETER = 0.0; // m
+    private final double MAX_SURFACE_SPEED = 1000; // m/s
+    private final double WHEEL_DIAMETER = 0.2; // m
     public OdometricSwerve makeSwerve(){
         return new OdometricSwerve(
-            new VirtualGyroComponent(),
+            new GyroSimulationComponent(1),
             makeWheelModule(2, 1, 0.5, 0.5),
             makeWheelModule(4, 3, 0.5, -0.5),
             makeWheelModule(6, 5, -0.5, 0.5),
