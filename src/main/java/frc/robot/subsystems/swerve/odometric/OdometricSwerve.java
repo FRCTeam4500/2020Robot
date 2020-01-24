@@ -21,13 +21,14 @@ public class OdometricSwerve extends KinematicSwerve {
 
     SwerveDriveOdometry odometry;
     OdometricWheelModule[] odometricWheelModules;
+    Pose2d currentPose = new Pose2d();
     public OdometricSwerve(IGyroComponent gyro, OdometricWheelModule... wheelModules) {
         super(gyro, wheelModules);
         odometry = new SwerveDriveOdometry(kinematics, new Rotation2d(gyro.getAngle()));
         odometricWheelModules = wheelModules;
     }
-    public Pose2d updateOdometry(){
-        return odometry.update(new Rotation2d(gyro.getAngle()), getSwerveModuleStates());
+    private void updateOdometry(){
+        currentPose = odometry.update(new Rotation2d(gyro.getAngle()), getSwerveModuleStates());
     }
     private SwerveModuleState[] getSwerveModuleStates(){
         var states = new SwerveModuleState[wheelModules.length];
@@ -35,5 +36,12 @@ public class OdometricSwerve extends KinematicSwerve {
             states[i] = odometricWheelModules[i].getState();
         }
         return states;
+    }
+    public Pose2d getCurrentPose(){
+        return currentPose;
+    }
+    @Override
+    public void periodic() {
+        updateOdometry();
     }
 }
