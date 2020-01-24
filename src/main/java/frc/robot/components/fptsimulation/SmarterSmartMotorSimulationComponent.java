@@ -21,7 +21,8 @@ public class SmarterSmartMotorSimulationComponent extends FptSimulationComponent
     OUTPUT_SETTER_KEY = "OutputSetter",
     OUTPUT_GETTER_KEY = "OutputGetter",
     ANGULAR_VELOCITY_SETTER_KEY = "AngularVelocitySetter",
-    ANGULAR_VELOCITY_GETTER_KEY = "AngularVelocityGetter";
+    ANGULAR_VELOCITY_GETTER_KEY = "AngularVelocityGetter",
+    MOTOR_MODE_KEY = "MotorMode";
 
     private NetworkTableEntry 
     angleGetterEntry,
@@ -29,7 +30,8 @@ public class SmarterSmartMotorSimulationComponent extends FptSimulationComponent
     outputSetterEntry,
     outputGetterEntry,
     angularVelocitySetterEntry,
-    angularVelocityGetterEntry;
+    angularVelocityGetterEntry,
+    motorModeEntry;
 
     public SmarterSmartMotorSimulationComponent(int id){
         super();
@@ -40,35 +42,40 @@ public class SmarterSmartMotorSimulationComponent extends FptSimulationComponent
         outputGetterEntry = motorTable.getEntry(OUTPUT_GETTER_KEY);
         angularVelocitySetterEntry = motorTable.getEntry(ANGULAR_VELOCITY_SETTER_KEY);
         angularVelocityGetterEntry = motorTable.getEntry(ANGULAR_VELOCITY_GETTER_KEY);
+        motorModeEntry = motorTable.getEntry(MOTOR_MODE_KEY);
     }
 
     @Override
     public double getAngle() {
-        return angleGetterEntry.getDouble(Double.NaN);
+        return angleGetterEntry.getDouble(0.0);
     }
 
     @Override
     public void setAngle(double angle) {
-        angleSetterEntry.forceSetDouble(Double.NaN);
+        angleSetterEntry.forceSetDouble(angle);
+        motorModeEntry.forceSetString("Angle");
+
     }
 
     @Override
     public void setOutput(double output) {
         outputSetterEntry.forceSetNumber(output);
+        motorModeEntry.forceSetString("Output");
     }
 
     @Override
     public double getOutput() {
-        return outputGetterEntry.getDouble(Double.NaN);
+        return outputGetterEntry.getDouble(0.0);
     }
 
     @Override
     public double getAngularVelocity() {
-        return angularVelocityGetterEntry.getDouble(Double.NaN);
+        return angularVelocityGetterEntry.getDouble(0.0);
     }
 
     @Override
     public void setAngularVelocity(double velocity) {
         angularVelocitySetterEntry.forceSetNumber(velocity);
+        motorModeEntry.forceSetString("AngularVelocity");
     }
 }
