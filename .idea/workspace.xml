@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e4c908e5-c833-4f88-97ac-6d5f96cb8347" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/autonomous/command/AutoCommandGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/autonomous/command/AutoCommandGroup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/autonomous/command/AutoTankDriveCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/autonomous/command/AutoTankDriveCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/shooter/IShooterOI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/RobotContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/RobotContainer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/shooter/Shooter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/shooter/Shooter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/shooter/command/ShootCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/shooter/command/ShootAtAngleCommand.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,8 +46,9 @@
         <option value="FRC v2 CommandGroup" />
         <option value="FRC v2 Subsystem" />
         <option value="Class" />
-        <option value="Interface" />
         <option value="FRC v2 Command" />
+        <option value="FRC v2 PIDSubsystem" />
+        <option value="Interface" />
       </list>
     </option>
     <option name="SCHEME" value="Project" />
@@ -52,6 +57,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1WYRl05vm73rJilQgUViKXh6Hr7" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -252,30 +258,30 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="589" y="169" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1579364611122" />
-    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1579735355307">
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom" timestamp="1579788497643">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1579735355307" />
-    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1579735355307">
+    <state width="1493" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1579788497643" />
+    <state width="1493" height="210" key="GridCell.Tab.0.center" timestamp="1579788497643">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1579735355307" />
-    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1579735355307">
+    <state width="1493" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1579788497643" />
+    <state width="1493" height="210" key="GridCell.Tab.0.left" timestamp="1579788497643">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1579735355307" />
-    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1579735355307">
+    <state width="1493" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1579788497643" />
+    <state width="1493" height="210" key="GridCell.Tab.0.right" timestamp="1579788497643">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1579735355307" />
+    <state width="1493" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1579788497643" />
     <state x="290" y="0" key="SettingsEditor" timestamp="1579730420087">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="290" y="0" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1579730420087" />
-    <state x="470" y="238" key="com.intellij.ide.util.TipDialog" timestamp="1579376047389">
+    <state x="470" y="238" key="com.intellij.ide.util.TipDialog" timestamp="1580134961749">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="470" y="238" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1579376047389" />
+    <state x="470" y="238" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1580134961749" />
     <state x="456" y="260" width="705" height="304" key="org.intellij.images.editor.actions.BackgroundImageDialog" timestamp="1579364685344">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

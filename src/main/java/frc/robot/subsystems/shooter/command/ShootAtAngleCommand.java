@@ -1,14 +1,20 @@
 package frc.robot.subsystems.shooter.command;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.shooter.IShooterOI;
 import frc.robot.subsystems.shooter.Shooter;
 
 
-public class ShootCommand extends CommandBase {
+public class ShootAtAngleCommand extends CommandBase {
     private Shooter shooter;
+    private IShooterOI oi;
 
-    public ShootCommand(Shooter shooter) {
+    private double topFlywheelSpeed;
+    private double bottomFlywheelSpeed;
+
+    public ShootAtAngleCommand(Shooter shooter, IShooterOI oi) {
         this.shooter = shooter;
+        this.oi = oi;
         addRequirements(shooter);
     }
 
@@ -19,13 +25,13 @@ public class ShootCommand extends CommandBase {
 
     @Override
     public void execute() {
-
+        //TODO: add logic to determine flywheel speed from angle
+        shooter.run(0,0);
     }
 
     @Override
     public boolean isFinished() {
-        // TODO: Make this return true when this Command no longer needs to run execute()
-        return false;
+        return !oi.getTurretActive();
     }
 
     @Override

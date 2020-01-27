@@ -10,7 +10,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.shooter.IShooterOI;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.command.ShootAtAngleCommand;
 import frc.robot.subsystems.turret.ITurretOI;
+import frc.robot.subsystems.turret.Turret;
+import frc.robot.subsystems.turret.command.SetTurretAngleCommand;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -18,12 +23,18 @@ import frc.robot.subsystems.turret.ITurretOI;
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
-public class RobotContainer implements ITurretOI {
+public class RobotContainer implements ITurretOI, IShooterOI {
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   private double turretAngle;
+  private double shooterAngle;
+  private boolean turretActive;
+  private Shooter shooter;
+  private ShootAtAngleCommand shootCommand;
+  private Turret turret;
+  private SetTurretAngleCommand setTurretAngleCommand;
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
@@ -51,5 +62,13 @@ public class RobotContainer implements ITurretOI {
 
   public double getTurretAngle(){
     return this.turretAngle;
+  }
+
+  public double getShooterAngle(){
+      return this.shooterAngle;
+  }
+
+  public boolean getTurretActive(){
+      return this.turretActive;
   }
 }
