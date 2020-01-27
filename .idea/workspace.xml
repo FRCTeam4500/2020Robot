@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e4c908e5-c833-4f88-97ac-6d5f96cb8347" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/shooter/factory/DefaultShooterFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/turret/factory/DefaultTurretFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/shooter/factory/ShooterFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/shooter/factory/IShooterFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/turret/Turret.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/turret/Turret.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,10 +44,10 @@
       <list>
         <option value="FRC v2 CommandGroup" />
         <option value="FRC v2 Subsystem" />
-        <option value="Class" />
         <option value="FRC v2 Command" />
         <option value="FRC v2 PIDSubsystem" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
     <option name="SCHEME" value="Project" />
@@ -80,7 +84,7 @@
       <command value="gradle simulateJava" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.C:/Users/tytbu/OneDrive/Desktop/school stuff/roboot/geet/2020Robot [simulateJava]">
+  <component name="RunManager" selected="Gradle.C:/Users/tytbu/OneDrive/Desktop/school stuff/roboot/geet/2020Robot [build]">
     <configuration name="2020Robot [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -281,10 +285,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="456" y="260" width="705" height="304" key="org.intellij.images.editor.actions.BackgroundImageDialog/0.0.1536.824@0.0.1536.824" timestamp="1579364685344" />
-    <state x="425" y="187" width="672" height="677" key="run.anything.popup" timestamp="1579735355295">
+    <state x="425" y="187" width="672" height="677" key="run.anything.popup" timestamp="1580166467187">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="425" y="187" width="672" height="677" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1579735355295" />
+    <state x="425" y="187" width="672" height="677" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1580166467187" />
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1579375811053">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
