@@ -17,7 +17,7 @@ import frc.robot.subsystems.swerve.odometric.OdometricWheelModule;
  * Add your docs here.
  */
 public class OdometricSimulatedSwerveFactory {
-    private final double MAX_SURFACE_SPEED = 1000; // m/s
+    private final double MAX_SURFACE_SPEED = 2.5; // m/s
     private final double WHEEL_DIAMETER = 0.2; // m
     public OdometricSwerve makeSwerve(){
         return new OdometricSwerve(
