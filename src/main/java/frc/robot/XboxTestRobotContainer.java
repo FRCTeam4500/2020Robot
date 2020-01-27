@@ -9,10 +9,13 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.subsystems.swerve.odometric.OdometricSwerve;
 import frc.robot.subsystems.swerve.odometric.OdometricSwerveDashboardUtility;
+import frc.robot.subsystems.swerve.odometric.command.OdometricSwerve_ResetPoseCommand;
 import frc.robot.subsystems.swerve.odometric.factory.OdometricSimulatedSwerveFactory;
 
 /**
@@ -34,6 +37,7 @@ public class XboxTestRobotContainer implements IRobotContainer{
             )
         );
         SendableRegistry.addLW(utility, "Swerve", "Utility");
+        SmartDashboard.putData(new OdometricSwerve_ResetPoseCommand(new Pose2d(),swerve));
     }
     private double withDeadzone(double value, double deadzone){
         if(Math.abs(value) < deadzone){
