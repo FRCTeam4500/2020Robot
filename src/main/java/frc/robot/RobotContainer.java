@@ -13,9 +13,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.shooter.IShooterOI;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.command.ShootStraightCommand;
+import frc.robot.subsystems.shooter.factory.DefaultShooterFactory;
+import frc.robot.subsystems.shooter.factory.IShooterFactory;
 import frc.robot.subsystems.turret.ITurretOI;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.command.SetTurretAngleCommand;
+import frc.robot.subsystems.turret.factory.DefaultTurretFactory;
+import frc.robot.subsystems.turret.factory.ITurretFactory;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -32,11 +36,21 @@ public class RobotContainer implements ITurretOI, IShooterOI {
   private double turretAngle;
   private double shooterAngle;
   private boolean turretActive;
+  private IShooterFactory shooterFactory;
   private Shooter shooter;
   private ShootStraightCommand shootCommand;
+  private ITurretFactory turretFactory;
   private Turret turret;
-  private SetTurretAngleCommand setTurretAngleCommand;
+  private SetTurretAngleCommand turretAngleCommand;
   public RobotContainer() {
+    shooterFactory = new DefaultShooterFactory();
+    shooter = shooterFactory.makeShooter();
+    shootCommand = new ShootStraightCommand(shooter, this);
+    shooter.setDefaultCommand(shootCommand);
+    turretFactory = new DefaultTurretFactory();
+    turret = turretFactory.makeTurret();
+    turretAngleCommand = new SetTurretAngleCommand(turret, this);
+    turret.setDefaultCommand(turretAngleCommand);
     // Configure the button bindings
     configureButtonBindings();
   }

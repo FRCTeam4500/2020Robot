@@ -25,12 +25,17 @@ public class ShootStraightCommand extends CommandBase {
 
     @Override
     public void execute() {
-        shooter.run(0,0);
+        if (oi.getShooterActive()) {
+            shooter.run(1, 1);
+        }
+        else{
+            shooter.run(0,0);
+        }
     }
 
     @Override
     public boolean isFinished() {
-        return !oi.getShooterActive();
+        return false;
     }
 
     @Override
