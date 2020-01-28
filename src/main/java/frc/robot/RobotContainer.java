@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.shooter.IShooterOI;
 import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.shooter.command.ShootAtAngleCommand;
+import frc.robot.subsystems.shooter.command.ShootStraightCommand;
 import frc.robot.subsystems.turret.ITurretOI;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.command.SetTurretAngleCommand;
@@ -33,7 +33,7 @@ public class RobotContainer implements ITurretOI, IShooterOI {
   private double shooterAngle;
   private boolean turretActive;
   private Shooter shooter;
-  private ShootAtAngleCommand shootCommand;
+  private ShootStraightCommand shootCommand;
   private Turret turret;
   private SetTurretAngleCommand setTurretAngleCommand;
   public RobotContainer() {
@@ -65,11 +65,7 @@ public class RobotContainer implements ITurretOI, IShooterOI {
     return this.turretAngle;
   }
 
-  public double getShooterAngle(){
-      return this.shooterAngle;
-  }
-
-  public boolean getTurretActive(){
+  public boolean getShooterActive(){
       return this.turretActive;
   }
 }
