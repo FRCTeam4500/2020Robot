@@ -46,21 +46,20 @@ public class OdometricSimulatedSwerveFactory {
             WHEEL_DIAMETER
         );
     }
-    public OdometricSwerve_MoveToPoseCommand makeMoveToPoseCommand(OdometricSwerve swerve, Pose2d target){
-        var subsystem = "Odometric Swerve Auto";
+    public OdometricSwerve_MoveToPoseCommand makeMoveToPoseCommand(String subsystem, OdometricSwerve swerve, Pose2d target){
         var leftwardController = new PIDController(1, 0, 0);
-        SendableRegistry.add(leftwardController, subsystem, "Leftward");
+        SendableRegistry.add(leftwardController, subsystem+ "Leftward");
         leftwardController.setTolerance(0.1);
         SmartDashboard.putData(leftwardController);
 
         var forwardController = new PIDController(1, 0, 0);
-        SendableRegistry.add(forwardController, subsystem, "Forward");
+        SendableRegistry.add(forwardController, subsystem+ "Forward");
         forwardController.setTolerance(0.1);
         SmartDashboard.putData(forwardController);
 
-        var coutnerClockwardController = new PIDController(0.25, 0, 0);
-        SendableRegistry.add(coutnerClockwardController, subsystem, "Rotational");
-        coutnerClockwardController.setTolerance(0.25);
+        var coutnerClockwardController = new PIDController(0.5, 0, 0);
+        SendableRegistry.add(coutnerClockwardController, subsystem+ "Rotational");
+        coutnerClockwardController.setTolerance(0.1);
         SmartDashboard.putData(coutnerClockwardController);
 
         return new OdometricSwerve_MoveToPoseCommand(
