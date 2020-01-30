@@ -23,7 +23,8 @@ import frc.robot.subsystems.swerve.odometric.factory.OdometricSimulatedSwerveFac
  */
 public class XboxTestRobotContainer implements IRobotContainer{
     private XboxController controller = new XboxController(0);
-    private OdometricSwerve swerve = new OdometricSimulatedSwerveFactory().makeSwerve();
+    private OdometricSimulatedSwerveFactory factory = new OdometricSimulatedSwerveFactory();
+    private OdometricSwerve swerve = factory.makeSwerve();
     private OdometricSwerveDashboardUtility utility = new OdometricSwerveDashboardUtility(swerve);
     public XboxTestRobotContainer(){
         swerve.setDefaultCommand(
@@ -38,6 +39,11 @@ public class XboxTestRobotContainer implements IRobotContainer{
         );
         SendableRegistry.addLW(utility, "Swerve", "Utility");
         SmartDashboard.putData(new OdometricSwerve_ResetPoseCommand(new Pose2d(),swerve));
+        var command = factory.makeMoveToPoseCommand(swerve, new Pose2d());
+        SmartDashboard.putData(command);
+        SmartDashboard.putData(new InstantCommand(() -> command.end(true)));
+
+        
     }
     private double withDeadzone(double value, double deadzone){
         if(Math.abs(value) < deadzone){
