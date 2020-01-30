@@ -7,11 +7,16 @@
 
 package frc.robot.subsystems.swerve.odometric.factory;
 
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.components.fptsimulation.GyroSimulationComponent;
 import frc.robot.components.fptsimulation.SmarterSmartMotorSimulationComponent;
 import frc.robot.subsystems.swerve.odometric.OdometricSwerve;
 import frc.robot.subsystems.swerve.odometric.OdometricWheelModule;
+import frc.robot.subsystems.swerve.odometric.command.OdometricSwerve_MoveToPoseCommand;
 
 /**
  * Add your docs here.
@@ -40,5 +45,29 @@ public class OdometricSimulatedSwerveFactory {
             speedMotor, 
             WHEEL_DIAMETER
         );
+    }
+    public OdometricSwerve_MoveToPoseCommand makeMoveToPoseCommand(OdometricSwerve swerve, Pose2d target){
+        var subsystem = "Odometric Swerve Auto";
+        var leftwardController = new PIDController(1, 0, 0);
+        SendableRegistry.add(leftwardController, subsystem, "Leftward");
+        leftwardController.setTolerance(0.1);
+        SmartDashboard.putData(leftwardController);
+
+        var forwardController = new PIDController(1, 0, 0);
+        SendableRegistry.add(forwardController, subsystem, "Forward");
+        forwardController.setTolerance(0.1);
+        SmartDashboard.putData(forwardController);
+
+        var coutnerClockwardController = new PIDController(0.25, 0, 0);
+        SendableRegistry.add(coutnerClockwardController, subsystem, "Rotational");
+        coutnerClockwardController.setTolerance(0.25);
+        SmartDashboard.putData(coutnerClockwardController);
+
+        return new OdometricSwerve_MoveToPoseCommand(
+            swerve, 
+            target, 
+            leftwardController, 
+            forwardController, 
+            coutnerClockwardController);
     }
 }
