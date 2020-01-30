@@ -39,7 +39,7 @@ public class XboxTestRobotContainer implements IRobotContainer{
         );
         SendableRegistry.addLW(utility, "Swerve", "Utility");
         SmartDashboard.putData(new OdometricSwerve_ResetPoseCommand(new Pose2d(),swerve));
-        var command = factory.makeMoveToPoseCommand(swerve, new Pose2d());
+        var command = factory.makeMoveToPoseCommand("Auto",swerve, new Pose2d());
         SmartDashboard.putData(command);
         SmartDashboard.putData(new InstantCommand(() -> command.end(true)));
 
