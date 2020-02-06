@@ -13,7 +13,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * Add your docs here.
  */
 public class Sensor {
+    private String name;
+    public Sensor(String name){
+        this.name = name;
+    }
     public boolean registersBall(){
-        return SmartDashboard.getNumber("sensor", Double.POSITIVE_INFINITY) < 17;
+        return SmartDashboard.getNumber(name, Double.POSITIVE_INFINITY) < 19;
     }
 }

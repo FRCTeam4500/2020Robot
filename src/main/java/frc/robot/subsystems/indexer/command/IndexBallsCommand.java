@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.components.ISpeedSetterComponent;
 import frc.robot.components.Sensor;
 
-public class Indexer extends CommandBase {
+public class IndexBallsCommand extends CommandBase {
   ISpeedSetterComponent indexMotor = new ISpeedSetterComponent(){
   
     @Override
@@ -27,13 +27,13 @@ public class Indexer extends CommandBase {
       SmartDashboard.putBoolean("Run Intake Motor", speed != 0);
     }
   };
-  Sensor sensor1 = new Sensor();
+  Sensor sensor1 = new Sensor("Sensor1");
   boolean indexingBall = false;
   int ballCount = 0;
   /**
    * Creates a new Indexer.
    */
-  public Indexer() {
+  public IndexBallsCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
