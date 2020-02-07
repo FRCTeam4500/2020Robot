@@ -14,6 +14,8 @@ import frc.robot.components.Sensor;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.robot.components.hardware.VictorSPComponent;
+
 
 public class Indexer extends CommandBase {
   private NetworkTableInstance nt;
@@ -27,13 +29,7 @@ public class Indexer extends CommandBase {
   private NetworkTableEntry Sensor5;
 
 
-  ISpeedSetterComponent indexMotor = new ISpeedSetterComponent(){
-  
-    @Override
-    public void setSpeed(double speed) {
-      SmartDashboard.putBoolean("Run Index Motor", speed != 0);
-    }
-  };
+  ISpeedSetterComponent indexMotor = new VictorSPComponent(0);
   ISpeedSetterComponent intakeMotor = new ISpeedSetterComponent(){
   
     @Override
@@ -41,14 +37,15 @@ public class Indexer extends CommandBase {
       SmartDashboard.putBoolean("Run Intake Motor", speed != 0);
     }
   };
-  Sensor sensor0 = new Sensor();
-  Sensor sensor1 = new Sensor();
+  Sensor sensor0 = new Sensor("sensor0");
+  Sensor sensor1 = new Sensor("sensor1");
   boolean indexingBall = false;
   int ballCount = 0;
-  Sensor sensor2 = new Sensor();
-  Sensor sensor3 = new Sensor();
-  Sensor sensor4 = new Sensor();
-  Sensor sensor5 = new Sensor();
+  Sensor sensor2 = new Sensor("sensor2");
+  Sensor sensor3 = new Sensor("sensor3");
+  Sensor sensor4 = new Sensor("sensor4");
+  Sensor sensor5 = new Sensor("sensor5");
+
 
 
   
@@ -56,7 +53,7 @@ public class Indexer extends CommandBase {
   /**
    * Creates a new Indexer.
    */
-  public Indexer(NetworkTable table) {
+  public Indexer() {
     nt = NetworkTableInstance.getDefault();
     table = nt.getTable("SmartDashboard");
     Sensor0 = table.getEntry("Sensor0");
@@ -118,7 +115,7 @@ public class Indexer extends CommandBase {
         if(sensor4.registersBall()) {
           indexMotor.setSpeed(0);
           intakeMotor.setSpeed(0);
-          
+
         }
       }
     }else{
