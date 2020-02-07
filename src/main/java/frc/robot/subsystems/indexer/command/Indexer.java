@@ -30,6 +30,14 @@ public class Indexer extends CommandBase {
   Sensor sensor1 = new Sensor();
   boolean indexingBall = false;
   int ballCount = 0;
+  Sensor sensor2 = new Sensor();
+  Sensor sensor3 = new Sensor();
+  Sensor sensor4 = new Sensor();
+  Sensor sensor5 = new Sensor();
+  Sensor sensor6 = new Sensor();
+
+  
+
   /**
    * Creates a new Indexer.
    */
@@ -49,6 +57,27 @@ public class Indexer extends CommandBase {
       indexMotor.setSpeed(1);
       intakeMotor.setSpeed(0);
       indexingBall = true;
+      if(!sensor2.registersBall()) {
+          if(sensor2.registersBall()) {
+            indexMotor.setSpeed(0);
+          }
+      }
+      if(!sensor3.registersBall()) {
+        if(sensor3.registersBall()) {
+          indexMotor.setSpeed(0);
+        }
+      }
+
+      if(!sensor4.registersBall()) {
+        if(sensor4.registersBall()) {
+          indexMotor.setSpeed(0);
+        }
+      }
+      if(!sensor5.registersBall()) {
+        if(sensor5.registersBall()) {
+          indexMotor.setSpeed(0);
+        }
+      }
     }else{
       indexMotor.setSpeed(0);
       intakeMotor.setSpeed(1);
