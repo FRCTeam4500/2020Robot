@@ -6,14 +6,19 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.components;
-
+import frc.robot.subsystems.indexer.Indexer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 /**
  * Add your docs here.
  */
 public class Sensor {
+    String sensorName = " ";
+    public Sensor(String sensorName) {
+        this.sensorName = sensorName;
+    }
     public boolean registersBall(){
-        return SmartDashboard.getNumber("sensor", Double.POSITIVE_INFINITY) < 17;
+        return SmartDashboard.getNumber("sensor0", Double.POSITIVE_INFINITY) < 17;
     }
 }
