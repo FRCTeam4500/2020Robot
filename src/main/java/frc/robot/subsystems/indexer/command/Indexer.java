@@ -117,6 +117,8 @@ public class Indexer extends CommandBase {
       if(!sensor4.registersBall()) {
         if(sensor4.registersBall()) {
           indexMotor.setSpeed(0);
+          intakeMotor.setSpeed(0);
+          
         }
       }
     }else{
