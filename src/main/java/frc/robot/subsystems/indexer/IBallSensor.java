@@ -5,20 +5,11 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.components;
-import frc.robot.subsystems.indexer.Indexer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+package frc.robot.subsystems.indexer;
 
 /**
  * Add your docs here.
  */
-public class Sensor {
-    private String name;
-    public Sensor(String name){
-        this.name = name;
-    }
-    public boolean registersBall(){
-        return SmartDashboard.getNumber(name, Double.POSITIVE_INFINITY) < 32;
-    }
+public interface IBallSensor {
+    boolean registersBall();
 }
