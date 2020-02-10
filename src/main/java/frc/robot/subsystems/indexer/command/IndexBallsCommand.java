@@ -32,6 +32,11 @@ public class IndexBallsCommand extends CommandBase {
 
   boolean indexingBall = false;
   int ballCount = 0;
+
+
+
+  
+
   /**
    * Creates a new Indexer.
    */
