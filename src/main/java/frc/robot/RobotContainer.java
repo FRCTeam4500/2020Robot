@@ -8,8 +8,15 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.subsystems.spinner.Spinner;
+import frc.robot.subsystems.spinner.command.Spinner_SetAngleCommand;
+import frc.robot.subsystems.spinner.factory.SpinnerFactory;
+import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.swerve.factory.DefaultSwerveFactory;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -19,10 +26,19 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
 
+  private Spinner spinner;
+  private Joystick joystick;
+  private JoystickButton button;
+  
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+
+    joystick = new Joystick(0);
+    spinner = new SpinnerFactory().makeSpinner();
+    button = new JoystickButton(joystick, 0);
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -34,6 +50,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    button.whenPressed(new Spinner_SetAngleCommand(spinner, 180));
   }
 
 
