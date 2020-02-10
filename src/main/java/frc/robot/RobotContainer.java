@@ -7,12 +7,17 @@
 
 package frc.robot;
 
+import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorSensorV3;
+
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.spinner.Spinner;
+import frc.robot.subsystems.spinner.command.ColorMatcherCommand;
 import frc.robot.subsystems.spinner.command.Spinner_SetAngleCommand;
 import frc.robot.subsystems.spinner.factory.SpinnerFactory;
 import frc.robot.subsystems.swerve.Swerve;
@@ -26,19 +31,18 @@ import frc.robot.subsystems.swerve.factory.DefaultSwerveFactory;
  */
 public class RobotContainer {
 
-  private Spinner spinner;
-  private Joystick joystick;
-  private JoystickButton button;
-  
+  ColorMatch matcher = new ColorMatch();
+
+  private ColorMatcherCommand command;
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
 
-    joystick = new Joystick(0);
-    spinner = new SpinnerFactory().makeSpinner();
-    button = new JoystickButton(joystick, 0);
+    matcher.setConfidenceThreshold(0.97);
+    command = new ColorMatcherCommand(new ColorSensorV3(I2C.Port.kOnboard), matcher);
+
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -50,7 +54,6 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    button.whenPressed(new Spinner_SetAngleCommand(spinner, 180));
   }
 
 
@@ -61,6 +64,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    return command;
   }
 }
