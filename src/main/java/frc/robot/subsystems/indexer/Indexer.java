@@ -8,4 +8,8 @@ public class Indexer extends SubsystemBase {
     public Indexer(ISpeedSetterComponent motor){
         this.motor = motor;
     }
+
+    public void setSpeed(double speed){
+        motor.setSpeed(speed);
+    }
 }
