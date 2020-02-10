@@ -10,6 +10,7 @@ public class Turret extends SubsystemBase {
     public Turret(ISmartMotorComponent turnMotor) {
         this.turnMotor = turnMotor;
     }
+
     public void setTurretAngle(double turnAngle){
         this.turnMotor.setAngle(turnAngle);
     }
