@@ -18,6 +18,6 @@ public class Sensor {
         this.name = name;
     }
     public boolean registersBall(){
-        return SmartDashboard.getNumber(name, Double.POSITIVE_INFINITY) < 19;
+        return SmartDashboard.getNumber(name, Double.POSITIVE_INFINITY) < 32;
     }
 }

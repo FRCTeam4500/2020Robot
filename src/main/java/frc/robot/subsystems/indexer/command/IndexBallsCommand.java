@@ -11,15 +11,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.components.ISpeedSetterComponent;
 import frc.robot.components.Sensor;
+import frc.robot.components.hardware.VictorSPComponent;
 
 public class IndexBallsCommand extends CommandBase {
-  ISpeedSetterComponent indexMotor = new ISpeedSetterComponent(){
-  
-    @Override
-    public void setSpeed(double speed) {
-      SmartDashboard.putBoolean("Run Index Motor", speed != 0);
-    }
-  };
+  ISpeedSetterComponent indexMotor = new VictorSPComponent(0);
   ISpeedSetterComponent intakeMotor = new ISpeedSetterComponent(){
   
     @Override
@@ -27,7 +22,14 @@ public class IndexBallsCommand extends CommandBase {
       SmartDashboard.putBoolean("Run Intake Motor", speed != 0);
     }
   };
-  Sensor sensor1 = new Sensor("Sensor1");
+  
+  Sensor sensor1 = new Sensor("Sensor1"), 
+      sensor0 = new Sensor("Sensor0"),
+      sensor2 = new Sensor("Sensor2"),
+      sensor3 = new Sensor("Sensor3"),
+      sensor4 = new Sensor("Sensor4"),
+      sensor5 = new Sensor("Sensor5");
+
   boolean indexingBall = false;
   int ballCount = 0;
   /**
@@ -43,15 +45,21 @@ public class IndexBallsCommand extends CommandBase {
   }
 
   // Called every time the scheduler runs while the command is scheduled.
+  double motorSpeed = -0.75;
   @Override
   public void execute() {
-    if(sensor1.registersBall()){
-      indexMotor.setSpeed(1);
+    if(sensor0.registersBall()){
+      indexMotor.setSpeed(motorSpeed);
       intakeMotor.setSpeed(0);
       indexingBall = true;
-    }else{
+    }
+    else if(sensor1.registersBall() ||
+    sensor2.registersBall() ||
+    sensor3.registersBall() ||
+    sensor4.registersBall() ||
+    sensor5.registersBall()){
       indexMotor.setSpeed(0);
-      intakeMotor.setSpeed(1);
+      intakeMotor.setSpeed(motorSpeed);
       if(indexingBall){
         indexingBall = false;
         ballCount++;
@@ -63,6 +71,8 @@ public class IndexBallsCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    intakeMotor.setSpeed(0.0);
+    indexMotor.setSpeed(0.0);
   }
 
   // Returns true when the command should end.
