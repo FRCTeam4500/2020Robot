@@ -15,5 +15,9 @@ public class Arm extends SubsystemBase {
         //       such as SpeedControllers, Encoders, DigitalInputs, etc.
     }
 
+    public void setAngle(double angle){
+        motor.setAngle(angle);
+    }
+
 }
 
