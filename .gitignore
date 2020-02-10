@@ -109,7 +109,6 @@ Temporary Items
 !.vscode/launch.json
 !.vscode/extensions.json
 
-### IntelliJ ###
 .idea/*
 
 ### Windows ###
@@ -136,6 +135,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+
 
 ### Gradle ###
 .gradle
