@@ -7,22 +7,17 @@
 
 package frc.robot;
 
-import java.util.List;
-
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.subsystems.swerve.odometric.OdometricSwerve;
 import frc.robot.subsystems.swerve.odometric.OdometricSwerveDashboardUtility;
-import frc.robot.subsystems.swerve.odometric.command.OdometricSwerve_FollowTrajectoryCommand;
+import frc.robot.subsystems.swerve.odometric.command.OdometricSwerve_MoveToTranslationCommand;
 import frc.robot.subsystems.swerve.odometric.command.OdometricSwerve_ResetPoseCommand;
 import frc.robot.subsystems.swerve.odometric.factory.OdometricSimulatedSwerveFactory;
 
@@ -46,13 +41,9 @@ public class XboxTestRobotContainer implements IRobotContainer{
             )
         );
         SendableRegistry.addLW(utility, "Swerve", "Utility");
-        SmartDashboard.putData(new OdometricSwerve_ResetPoseCommand(new Pose2d(),swerve));
-        var firstCommand = factory.makeMoveToPoseCommand("Translational Auto",swerve, new Pose2d());
-        firstCommand.getCounterClockwardController().setTolerance(Double.POSITIVE_INFINITY);
-        firstCommand.getCounterClockwardController().setPID(0, 0, 0);
-        var secondCommand = factory.makeMoveToPoseCommand("Rotational Auto", swerve, new Pose2d());
-        SmartDashboard.putData(firstCommand.andThen(secondCommand));
-        SmartDashboard.putData(makeTrajectoryCommand());
+        SmartDashboard.putData("Reset Pose",new OdometricSwerve_ResetPoseCommand(new Pose2d(),swerve));
+        SmartDashboard.putData("Run Auto",makeMoveToTranslationCommand());
+
 
         
     }
@@ -63,15 +54,23 @@ public class XboxTestRobotContainer implements IRobotContainer{
             return value;
         }
     }
-    private OdometricSwerve_FollowTrajectoryCommand makeTrajectoryCommand(){
-        var config = new TrajectoryConfig(2, 1);
-        var trajectory = TrajectoryGenerator.generateTrajectory(
-            new Pose2d(), 
-            List.of(new Translation2d(2,2), new Translation2d(4,-2)),
-            new Pose2d(6, 0, new Rotation2d()), 
-            config);
-
-        trajectory = TrajectoryGenerator.generateTrajectory(new Pose2d(), List.of(), new Pose2d(5,0,new Rotation2d()), config);
-        return new OdometricSwerve_FollowTrajectoryCommand(swerve, trajectory, new RamseteController());
+    private CommandBase makeMoveToTranslationCommand(){
+        return makeMoveToTranslationCommand(0, -2, 0)
+        .andThen(makeMoveToTranslationCommand(1,-1,2))
+        .andThen(makeMoveToTranslationCommand(1.5,0,2))
+        .andThen(makeMoveToTranslationCommand(1,1,2))
+        .andThen(makeMoveToTranslationCommand(0,2,0));
+    }
+    private CommandBase makeMoveToTranslationCommand(double x, double y, double targetSpeed){
+        return new OdometricSwerve_MoveToTranslationCommand(
+            swerve, 
+            new Translation2d(x,y), 
+            targetSpeed, 
+            createDefaultController()).alongWith(new InstantCommand(() -> SmartDashboard.putString("MOVING TO", String.format("X: %s, Y: %s", x,y))));
+    }
+    private PIDController createDefaultController(){
+        var controller = new PIDController(1, 0, 0);
+        controller.setTolerance(0.05);
+        return controller;
     }
 }
