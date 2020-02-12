@@ -7,8 +7,10 @@
 
 package frc.robot.subsystems.swerve.odometric;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import frc.robot.components.IGyroComponent;
@@ -21,12 +23,16 @@ public class OdometricSwerve extends KinematicSwerve {
 
     SwerveDriveOdometry odometry;
     OdometricWheelModule[] odometricWheelModules;
+    private Translation2d lastTranslation;
+    private double lastTime;
     public OdometricSwerve(IGyroComponent gyro, OdometricWheelModule... wheelModules) {
         super(gyro, wheelModules);
         odometry = new SwerveDriveOdometry(kinematics, new Rotation2d(gyro.getAngle()));
         odometricWheelModules = wheelModules;
     }
     private void updateOdometry(){
+        lastTime = Timer.getFPGATimestamp();
+        lastTranslation = getCurrentPose().getTranslation();
         odometry.update(new Rotation2d(gyro.getAngle()), getSwerveModuleStates());
     }
     private SwerveModuleState[] getSwerveModuleStates(){
@@ -38,6 +44,9 @@ public class OdometricSwerve extends KinematicSwerve {
     }
     public Pose2d getCurrentPose(){
         return odometry.getPoseMeters();
+    }
+    public Translation2d getCurrentVelocity(){
+        return getCurrentPose().getTranslation().minus(lastTranslation).div(Timer.getFPGATimestamp() - lastTime);
     }
     public void resetPose(Pose2d pose){
         odometry.resetPosition(pose, new Rotation2d(gyro.getAngle()));
