@@ -36,12 +36,22 @@ public class TalonFXComponent extends TalonFX implements ISmartMotorComponent {
     }
 
     @Override
-    public void setSpeed(double speed) {
+    public void setOutput(double speed) {
         set(TalonFXControlMode.PercentOutput,-speed);
     }
 
     @Override
-    public double getSpeed() {
+    public double getOutput() {
         return -getMotorOutputPercent();
+    }
+
+    @Override
+    public double getAngularVelocity() {
+        return -getSelectedSensorVelocity() / TICKS_PER_RADIAN * 10;
+    }
+
+    @Override
+    public void setAngularVelocity(double velocity) {
+        set(TalonFXControlMode.Velocity,-velocity * TICKS_PER_RADIAN/10.0);
     }
 }

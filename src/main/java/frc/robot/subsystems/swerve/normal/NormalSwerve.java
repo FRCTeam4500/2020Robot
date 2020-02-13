@@ -5,7 +5,7 @@
 /* the project. */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems.swerve;
+package frc.robot.subsystems.swerve.normal;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.components.IGyroComponent;
@@ -13,13 +13,13 @@ import frc.robot.components.IGyroComponent;
 /**
  * The subsystem representing the swerve drive on the robot. A swerve drive is a
  * drivetrain which allows independent movement along the X, Y, and rotational
- * axes. This implementation consists of four {@link WheelModule}s on each
+ * axes. This implementation consists of four {@link NormalWheelModule}s on each
  * corner of the robot.
  */
-public class Swerve extends SubsystemBase {
+public class NormalSwerve extends SubsystemBase {
 
     private double length, width;
-    private WheelModule fl, fr, bl, br;
+    private NormalWheelModule fl, fr, bl, br;
     private IGyroComponent gyro;
 
     /**
@@ -50,7 +50,7 @@ public class Swerve extends SubsystemBase {
      * @param br     the back right wheel module
      * @param gyro   the gyro which measures the rotation of the robot
      */
-    public Swerve(double length, double width, WheelModule fl, WheelModule fr, WheelModule bl, WheelModule br,
+    public NormalSwerve(double length, double width, NormalWheelModule fl, NormalWheelModule fr, NormalWheelModule bl, NormalWheelModule br,
             IGyroComponent gyro) {
         this.length = length;
         this.width = width;

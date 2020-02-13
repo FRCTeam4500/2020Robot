@@ -7,6 +7,8 @@
 
 package frc.robot.utility;
 
+import edu.wpi.first.wpilibj.geometry.Translation2d;
+
 /**
  * This is a simple container for math functions which are useful, but are not included in the
  * standard {@link Math} class.
@@ -29,5 +31,17 @@ public class ExtendedMath {
      */
     public static double clamp(double min, double max, double output) {
         return Math.min(max, Math.max(min, output));
+    }
+    public static double dot(Translation2d a, Translation2d b){
+        return a.getX()*b.getX()+a.getY()*b.getY();
+    }
+    public static double angleBetween(Translation2d a, Translation2d b){
+        return Math.acos(dot(a,b)/(a.getNorm()*b.getNorm()));
+    }
+    public static double scalarProjectionOf(Translation2d a, Translation2d b){
+        return dot(a,b)/b.getNorm();
+    }
+    public static Translation2d normalize(Translation2d a){
+        return a.div(a.getNorm());
     }
 }

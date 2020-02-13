@@ -28,6 +28,7 @@ public class DoubleSolenoidDashboardDecorator extends DashboardDecorator impleme
     public DoubleSolenoidDashboardDecorator(String name, String subsystem, IDoubleSolenoidComponent ds) {
         super(name, subsystem);
         this.ds = ds;
+        send();
     }
 
     /**

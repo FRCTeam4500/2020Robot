@@ -28,6 +28,7 @@ public class AngleSetterDashboardDecorator extends DashboardDecorator implements
     public AngleSetterDashboardDecorator(String name, String subsystem, IAngleSetterComponent setter) {
         super(name + " " + "Angle Setter Component", subsystem);
         this.setter = setter;
+        send();
     }
 
     @Override

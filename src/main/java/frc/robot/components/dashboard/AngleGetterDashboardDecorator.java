@@ -26,6 +26,7 @@ public class AngleGetterDashboardDecorator extends DashboardDecorator implements
     public AngleGetterDashboardDecorator(String name, String subsystem, IAngleGetterComponent getter) {
         super(name, subsystem);
         this.getter = getter;
+        send();
     }
 
     @Override

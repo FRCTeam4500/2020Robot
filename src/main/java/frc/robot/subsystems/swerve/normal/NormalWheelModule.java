@@ -5,24 +5,24 @@
 /* the project. */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems.swerve;
+package frc.robot.subsystems.swerve.normal;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.components.IAngleGetterComponent;
 import frc.robot.components.IAngleSetterComponent;
-import frc.robot.components.ISpeedSetterComponent;
+import frc.robot.components.IOutputSetterComponent;
 
 /**
  * A subsystem which represents the combination of a speed motor and an angle motor. This class is
- * used by {@link Swerve} drives in order to move the robot in any direction. Currently, there is no
+ * used by {@link NormalSwerve} drives in order to move the robot in any direction. Currently, there is no
  * real reason for this class to be a subsystem other than the fact that it was a subsystem in
  * previous code. This class implements angle wrapping and speed inversion optimizations.
  */
-public class WheelModule extends SubsystemBase {
+public class NormalWheelModule extends SubsystemBase {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     protected IAngleSetterComponent angleSetter;
-    protected ISpeedSetterComponent speedSetter;
+    protected IOutputSetterComponent speedSetter;
     protected IAngleGetterComponent angleGetter;
     /**
      * This variable exists so that the wheel module can always make wheel wrapping and speed
@@ -37,19 +37,19 @@ public class WheelModule extends SubsystemBase {
      * @param angleSetter the component which controls the angle of the wheel module
      * @param speedSetter the component which controls the speed of the wheel module
      */
-    public WheelModule(IAngleSetterComponent angleSetter, ISpeedSetterComponent speedSetter) {
+    public NormalWheelModule(IAngleSetterComponent angleSetter, IOutputSetterComponent speedSetter) {
         this.angleSetter = angleSetter;
         this.speedSetter = speedSetter;
     }
 
     /**
-     * Similar to {@link WheelModule#WheelModule(IAngleSetterComponent, ISpeedSetterComponent)}, but
+     * Similar to {@link NormalWheelModule#WheelModule(IAngleSetterComponent, IOutputSetterComponent)}, but
      * with an added component to measure the current angle of the wheel module. This allows for
      * better wheel wrapping and speed inversion optimizations.
      * 
      * @param angleGetter the component which measures the angle of the wheel module
      */
-    public WheelModule(IAngleSetterComponent angleSetter, ISpeedSetterComponent speedSetter,
+    public NormalWheelModule(IAngleSetterComponent angleSetter, IOutputSetterComponent speedSetter,
             IAngleGetterComponent angleGetter) {
         this(angleSetter, speedSetter);
         this.angleGetter = angleGetter;
@@ -99,7 +99,7 @@ public class WheelModule extends SubsystemBase {
         }
 
         angleSetter.setAngle(finalAngle);
-        speedSetter.setSpeed(finalSpeed);
+        speedSetter.setOutput(finalSpeed);
         lastAngle = finalAngle;
 
     }

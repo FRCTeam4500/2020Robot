@@ -27,7 +27,9 @@ public abstract class DashboardDecorator implements Sendable {
      * @param subsystem the subsystem which the component is part of
      */
     public DashboardDecorator(String name, String subsystem) {
-        SendableRegistry.setName(this, name);
-        SendableRegistry.setSubsystem(this, subsystem);
+        SendableRegistry.add(this, subsystem, name);
+    }
+    public void send(){
+        SendableRegistry.enableLiveWindow(this);
     }
 }

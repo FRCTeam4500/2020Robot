@@ -9,35 +9,36 @@ package frc.robot.components.dashboard;
 
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
-import frc.robot.components.ISpeedSetterComponent;
+import frc.robot.components.IOutputSetterComponent;
 
 /**
- * A {@link DashboardDecorator} for any {@link ISpeedSetterComponent} component.
+ * A {@link DashboardDecorator} for any {@link IOutputSetterComponent} component.
  */
-public class SpeedSetterDashboardDecorator extends DashboardDecorator implements ISpeedSetterComponent {
+public class OutputSetterDashboardDecorator extends DashboardDecorator implements IOutputSetterComponent {
 
     private double lastSetSpeed;
-    private ISpeedSetterComponent setter;
+    private IOutputSetterComponent setter;
 
     /**
      * See {@link DashboardDecorator#DashboardDecorator(String, String)} for more
      * details.
      * 
-     * @param setter the {@link ISpeedSetterComponent} component to decorate
+     * @param setter the {@link IOutputSetterComponent} component to decorate
      */
-    public SpeedSetterDashboardDecorator(String name, String subsystem, ISpeedSetterComponent setter) {
+    public OutputSetterDashboardDecorator(String name, String subsystem, IOutputSetterComponent setter) {
         super(name, subsystem);
         this.setter = setter;
+        send();
     }
 
     @Override
-    public void setSpeed(double speed) {
+    public void setOutput(double speed) {
         lastSetSpeed = speed;
-        setter.setSpeed(speed);
+        setter.setOutput(speed);
     }
 
     /**
-     * Gets the last set speed set by {@link #setSpeed(double)}. The speed sent is
+     * Gets the last set speed set by {@link #setOutput(double)}. The speed sent is
      * not always the final speed of the component, since the component may
      * transform the input into another value.
      * 

@@ -1,0 +1,8 @@
+{
+  "lengthUnit": "Meter",
+  "maxVelocity": 2.0,
+  "maxAcceleration": 2.0,
+  "wheelBase": 1.0,
+  "gameName": "Unity Simulation",
+  "outputDir": "../deploy/paths"
+}

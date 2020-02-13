@@ -27,6 +27,7 @@ public class CompressorDashboardDecorator extends DashboardDecorator implements 
     public CompressorDashboardDecorator(String name, String subsystem, ICompressorComponent compressor) {
         super(name + " " + "Compressor Component", subsystem);
         this.compressor = compressor;
+        send();
     }
 
     @Override

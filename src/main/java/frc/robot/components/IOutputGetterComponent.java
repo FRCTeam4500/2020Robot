@@ -10,6 +10,6 @@ package frc.robot.components;
 /**
  * Add your docs here.
  */
-public interface ISpeedGetterComponent {
-    double getSpeed();
+public interface IOutputGetterComponent {
+    double getOutput();
 }

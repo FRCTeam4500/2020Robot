@@ -1,12 +1,12 @@
 package frc.robot.subsystems.indexer;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.components.ISpeedSetterComponent;
+import frc.robot.components.IOutputSetterComponent;
 
 public class Indexer extends SubsystemBase {
-    private ISpeedSetterComponent motor;
+    private IOutputSetterComponent motor;
     IBallSensor sensor0, sensor1, sensor2, sensor3, sensor4, sensor5;
-    public Indexer(ISpeedSetterComponent motor, IBallSensor sensor0, IBallSensor sensor1, IBallSensor sensor2, IBallSensor sensor3, IBallSensor sensor4, IBallSensor sensor5){
+    public Indexer(IOutputSetterComponent motor, IBallSensor sensor0, IBallSensor sensor1, IBallSensor sensor2, IBallSensor sensor3, IBallSensor sensor4, IBallSensor sensor5){
         this.motor = motor;
         this.sensor0 = sensor0;
         this.sensor1 = sensor1;
@@ -17,7 +17,7 @@ public class Indexer extends SubsystemBase {
     }
 
     public void setSpeed(double speed){
-        motor.setSpeed(speed);
+        motor.setOutput(speed);
     }
     public boolean sensor0RegistersBall(){
         return sensor0.registersBall();

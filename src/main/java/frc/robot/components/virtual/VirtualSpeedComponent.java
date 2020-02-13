@@ -7,12 +7,12 @@
 
 package frc.robot.components.virtual;
 
-import frc.robot.components.ISpeedSetterComponent;
+import frc.robot.components.IOutputSetterComponent;
 
 /**
- * A virtual {@link ISpeedSetterComponent} component.
+ * A virtual {@link IOutputSetterComponent} component.
  */
-public class VirtualSpeedComponent implements ISpeedSetterComponent {
+public class VirtualSpeedComponent implements IOutputSetterComponent {
 
     private double speed;
 
@@ -26,7 +26,7 @@ public class VirtualSpeedComponent implements ISpeedSetterComponent {
     }
 
     @Override
-    public void setSpeed(double speed) {
+    public void setOutput(double speed) {
         this.speed = speed;
     }
 }

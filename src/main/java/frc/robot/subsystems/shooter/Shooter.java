@@ -1,19 +1,19 @@
 package frc.robot.subsystems.shooter;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.components.ISpeedSetterComponent;
+import frc.robot.components.IOutputSetterComponent;
 
 public class Shooter extends SubsystemBase {
-    private ISpeedSetterComponent topMotor;
-    private ISpeedSetterComponent bottomMotor;
-    public Shooter(ISpeedSetterComponent topMotor, ISpeedSetterComponent bottomMotor) {
+    private IOutputSetterComponent topMotor;
+    private IOutputSetterComponent bottomMotor;
+    public Shooter(IOutputSetterComponent topMotor, IOutputSetterComponent bottomMotor) {
         this.topMotor = topMotor;
         this.bottomMotor = bottomMotor;
     }
 
     public void run(double topSpeed, double bottomSpeed){
-        this.topMotor.setSpeed(topSpeed);
-        this.bottomMotor.setSpeed(bottomSpeed);
+        this.topMotor.setOutput(topSpeed);
+        this.bottomMotor.setOutput(bottomSpeed);
     }
 }
 

@@ -5,22 +5,11 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.components.hardware;
-
-import edu.wpi.first.wpilibj.VictorSP;
-import frc.robot.components.IOutputSetterComponent;
+package frc.robot.components;
 
 /**
  * Add your docs here.
  */
-public class VictorSPComponent extends VictorSP implements IOutputSetterComponent{
-
-    public VictorSPComponent(int channel) {
-        super(channel);
-    }
-
-    @Override
-    public void setOutput(double output) {
-        set(-output);
-    }
+public interface IAngularVelocitySetterComponent {
+    public void setAngularVelocity(double velocity);
 }
