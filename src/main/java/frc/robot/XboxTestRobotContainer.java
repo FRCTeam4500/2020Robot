@@ -7,20 +7,14 @@
 
 package frc.robot;
 
-import java.io.IOException;
-import java.nio.file.Path;
-
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj2.command.*;
+import frc.robot.autonomous.ExtendedTrajectoryUtilities;
 import frc.robot.subsystems.swerve.odometric.OdometricSwerve;
 import frc.robot.subsystems.swerve.odometric.OdometricSwerveDashboardUtility;
 import frc.robot.subsystems.swerve.odometric.command.OdometricSwerve_FollowTrajecoryCommand;
@@ -43,7 +37,18 @@ public class XboxTestRobotContainer implements IRobotContainer {
                         withDeadzone(controller.getX(Hand.kRight), 0.2) * 3), swerve));
         SendableRegistry.addLW(utility, "Swerve", "Utility");
         SmartDashboard.putData("Reset Pose", new OdometricSwerve_ResetPoseCommand(new Pose2d(), swerve));
-        SmartDashboard.putData("Run Auto", makeMoveToTranslationCommand());
+
+        addAutonCommand("AwayFromCenterBackward");
+        addAutonCommand("AwayFromCenterForward");
+        addAutonCommand("CitrusCompatabile");
+        addAutonCommand("CrossTheLine");
+        SmartDashboard.putData("10 Ball Auton", 
+        makeCitrusAuton(1).andThen(
+            makeCitrusAuton(2),
+            makeCitrusAuton(3),
+            makeCitrusAuton(4),
+            makeCitrusAuton(5),
+            makeCitrusAuton(6)));
 
     }
 
@@ -55,22 +60,15 @@ public class XboxTestRobotContainer implements IRobotContainer {
         }
     }
 
-    private CommandBase makeMoveToTranslationCommand() {
+    private CommandBase makeMoveToTranslationCommand(String trajectoryName) {
         var pid = new PIDController(0.5, 0, 0);
         pid.setTolerance(0.1);
-        return new OdometricSwerve_FollowTrajecoryCommand(swerve, pid,
-                getTrajectory().getStates().toArray(Trajectory.State[]::new));
+        return new OdometricSwerve_FollowTrajecoryCommand(swerve, pid, ExtendedTrajectoryUtilities.tryGetDeployedTrajectory(trajectoryName));
     }
-
-    private Trajectory getTrajectory() {
-        String trajectoryJSON = "paths/output/Crazy.wpilib.json";
-        try {
-            Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-            Trajectory trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-            return trajectory;
-        } catch (IOException ex) {
-            DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-            return new Trajectory(null);
-        }
+    private void addAutonCommand(String trajectoryName){
+        SmartDashboard.putData("Run "+trajectoryName, makeMoveToTranslationCommand(trajectoryName));
+    }
+    private CommandBase makeCitrusAuton(int partId){
+        return makeMoveToTranslationCommand("CitrusAutonPart"+String.valueOf(partId));
     }
 }
