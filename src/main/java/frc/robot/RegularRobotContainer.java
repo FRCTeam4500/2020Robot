@@ -27,7 +27,7 @@ import frc.robot.subsystems.turret.factory.ITurretFactory;
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
-public class RobotContainer implements ITurretOI, IShooterOI {
+public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotContainer {
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -42,7 +42,7 @@ public class RobotContainer implements ITurretOI, IShooterOI {
   private ITurretFactory turretFactory;
   private Turret turret;
   private SetTurretAngleCommand turretAngleCommand;
-  public RobotContainer() {
+  public RegularRobotContainer() {
     shooterFactory = new DefaultShooterFactory();
     shooter = shooterFactory.makeShooter();
     shootCommand = new ShootStraightCommand(shooter, this);
