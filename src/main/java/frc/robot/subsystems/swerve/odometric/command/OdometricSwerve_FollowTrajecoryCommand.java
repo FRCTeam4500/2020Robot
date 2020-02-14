@@ -41,6 +41,9 @@ public class OdometricSwerve_FollowTrajecoryCommand extends CommandBase {
     this.states = states;
     addRequirements(swerve);
   }
+  public OdometricSwerve_FollowTrajecoryCommand(OdometricSwerve swerve, PIDController controller, Trajectory trajectory){
+    this(swerve, controller, trajectory.getStates().toArray(Trajectory.State[]::new));
+  }
 
   // Called when the command is initially scheduled.
   @Override
