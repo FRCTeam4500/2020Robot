@@ -13,7 +13,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class ArmRunCommand extends CommandBase {
   private Arm arm;
   private IArmOI oi;
-  
+  private double minAngle=0,maxAngle=23456;
+//plug in correct values to min and max
   public ArmRunCommand(Arm arm, IArmOI oi) {
     this.arm = arm;
     this.oi = oi;
@@ -28,8 +29,14 @@ public class ArmRunCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    arm.setAngle(oi.getArmAngle());
-    //TODO: add limitations to here and factory using code in programming chat
+    var angle = oi.getArmAngle();
+    if(angle > maxAngle){
+      angle = maxAngle;
+    }else if(angle < minAngle){
+      angle = minAngle;
+    }
+    arm.setAngle(angle);
+
   }
 
   // Called once the command ends or is interrupted.
