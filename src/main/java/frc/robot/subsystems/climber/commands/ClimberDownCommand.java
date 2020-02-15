@@ -23,7 +23,6 @@ public class ClimberDownCommand extends CommandBase{
     }
     @Override
     public void execute() {
-         
         motor1.setAngle(this.oi.getClimberHeight());
     }
 
