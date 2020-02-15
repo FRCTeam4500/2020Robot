@@ -16,8 +16,8 @@ public class ClimberCarriage extends SubsystemBase {
     this.motor1 = motor1;
   }
 
-  public void run(double speed){
-this.motor1.setOutput(speed);
+  public void setOutput(double speed){
+    this.motor1.setOutput(speed);
   }
 
   @Override

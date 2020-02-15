@@ -11,5 +11,5 @@ package frc.robot.subsystems.climbercarriage;
  * Add your docs here.
  */
 public interface IClimberCarriageOI {
-    public double getClimberCarriageSpeed();
+    public double getClimberCarriageOutput();
 }
