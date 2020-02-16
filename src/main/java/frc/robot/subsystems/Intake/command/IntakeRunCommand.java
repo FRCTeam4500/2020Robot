@@ -5,9 +5,11 @@ import frc.robot.subsystems.Intake.IIntakeOI;
 import frc.robot.subsystems.Intake.Intake;
 
 
+
 public class IntakeRunCommand extends CommandBase {
     private Intake intake;
     private IIntakeOI oi;
+    
     public IntakeRunCommand(Intake intake, IIntakeOI oi) {
         this.intake = intake;
         this.oi = oi;
@@ -22,6 +24,7 @@ public class IntakeRunCommand extends CommandBase {
     @Override
     public void execute() {
         intake.setSpeed(oi.getIntakeSpeed());
+        
     }
 
     @Override
