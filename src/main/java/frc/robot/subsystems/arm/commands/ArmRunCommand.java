@@ -7,13 +7,15 @@
 
 package frc.robot.subsystems.arm.commands;
 import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.arm.ArmMap;
 import frc.robot.subsystems.arm.IArmOI;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ArmRunCommand extends CommandBase {
   private Arm arm;
   private IArmOI oi;
-  private double minAngle=0,maxAngle=23456;
+
+  //min/max are 0 and -3600 sensor units
 //plug in correct values to min and max
   public ArmRunCommand(Arm arm, IArmOI oi) {
     this.arm = arm;
@@ -29,13 +31,12 @@ public class ArmRunCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    var angle = oi.getArmAngle();
-    if(angle > maxAngle){
-      angle = maxAngle;
-    }else if(angle < minAngle){
-      angle = minAngle;
+    if (oi.getArmActivated() == true){
+      arm.setAngle(ArmMap.ARM_MAX_VALUE);
     }
-    arm.setAngle(angle);
+    else{
+      arm.setAngle(ArmMap.ARM_MIN_VALUE);
+    }
 
   }
 

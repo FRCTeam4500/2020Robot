@@ -8,9 +8,16 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.arm.IArmOI;
+import frc.robot.subsystems.arm.commands.ArmRunCommand;
+import frc.robot.subsystems.arm.factory.DefaultArmFactory;
 import frc.robot.subsystems.indexer.command.Indexer;
 
 /**
@@ -19,12 +26,22 @@ import frc.robot.subsystems.indexer.command.Indexer;
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
-public class RobotContainer {
-
+public class RobotContainer implements IArmOI {
+  private boolean armActivated;
+  private Arm arm;
+  private DefaultArmFactory armFactory;
+  private ArmRunCommand armRunCommand;
+  private Joystick joystick;
+  private JoystickButton button1;
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    arm = armFactory.makeArm();
+    armRunCommand = new ArmRunCommand(arm, this);
+    arm.setDefaultCommand(armRunCommand);
+    joystick = new Joystick(0);
+    button1 = new JoystickButton(joystick,1);
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -36,6 +53,10 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    button1.whenPressed(new InstantCommand(() -> this.setArmActivated(true)));
+    button1.whenReleased(new InstantCommand(() -> {this.setArmActivated(false);}));
+
+
   }
 
 
@@ -47,5 +68,13 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return null;
+  }
+
+  public void setArmActivated(boolean activated){
+    armActivated = activated;
+  }
+
+  public boolean getArmActivated(){
+    return armActivated;
   }
 }
