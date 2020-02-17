@@ -6,8 +6,8 @@ import frc.robot.components.IAngleSetterComponent;
 import frc.robot.components.ISmartMotorComponent;
 
 public class Turret extends SubsystemBase {
-    private ISmartMotorComponent turnMotor;
-    public Turret(ISmartMotorComponent turnMotor) {
+    private IAngleSetterComponent turnMotor;
+    public Turret(IAngleSetterComponent turnMotor) {
         this.turnMotor = turnMotor;
     }
 
