@@ -7,11 +7,11 @@ public class ClimberUpCommand extends CommandBase{
     private Climber climber;
     IAngleSetterComponent motor1;
     private IClimberOI oi;
-    private double ArmSpeed;
+    //private double ArmSpeed;
     public ClimberUpCommand(Climber climber, IClimberOI oi) {
         addRequirements(climber);
         this.climber = climber;
-        this.ArmSpeed = ArmSpeed;
+        //this.ArmSpeed = ArmSpeed;
         this.oi = oi;
 
     }
@@ -21,7 +21,7 @@ public class ClimberUpCommand extends CommandBase{
     }
     @Override
     public void execute() {
-        motor1.setAngle(this.oi.getClimberHeight());
+        climber.setClimberAngle(this.oi.getClimberHeight());
        
     }
 
