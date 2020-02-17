@@ -5,13 +5,12 @@ import frc.robot.components.IAngleSetterComponent;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 public class ClimberDownCommand extends CommandBase{
     private Climber climber;
-    IAngleSetterComponent motor1;
     private IClimberOI oi;
-    private double ArmSpeed;
+    //private double ArmSpeed;
     public ClimberDownCommand(Climber climber, IClimberOI oi) {
         addRequirements(climber);
         this.climber = climber;
-        this.ArmSpeed = ArmSpeed;
+        //this.ArmSpeed = ArmSpeed;
         this.oi = oi;
 
     }
@@ -21,7 +20,7 @@ public class ClimberDownCommand extends CommandBase{
     }
     @Override
     public void execute() {
-        motor1.setAngle(this.oi.getClimberHeight());
+        climber.setClimberAngle(this.oi.getClimberHeight());
     }
 
     @Override

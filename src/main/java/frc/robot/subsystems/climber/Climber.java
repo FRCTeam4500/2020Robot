@@ -12,7 +12,7 @@ public class Climber extends SubsystemBase {
         this.motor2 = motor2;
     }
 
-    public void setSpeed(double angle){
+    public void setClimberAngle(double angle){
         motor1.setAngle(angle);
         motor2.setAngle(angle);
     }
