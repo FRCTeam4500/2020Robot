@@ -31,7 +31,7 @@ public class ArmRunCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (oi.getArmActivated() == true){
+    if (oi.getArmActive() == true){
       arm.setAngle(ArmMap.ARM_MAX_VALUE);
     }
     else{
