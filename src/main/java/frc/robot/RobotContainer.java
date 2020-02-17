@@ -18,7 +18,7 @@ import frc.robot.subsystems.shooter.factory.DefaultShooterFactory;
 import frc.robot.subsystems.shooter.factory.IShooterFactory;
 import frc.robot.subsystems.turret.ITurretOI;
 import frc.robot.subsystems.turret.Turret;
-import frc.robot.subsystems.climber.commands.ClimberUpCommand;
+import frc.robot.subsystems.climber.command.ClimberUpCommand;
 import frc.robot.subsystems.climber.IClimberOI;
 import frc.robot.subsystems.climber.factory.DefaultClimberFactory;
 import frc.robot.subsystems.climber.Climber;
