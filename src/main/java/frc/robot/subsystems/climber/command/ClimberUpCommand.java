@@ -5,7 +5,6 @@ import frc.robot.components.IAngleSetterComponent;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 public class ClimberUpCommand extends CommandBase{
     private Climber climber;
-    IAngleSetterComponent motor1;
     private IClimberOI oi;
     //private double ArmSpeed;
     public ClimberUpCommand(Climber climber, IClimberOI oi) {
