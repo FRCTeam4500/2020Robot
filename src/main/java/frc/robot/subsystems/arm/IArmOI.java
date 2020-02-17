@@ -1,5 +1,6 @@
 package frc.robot.subsystems.arm;
 
 public interface IArmOI {
-    public double getArmAngle();
+    void setArmActivated(boolean activated);
+    boolean getArmActivated();
 }
