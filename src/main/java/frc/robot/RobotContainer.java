@@ -37,6 +37,7 @@ public class RobotContainer implements IArmOI {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    armFactory = new DefaultArmFactory();
     arm = armFactory.makeArm();
     armRunCommand = new ArmRunCommand(arm, this);
     arm.setDefaultCommand(armRunCommand);
