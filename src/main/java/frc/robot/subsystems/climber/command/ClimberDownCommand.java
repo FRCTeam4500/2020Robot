@@ -1,16 +1,14 @@
-package frc.robot.subsystems.climber.commands;
+package frc.robot.subsystems.climber.command;
 import frc.robot.subsystems.climber.Climber;
-import frc.robot.subsystems.climber.ClimberMap;
 import frc.robot.subsystems.climber.IClimberOI;
-import frc.robot.RobotContainer;
 import frc.robot.components.IAngleSetterComponent;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-public class ClimberUpCommand extends CommandBase{
+public class ClimberDownCommand extends CommandBase{
     private Climber climber;
     IAngleSetterComponent motor1;
     private IClimberOI oi;
     private double ArmSpeed;
-    public ClimberUpCommand(Climber climber, IClimberOI oi) {
+    public ClimberDownCommand(Climber climber, IClimberOI oi) {
         addRequirements(climber);
         this.climber = climber;
         this.ArmSpeed = ArmSpeed;
@@ -24,7 +22,6 @@ public class ClimberUpCommand extends CommandBase{
     @Override
     public void execute() {
         motor1.setAngle(this.oi.getClimberHeight());
-       
     }
 
     @Override
