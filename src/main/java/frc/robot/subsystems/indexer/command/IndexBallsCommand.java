@@ -8,18 +8,21 @@
 package frc.robot.subsystems.indexer.command;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.indexer.Indexer;
 
 public class IndexBallsCommand extends CommandBase {
 
   Indexer indexer;
   double motorSpeed;
+  Intake intake;
   /**
    * Creates a new Indexer.
    */
-  public IndexBallsCommand(Indexer indexer, double motorSpeed) {
+  public IndexBallsCommand(Indexer indexer, Intake intake, double motorSpeed) {
     this.indexer = indexer;
     this.motorSpeed = motorSpeed;
+    this.intake = intake;
     addRequirements(indexer);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -34,6 +37,7 @@ public class IndexBallsCommand extends CommandBase {
   public void execute() {
     if(indexer.sensor0RegistersBall()){
       indexer.setSpeed(motorSpeed);
+      intake.setSpeed(0);
     }
     else if(indexer.sensor1RegistersBall() ||
     indexer.sensor2RegistersBall() ||
@@ -41,6 +45,7 @@ public class IndexBallsCommand extends CommandBase {
     indexer.sensor4RegistersBall() ||
     indexer.sensor5RegistersBall()){
       indexer.setSpeed(0);
+      intake.setSpeed(-motorSpeed);
     }
   }
 
@@ -48,6 +53,7 @@ public class IndexBallsCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     indexer.setSpeed(0.0);
+    intake.setSpeed(0.0);
   }
 
   // Returns true when the command should end.

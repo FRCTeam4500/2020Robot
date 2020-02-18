@@ -54,6 +54,8 @@ public class ThirteenWheelSwerveFactory {
             new ShoehornedAngularVelocitySetter(sid), 
             new Translation2d(x, y), 
             1,
-            0.2);
+            0.2,
+            1,
+            1);
     }
 }

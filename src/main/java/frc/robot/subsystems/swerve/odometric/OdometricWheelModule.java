@@ -25,8 +25,8 @@ public class OdometricWheelModule extends KinematicWheelModule {
     protected IAngularVelocityGetterComponent angularVelocityGetterComponent;
     
     public OdometricWheelModule(IAngleSetterComponent angleSetterComponent, IAngularVelocitySetterComponent angularVelocitySetterComponent,
-            Translation2d translationFromSwerveCenter, double maxSurfaceSpeed, IAngleGetterComponent angleGetterComponent, IAngularVelocityGetterComponent angularVelocityGetterComponent,double wheelDiameter) {
-        super(angleSetterComponent, angularVelocitySetterComponent, translationFromSwerveCenter, maxSurfaceSpeed, wheelDiameter);
+            Translation2d translationFromSwerveCenter, double maxSurfaceSpeed, IAngleGetterComponent angleGetterComponent, IAngularVelocityGetterComponent angularVelocityGetterComponent,double wheelDiameter, double angleRotsPerMotorRots, double driveRotsPerMotorRots) {
+        super(angleSetterComponent, angularVelocitySetterComponent, translationFromSwerveCenter, maxSurfaceSpeed, wheelDiameter, angleRotsPerMotorRots, driveRotsPerMotorRots);
         this.angleGetterComponent = angleGetterComponent;
         this.angularVelocityGetterComponent = angularVelocityGetterComponent;
     }

@@ -126,6 +126,6 @@ public class GertrudeOdometricSwerveFactory {
         var actualAngle = new AngleGetterDashboardDecorator("Actual Angle", subsystem, angleMotor);
         var actualAngularVelocity = new AngularVelocityGetterDashboardDecorator("Actual Angular Velocity", subsystem, speedMotor);
 
-        return new OdometricWheelModule(sentAngle, sentAngularVelocity, translationFromSwerveCenter, MAX_SURFACE_SPEED, actualAngle, actualAngularVelocity,WHEEL_DIAMETER);
+        return new OdometricWheelModule(sentAngle, sentAngularVelocity, translationFromSwerveCenter, MAX_SURFACE_SPEED, actualAngle, actualAngularVelocity,WHEEL_DIAMETER,1,1);
     }
 }

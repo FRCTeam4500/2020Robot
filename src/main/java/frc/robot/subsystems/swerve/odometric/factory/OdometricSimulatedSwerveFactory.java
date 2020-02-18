@@ -43,7 +43,9 @@ public class OdometricSimulatedSwerveFactory {
             MAX_SURFACE_SPEED, 
             angleMotor, 
             speedMotor, 
-            WHEEL_DIAMETER
+            WHEEL_DIAMETER,
+            1,
+            1
         );
     }
     public OdometricSwerve_MoveToPoseCommand makeMoveToPoseCommand(String subsystem, OdometricSwerve swerve, Pose2d target){

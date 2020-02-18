@@ -17,16 +17,20 @@ public class KinematicWheelModule extends SubsystemBase {
 
 
   protected IAngleSetterComponent angleSetterComponent;
+  protected double angleRotsPerMotorRots;
+  protected double driveRotsPerMotorRots;
   protected IAngularVelocitySetterComponent angularVelocitySetterComponent;
   protected Translation2d translationFromSwerveCenter;
   protected double maxSurfaceSpeed;
   protected double wheelDiameter;
-  public KinematicWheelModule(IAngleSetterComponent angleSetterComponent, IAngularVelocitySetterComponent angularVelocitySetterComponent, Translation2d translationFromSwerveCenter, double maxSurfaceSpeed, double wheelDiameter) {
+  public KinematicWheelModule(IAngleSetterComponent angleSetterComponent, IAngularVelocitySetterComponent angularVelocitySetterComponent, Translation2d translationFromSwerveCenter, double maxSurfaceSpeed, double wheelDiameter, double angleRotsPerMotorRots, double driveRotsPerMotorRots) {
     this.angleSetterComponent = angleSetterComponent;
     this.angularVelocitySetterComponent = angularVelocitySetterComponent;
     this.translationFromSwerveCenter = translationFromSwerveCenter;
     this.maxSurfaceSpeed = maxSurfaceSpeed;
     this.wheelDiameter = wheelDiameter;
+    this.angleRotsPerMotorRots = angleRotsPerMotorRots;
+    this.driveRotsPerMotorRots = driveRotsPerMotorRots;
   }
   public void drive(SwerveModuleState state){
     angleSetterComponent.setAngle(state.angle.getRadians());

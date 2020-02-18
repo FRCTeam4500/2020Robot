@@ -44,4 +44,11 @@ public class ExtendedMath {
     public static Translation2d normalize(Translation2d a){
         return a.div(a.getNorm());
     }
+    public static double withDeadzone(double value, double deadzone){
+        if(Math.abs(value) < deadzone){
+            return 0;
+        }else{
+            return value;
+        }
+    }
 }

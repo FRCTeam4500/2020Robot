@@ -6,6 +6,7 @@ import frc.robot.components.IAngleSetterComponent;
 
 public class Arm extends SubsystemBase {
     IAngleSetterComponent motor;
+    public final double ARM_ROTS_PER_MOTOR_ROTS = (Math.PI/2)/(3600.0/4096.0);
     public Arm(IAngleSetterComponent motor) {
         this.motor = motor;
 
@@ -16,7 +17,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void setAngle(double angle){
-        motor.setAngle(angle);
+        motor.setAngle(angle / ARM_ROTS_PER_MOTOR_ROTS);
     }
 
 }

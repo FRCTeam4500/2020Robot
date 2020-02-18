@@ -8,6 +8,7 @@
 package frc.robot.components.hardware;
 
 import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.SPI.Port;
 import frc.robot.components.IGyroComponent;
 
@@ -19,11 +20,14 @@ public class AHRSAngleGetterComponent extends AHRS implements IGyroComponent {
     /**
      * @see AHRS#AHRS(Port)
      */
-    public AHRSAngleGetterComponent(Port serial_port_id) {
-        super(serial_port_id);
+    public AHRSAngleGetterComponent(edu.wpi.first.wpilibj.I2C.Port kmxp) {
+        super(kmxp);
     }
+	public AHRSAngleGetterComponent(Port kmxp) {
+        super(kmxp);
+	}
 
-    @Override
+	@Override
     public double getAngle() {
         return Math.toRadians(super.getAngle());
     }

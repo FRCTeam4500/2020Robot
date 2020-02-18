@@ -23,8 +23,8 @@ import frc.robot.components.IOutputSetterComponent;
 public class TalonSRXComponent extends TalonSRX
         implements IOutputSetterComponent, IAngleSetterComponent, IAngleGetterComponent, IAngularVelocityGetterComponent, IAngularVelocitySetterComponent, IOutputGetterComponent {
 
-    public static final double TICKS_PER_DEGREE = 16.2539;
-    public static final double TICKS_PER_RADIAN = TICKS_PER_DEGREE * 360 / 2 / Math.PI;
+    public static final double TICKS_PER_DEGREE = 4096 / 360.0;
+    public static final double TICKS_PER_RADIAN = 4096 / Math.PI / 2.0;
 
     /**
      * @see TalonSRX#TalonSRX(int)
@@ -40,7 +40,7 @@ public class TalonSRXComponent extends TalonSRX
 
     @Override
     public void setAngle(double angle) {
-        set(ControlMode.MotionMagic, -angle * TICKS_PER_RADIAN);
+        set(ControlMode.Position, -angle * TICKS_PER_RADIAN);
     }
 
     @Override
