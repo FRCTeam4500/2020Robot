@@ -9,8 +9,8 @@ public class ShootStraightCommand extends CommandBase {
     private Shooter shooter;
     private IShooterOI oi;
 
-    private double topFlywheelSpeed;
-    private double bottomFlywheelSpeed;
+   /*  private double topFlywheelSpeed;
+    private double bottomFlywheelSpeed; */
 
     public ShootStraightCommand(Shooter shooter, IShooterOI oi) {
         this.shooter = shooter;
@@ -41,5 +41,5 @@ public class ShootStraightCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
 
-    }
+    } 
 }
