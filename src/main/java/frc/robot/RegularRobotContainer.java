@@ -52,6 +52,7 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   public RegularRobotContainer() {
     shooterFactory = new DefaultShooterFactory();
     shooter = shooterFactory.makeShooter();
+    shooterActive = true;
     shootCommand = new ShootStraightCommand(shooter, this);
     shooter.setDefaultCommand(shootCommand);
     turretFactory = new DefaultTurretFactory();
@@ -74,6 +75,7 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   private void configureButtonBindings() {
     button5.whenPressed(new InstantCommand(() -> this.setShooterActive(true)));
     button5.whenReleased(new InstantCommand(() -> this.setShooterActive(false)));
+
   }
 
 
