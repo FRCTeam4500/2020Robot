@@ -26,7 +26,7 @@ public class ShootStraightCommand extends CommandBase {
     @Override
     public void execute() {
         if (oi.getShooterActive()) {
-            shooter.run(1, 1);
+            shooter.run(150, 150);
         }
         else{
             shooter.run(0,0);
