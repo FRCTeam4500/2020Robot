@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.shooter.IShooterOI;
 import frc.robot.subsystems.shooter.Shooter;
@@ -38,6 +39,7 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   private double turretAngle;
   private double shooterAngle;
   private boolean turretActive;
+  private boolean shooterActive;
   private IShooterFactory shooterFactory;
   private Shooter shooter;
   private ShootStraightCommand shootCommand;
@@ -70,7 +72,8 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    button5.whenHeld(shootCommand);
+    button5.whenPressed(new InstantCommand(() -> this.setShooterActive(true)));
+    button5.whenReleased(new InstantCommand(() -> this.setShooterActive(false)));
   }
 
 
@@ -88,7 +91,19 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
     return this.turretAngle;
   }
 
+  public void setShooterActive(boolean shooterActive){
+    this.shooterActive = shooterActive;
+  }
+
   public boolean getShooterActive(){
-      return this.turretActive;
+      return this.shooterActive;
+  }
+
+  public void setTurretActive(boolean turretActive){
+    this.turretActive = turretActive;
+  }
+
+  public boolean getTurretActive(){
+    return turretActive;
   }
 }
