@@ -6,7 +6,6 @@ import frc.robot.subsystems.climber.ClimberMap;
 
 public class DefaultClimberFactory {
     public Climber makeClimber(){
-        return new Climber(new TalonSRXComponent(ClimberMap.CLIMBER_MOTOR1_PORT),
-                new TalonSRXComponent(ClimberMap.CLIMBER_MOTOR2_PORT));
+        return new Climber(new TalonSRXComponent(ClimberMap.CLIMBER_MOTOR1_PORT));
     }
 }
