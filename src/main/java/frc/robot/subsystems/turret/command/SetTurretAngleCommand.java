@@ -3,6 +3,7 @@ package frc.robot.subsystems.turret.command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.turret.ITurretOI;
 import frc.robot.subsystems.turret.Turret;
+import frc.robot.subsystems.turret.factory.DefaultTurretFactory;
 
 
 public class SetTurretAngleCommand extends CommandBase {
@@ -25,10 +26,11 @@ public class SetTurretAngleCommand extends CommandBase {
     public void execute() {
         double desiredAngle = this.oi.getTurretAngle();
         if(desiredAngle > maxAngle) {
-            this.desiredAngle = maxAngle;
+            turret.setTurretAngle(maxAngle);
         } else {
-            this.desiredAngle = desiredAngle;
+            turret.setTurretAngle(desiredAngle);
         }
+        
     }
 
     @Override
