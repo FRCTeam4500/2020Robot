@@ -8,6 +8,8 @@ import frc.robot.subsystems.turret.Turret;
 public class SetTurretAngleCommand extends CommandBase {
     private Turret turret;
     private ITurretOI oi;
+    private double desiredAngle;
+    private double maxAngle;
     public SetTurretAngleCommand(Turret turret, ITurretOI oi) {
         this.turret = turret;
         this.oi = oi;
@@ -21,7 +23,12 @@ public class SetTurretAngleCommand extends CommandBase {
 
     @Override
     public void execute() {
-        turret.setTurretAngle(this.oi.getTurretAngle());
+        double desiredAngle = this.oi.getTurretAngle();
+        if(desiredAngle > maxAngle) {
+            this.desiredAngle = maxAngle;
+        } else {
+            this.desiredAngle = desiredAngle;
+        }
     }
 
     @Override

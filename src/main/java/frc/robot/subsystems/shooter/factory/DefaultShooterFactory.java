@@ -8,7 +8,7 @@ import frc.robot.subsystems.shooter.ShooterMap;
 public class DefaultShooterFactory implements IShooterFactory {
     public Shooter makeShooter() {
         return new Shooter(new SparkMaxComponent(ShooterMap.TOP_MOTOR_PORT, CANSparkMaxLowLevel.MotorType.kBrushless),
-                new SparkMaxComponent(ShooterMap.BOTTOM_MOTOR_PORT, CANSparkMaxLowLevel.MotorType.kBrushless));
+                new SparkMaxComponent(ShooterMap.BOTTOM_MOTOR_PORT,CANSparkMaxLowLevel.MotorType.kBrushless));
     }
 
 }

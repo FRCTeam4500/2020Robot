@@ -6,6 +6,13 @@ import frc.robot.subsystems.turret.TurretMap;
 
 public class DefaultTurretFactory implements ITurretFactory{
     public Turret makeTurret(){
-        return new Turret(new TalonSRXComponent(TurretMap.TURRET_MOTOR_PORT));
+
+        TalonSRXComponent turnMotor = new TalonSRXComponent(TurretMap.TURRET_MOTOR_PORT);
+        turnMotor.configForwardSoftLimitThreshold(10000, 0);
+        turnMotor.configReverseSoftLimitThreshold(-10000, 0);
+        turnMotor.configForwardSoftLimitEnable(true, 0);
+        turnMotor.configReverseSoftLimitEnable(true, 0);
+        return new Turret(turnMotor);
+        
     }
 }

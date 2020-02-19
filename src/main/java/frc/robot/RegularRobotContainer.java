@@ -49,6 +49,7 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
 
   private Joystick joystick;
   private JoystickButton button5;
+  private JoystickButton button6;
   public RegularRobotContainer() {
     shooterFactory = new DefaultShooterFactory();
     shooter = shooterFactory.makeShooter();
@@ -61,6 +62,7 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
 
     joystick = new Joystick(0);
     button5 = new JoystickButton(joystick, 5);
+    button6 = new JoystickButton(joystick, 6);
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -74,6 +76,7 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   private void configureButtonBindings() {
     button5.whenPressed(new InstantCommand(() -> this.setShooterActive(true)));
     button5.whenReleased(new InstantCommand(() -> this.setShooterActive(false)));
+    button6.whenPressed(turretAngleCommand);
   }
 
 
