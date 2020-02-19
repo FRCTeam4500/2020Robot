@@ -18,6 +18,7 @@ import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.command.ShootStraightCommand;
 import frc.robot.subsystems.shooter.factory.DefaultShooterFactory;
 import frc.robot.subsystems.shooter.factory.IShooterFactory;
+import frc.robot.subsystems.shooter.command.ShootAllCommand;
 import frc.robot.subsystems.turret.ITurretOI;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.command.SetTurretAngleCommand;
@@ -46,10 +47,12 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   private ITurretFactory turretFactory;
   private Turret turret;
   private SetTurretAngleCommand turretAngleCommand;
+  private ShootAllCommand allShootCommand;
 
   private Joystick joystick;
   private JoystickButton button5;
   private JoystickButton button6;
+  private JoystickButton button7;
   public RegularRobotContainer() {
     shooterFactory = new DefaultShooterFactory();
     shooter = shooterFactory.makeShooter();
@@ -59,10 +62,12 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
     turret = turretFactory.makeTurret();
     turretAngleCommand = new SetTurretAngleCommand(turret, this);
     turret.setDefaultCommand(turretAngleCommand);
+    allShootCommand = new ShootAllCommand(shooter, this);
 
     joystick = new Joystick(0);
     button5 = new JoystickButton(joystick, 5);
     button6 = new JoystickButton(joystick, 6);
+    button7 = new JoystickButton (joystick, 7);
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -77,6 +82,7 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
     button5.whenPressed(new InstantCommand(() -> this.setShooterActive(true)));
     button5.whenReleased(new InstantCommand(() -> this.setShooterActive(false)));
     button6.whenPressed(turretAngleCommand);
+    button7.whenPressed(allShootCommand); 
   }
 
 
