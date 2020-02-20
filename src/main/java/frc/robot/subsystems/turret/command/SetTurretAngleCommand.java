@@ -11,6 +11,7 @@ public class SetTurretAngleCommand extends CommandBase {
     private ITurretOI oi;
     private double desiredAngle;
     private double maxAngle;
+    private double minAngle;
     public SetTurretAngleCommand(Turret turret, ITurretOI oi) {
         this.turret = turret;
         this.oi = oi;
@@ -27,6 +28,8 @@ public class SetTurretAngleCommand extends CommandBase {
         double desiredAngle = this.oi.getTurretAngle();
         if(desiredAngle > maxAngle) {
             turret.setTurretAngle(maxAngle);
+        } else if(desiredAngle < minAngle) {
+            turret.setTurretAngle(minAngle);
         } else {
             turret.setTurretAngle(desiredAngle);
         }
