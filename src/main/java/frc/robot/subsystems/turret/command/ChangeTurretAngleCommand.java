@@ -30,7 +30,7 @@ public class ChangeTurretAngleCommand extends CommandBase {
             turret.setTurretAngle(TurretMap.TURRET_MINIMUM_VALUE);
         }
         else{
-            turretAngle = turretAngle + oi.getTurretDesiredAngle();
+            turret.setTurretAngle(turretAngle + oi.getTurretDesiredAngle());
         }
 
     }
