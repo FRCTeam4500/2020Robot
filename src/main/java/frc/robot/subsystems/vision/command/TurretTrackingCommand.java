@@ -22,7 +22,12 @@ public class TurretTrackingCommand extends CommandBase {
 
     @Override
     public void execute() {
-        oi.setTurretDesiredAngle(vision.getHorizontalOffset());
+        if (vision.hasValidTargets()) {
+            oi.setTurretDesiredAngle(vision.getHorizontalOffset());
+        }
+        else{
+            oi.setTurretDesiredAngle(0);
+        }
     }
 
     @Override
