@@ -21,6 +21,10 @@ import frc.robot.subsystems.turret.command.SetTurretAngleCommand;
 import frc.robot.subsystems.turret.factory.DefaultTurretFactory;
 import frc.robot.subsystems.turret.factory.ITurretFactory;
 import frc.robot.subsystems.turret.command.ChangeTurretAngleCommand;
+import frc.robot.subsystems.vision.Vision;
+import frc.robot.subsystems.vision.command.TurretTrackingCommand;
+import frc.robot.subsystems.vision.factory.DefaultVisionFactory;
+import frc.robot.subsystems.vision.factory.IVisionFactory;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -44,6 +48,9 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   private ITurretFactory turretFactory;
   private Turret turret;
   private ChangeTurretAngleCommand turretAngleCommand;
+  private IVisionFactory visionFactory;
+  private Vision vision;
+  private TurretTrackingCommand turretTrackingCommand;
   
   public RegularRobotContainer() {
     shooterFactory = new DefaultShooterFactory();
@@ -54,6 +61,10 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
     turret = turretFactory.makeTurret();
     turretAngleCommand = new ChangeTurretAngleCommand(turret, this);
     turret.setDefaultCommand(turretAngleCommand);
+    visionFactory = new DefaultVisionFactory();
+    vision = visionFactory.makeVision();
+    turretTrackingCommand = new TurretTrackingCommand(vision, this);
+    vision.setDefaultCommand(turretTrackingCommand);
     // Configure the button bindings
     configureButtonBindings();
   }
