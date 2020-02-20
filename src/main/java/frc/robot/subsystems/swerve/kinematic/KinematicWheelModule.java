@@ -33,8 +33,8 @@ public class KinematicWheelModule extends SubsystemBase {
     this.driveRotsPerMotorRots = driveRotsPerMotorRots;
   }
   public void drive(SwerveModuleState state){
-    angleSetterComponent.setAngle(state.angle.getRadians());
-    angularVelocitySetterComponent.setAngularVelocity(state.speedMetersPerSecond / (wheelDiameter * Math.PI) * 2 * Math.PI);
+    angleSetterComponent.setAngle(state.angle.getRadians() / angleRotsPerMotorRots);
+    angularVelocitySetterComponent.setAngularVelocity(state.speedMetersPerSecond / (wheelDiameter * Math.PI) * 2 * Math.PI / driveRotsPerMotorRots);
   }
   public Translation2d getTranslationFromSwerveCenter(){
     return translationFromSwerveCenter;
