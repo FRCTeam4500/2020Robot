@@ -21,9 +21,9 @@ import frc.robot.subsystems.swerve.odometric.OdometricWheelModule;
  */
 public class EntropySwerveFactory {
 
-    private static final int DRIVE_ROTATIONS_PER_MOTOR_ROTATIONS = 1;
+    private static final double DRIVE_ROTATIONS_PER_MOTOR_ROTATIONS = 0.05;
     private static final double ANGLE_ROTATIONS_PER_MOTOR_ROTATIONS = 1 / 1.492;
-    private static final double MAX_SURFACE_SPEED = 0.5;
+    private static final double MAX_SURFACE_SPEED = 0.3;
     private static final int BR_DRIVE_PORT = 10;
     private static final int BR_ANGLE_PORT = 11;
     private static final int BL_DRIVE_PORT = 1;
@@ -37,24 +37,31 @@ public class EntropySwerveFactory {
     public double DRIVE_FORWARD = Units.inchesToMeters(24.5 - 1.75);
     public OdometricSwerve makeSwerve(){
 
-        var fl = makeWheelModule(FL_ANGLE_PORT, FL_DRIVE_PORT, new Translation2d(DRIVE_FORWARD / 2, DRIVE_LEFTWARD/2), false);
-        var fr = makeWheelModule(FR_ANGLE_PORT, FR_DRIVE_PORT, new Translation2d(DRIVE_FORWARD / 2, -DRIVE_LEFTWARD / 2), false);
-        var bl = makeWheelModule(BL_ANGLE_PORT, BL_DRIVE_PORT, new Translation2d(-DRIVE_FORWARD / 2, DRIVE_LEFTWARD / 2), false);
-        var br = makeWheelModule(BR_ANGLE_PORT, BR_DRIVE_PORT, new Translation2d(-DRIVE_FORWARD / 2, -DRIVE_LEFTWARD / 2), true);
+        var fl = makeWheelModule(FL_ANGLE_PORT, FL_DRIVE_PORT, new Translation2d(DRIVE_FORWARD / 2, DRIVE_LEFTWARD/2), true, false);
+        var fr = makeWheelModule(FR_ANGLE_PORT, FR_DRIVE_PORT, new Translation2d(DRIVE_FORWARD / 2, -DRIVE_LEFTWARD / 2), true, false);
+        var bl = makeWheelModule(BL_ANGLE_PORT, BL_DRIVE_PORT, new Translation2d(-DRIVE_FORWARD / 2, DRIVE_LEFTWARD / 2), false, true);
+        var br = makeWheelModule(BR_ANGLE_PORT, BR_DRIVE_PORT, new Translation2d(-DRIVE_FORWARD / 2, -DRIVE_LEFTWARD / 2), true, false);
 
         return new OdometricSwerve(
             new AHRSAngleGetterComponent(Port.kMXP),
-                // fl, 
-                // fr, 
+                fl, 
+                fr, 
                 bl ,
                 br
                 );
             
     }
-    public OdometricWheelModule makeWheelModule(int angleId, int driveId,Translation2d translationFromSwerveCenter, boolean sensorPhase){
+    public OdometricWheelModule makeWheelModule(int angleId, int driveId,Translation2d translationFromSwerveCenter, boolean invertSensorPhase, boolean invertOutput){
         var srx = new TalonSRXComponent(angleId);
-        srx.setSensorPhase(sensorPhase);
+        srx.setSensorPhase(invertSensorPhase);
+        srx.setInverted(invertOutput);
+        srx.config_kP(0, 1.25);
+        
+        srx.configPeakOutputForward(0.5);
+        srx.configPeakOutputReverse(-0.5);
         var falcon = new TalonFXComponent(driveId);
+        falcon.config_kP(0, 0.03);
+        falcon.config_kF(0, 0.047);
 
         return new OdometricWheelModule(
             srx, 
