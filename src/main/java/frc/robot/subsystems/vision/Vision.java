@@ -14,6 +14,16 @@ public class Vision extends SubsystemBase {
         //       Also, you can call addChild(name, sendableChild) to associate sendables with the subsystem
         //       such as SpeedControllers, Encoders, DigitalInputs, etc.
     }
+    public boolean hasValidTargets(){
+        return limelight.hasValidTargets();
+    }
 
+    public double getHorizontalOffset(){
+        return limelight.getHorizontalOffsetFromCrosshair();
+    }
+
+    public double getVerticalOffset(){
+        return limelight.getVerticalOffsetFromCrosshar();
+    }
 }
 
