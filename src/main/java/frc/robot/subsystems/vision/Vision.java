@@ -23,7 +23,7 @@ public class Vision extends SubsystemBase {
     }
 
     public double getVerticalOffset(){
-        return limelight.getVerticalOffsetFromCrosshar();
+        return limelight.getVerticalOffsetFromCrosshair();
     }
 }
 
