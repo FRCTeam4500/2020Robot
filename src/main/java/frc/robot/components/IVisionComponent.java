@@ -51,7 +51,7 @@ public interface IVisionComponent {
      * 
      * @return the vertical offset
      */
-    double getVerticalOffsetFromCrosshar();
+    double getVerticalOffsetFromCrosshair();
 
     /**
      * Gets the percentage of the camera's FOV that is taken up by the target. 0%

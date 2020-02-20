@@ -22,7 +22,7 @@ public class TurretTrackingCommand extends CommandBase {
 
     @Override
     public void execute() {
-        oi.setTurretDesiredAngle(vision.);
+        oi.setTurretDesiredAngle(vision.getHorizontalOffset());
     }
 
     @Override
