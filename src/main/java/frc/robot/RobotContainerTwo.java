@@ -50,9 +50,9 @@ public class RobotContainerTwo implements IRobotContainer {
 
         swerve.setDefaultCommand(new RunCommand(() -> {
             swerve.moveFieldCentric(
-                withDeadzone(joystick.getY(),0.1), 
-                withDeadzone(-joystick.getX(),0.1), 
-                withDeadzone(joystick.getZ(), 0.1));
+                withDeadzone(joystick.getY(),0.2), 
+                withDeadzone(-joystick.getX(),0.2), 
+                withDeadzone(joystick.getZ(), 0.2));
         }, swerve));
     }
 }

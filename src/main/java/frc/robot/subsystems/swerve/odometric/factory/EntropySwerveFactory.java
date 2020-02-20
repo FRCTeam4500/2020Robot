@@ -46,7 +46,7 @@ public class EntropySwerveFactory {
             new AHRSAngleGetterComponent(Port.kMXP),
                 fl, 
                 fr, 
-                bl ,
+                bl,
                 br
                 );
             
@@ -55,7 +55,7 @@ public class EntropySwerveFactory {
         var srx = new TalonSRXComponent(angleId);
         srx.setSensorPhase(invertSensorPhase);
         srx.setInverted(invertOutput);
-        srx.config_kP(0, 1.25);
+        srx.config_kP(0, 1);
         
         srx.configPeakOutputForward(0.5);
         srx.configPeakOutputReverse(-0.5);

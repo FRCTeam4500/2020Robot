@@ -15,6 +15,7 @@ import frc.robot.components.IAngleSetterComponent;
 import frc.robot.components.IAngularVelocityGetterComponent;
 import frc.robot.components.IAngularVelocitySetterComponent;
 import frc.robot.subsystems.swerve.kinematic.KinematicWheelModule;
+import static frc.robot.utility.ExtendedMath.getShortestRadianToTarget;
 
 /**
  * Add your docs here.
@@ -23,6 +24,7 @@ public class OdometricWheelModule extends KinematicWheelModule {
 
     protected IAngleGetterComponent angleGetterComponent;
     protected IAngularVelocityGetterComponent angularVelocityGetterComponent;
+    protected boolean wheelWrapEnabled = true;
     
     public OdometricWheelModule(IAngleSetterComponent angleSetterComponent, IAngularVelocitySetterComponent angularVelocitySetterComponent,
             Translation2d translationFromSwerveCenter, double maxSurfaceSpeed, IAngleGetterComponent angleGetterComponent, IAngularVelocityGetterComponent angularVelocityGetterComponent,double wheelDiameter, double angleRotsPerMotorRots, double driveRotsPerMotorRots) {
@@ -31,6 +33,17 @@ public class OdometricWheelModule extends KinematicWheelModule {
         this.angularVelocityGetterComponent = angularVelocityGetterComponent;
     }
     public SwerveModuleState getState(){
-        return new SwerveModuleState(angularVelocityGetterComponent.getAngularVelocity() / 2 / Math.PI * Math.PI *wheelDiameter, new Rotation2d(angleGetterComponent.getAngle()));
+        return new SwerveModuleState(angularVelocityGetterComponent.getAngularVelocity() * driveRotsPerMotorRots / 2 / Math.PI * Math.PI *wheelDiameter, new Rotation2d(angleGetterComponent.getAngle() *angleRotsPerMotorRots));
+    }
+    @Override
+    public void drive(SwerveModuleState state) {
+        
+        if(wheelWrapEnabled){
+        double currentAngle = angleGetterComponent.getAngle() * angleRotsPerMotorRots;
+        double shortestRadianToTarget = getShortestRadianToTarget(currentAngle, state.angle.getRadians());
+        double targetAngle = shortestRadianToTarget - currentAngle;
+        state.angle = new Rotation2d(targetAngle);
+        }
+        super.drive(state);
     }
 }
