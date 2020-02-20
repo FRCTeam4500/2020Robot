@@ -8,10 +8,10 @@ public class DefaultTurretFactory implements ITurretFactory{
     public Turret makeTurret(){
 
         TalonSRXComponent turnMotor = new TalonSRXComponent(TurretMap.TURRET_MOTOR_PORT);
-        turnMotor.configForwardSoftLimitThreshold(10000, 0);
+        /* turnMotor.configForwardSoftLimitThreshold(10000, 0);
         turnMotor.configReverseSoftLimitThreshold(-10000, 0);
         turnMotor.configForwardSoftLimitEnable(true, 0);
-        turnMotor.configReverseSoftLimitEnable(true, 0);
+        turnMotor.configReverseSoftLimitEnable(true, 0); */
         return new Turret(turnMotor);
         
     }
