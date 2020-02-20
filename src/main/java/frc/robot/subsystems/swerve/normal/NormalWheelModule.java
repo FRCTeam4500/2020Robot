@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.components.IAngleGetterComponent;
 import frc.robot.components.IAngleSetterComponent;
 import frc.robot.components.IOutputSetterComponent;
-
+import static frc.robot.utility.ExtendedMath.getShortestRadianToTarget;
 /**
  * A subsystem which represents the combination of a speed motor and an angle motor. This class is
  * used by {@link NormalSwerve} drives in order to move the robot in any direction. Currently, there is no
@@ -102,33 +102,6 @@ public class NormalWheelModule extends SubsystemBase {
         speedSetter.setOutput(finalSpeed);
         lastAngle = finalAngle;
 
-    }
-
-    /**
-     * A custom mod function which returns a remainder with the same sign as the dividend. This is
-     * different from using {@code %}, which returns the remainder with the same sign as the
-     * divisor.
-     * 
-     * @param a the dividend
-     * @param n the divisor
-     * @return the remainder with the same sign as {@code a}
-     */
-    private double customMod(double a, double n) {
-        return a - Math.floor(a / n) * n;
-    }
-
-    /**
-     * Calculates the shortest radian to a given angle, assuming that all angles that are 2 pi away
-     * from each other are equivalent.
-     * 
-     * @param currentAngle the starting angle
-     * @param targetAngle  the final angle
-     * @return the smallest difference and direction between these two angles
-     */
-    private double getShortestRadianToTarget(double currentAngle, double targetAngle) {
-        double actualDifference = targetAngle - currentAngle;
-        double shortestDifference = customMod(actualDifference + Math.PI, 2 * Math.PI) - Math.PI;
-        return shortestDifference;
     }
 
 }
