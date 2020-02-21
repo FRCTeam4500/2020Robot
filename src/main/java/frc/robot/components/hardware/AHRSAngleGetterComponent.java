@@ -29,6 +29,6 @@ public class AHRSAngleGetterComponent extends AHRS implements IGyroComponent {
 
 	@Override
     public double getAngle() {
-        return Math.toRadians(super.getAngle());
+        return -Math.toRadians(super.getAngle());
     }
 }

@@ -21,7 +21,7 @@ import frc.robot.subsystems.vision.VisionSubsystem;
 
 import static frc.robot.utility.ExtendedMath.withDeadzone;
 
-public class RobotContainerTwo implements IRobotContainer {
+public class RobotContainerThree implements IRobotContainer {
     private Turret turret;
     private ITurretFactory factory;
     private VisionSubsystem vision;
@@ -36,7 +36,7 @@ public class RobotContainerTwo implements IRobotContainer {
 
     private boolean armDown = false;
 
-    public RobotContainerTwo(){
+    public RobotContainerThree(){
         arm = new Arm(new TalonSRXComponent(8));
         intake = new Intake(new TalonSRXComponent(5));
         
@@ -63,27 +63,24 @@ public class RobotContainerTwo implements IRobotContainer {
 
         button9.whenPressed(() -> swerve.resetGyro(),swerve);
         
-        /*button7.whenPressed(() -> {
+        button7.whenPressed(() -> {
             if(armDown){
                 armDown = false;
                 arm.setAngle(0.0);
             }else{
                 armDown = true;
-                arm.setAngle(Math.PI/3);
+                arm.setAngle(Math.PI/2);
             }
-        },arm);*/
-        button7.whenPressed(() -> arm.setAngle(Math.PI/2.5), arm);
-        button7.whenReleased(() -> arm.setAngle(0.0),arm);
+        },arm);
 
-        button2.whileHeld(new IndexBallsCommand(indexer, intake, 1));
+        button2.whileHeld(new IndexBallsCommand(indexer, intake, 1.0));
   
         swerve.setDefaultCommand(new FunctionalCommand(() -> swerve.enableWheelInversion(true),() -> {
             swerve.moveFieldCentric(
                 withDeadzone(-joystick.getY(),0.3), 
                 withDeadzone(-joystick.getX(),0.3), 
-                withDeadzone(joystick.getZ()*1.5, 0.3));
+                withDeadzone(joystick.getZ(), 0.3));
         }, (interrupted) -> {
-
             swerve.enableWheelInversion(false);
             swerve.moveFieldCentric(0, 0, 0);
         }, () -> false,  swerve));

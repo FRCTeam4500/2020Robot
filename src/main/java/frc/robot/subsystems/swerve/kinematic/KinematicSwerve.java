@@ -97,4 +97,7 @@ public class KinematicSwerve extends SubsystemBase {
     }
     return lowestMaxSpeed;
   }
+  public void resetGyro(){
+    gyro.reset();
+  }
 }

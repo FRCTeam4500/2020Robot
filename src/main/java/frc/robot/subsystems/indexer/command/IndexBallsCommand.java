@@ -23,13 +23,16 @@ public class IndexBallsCommand extends CommandBase {
     this.indexer = indexer;
     this.motorSpeed = motorSpeed;
     this.intake = intake;
-    addRequirements(indexer);
+    addRequirements(indexer, intake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
+
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    intake.setSpeed(-motorSpeed);
+    indexer.setSpeed(0.0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -55,4 +55,14 @@ public class OdometricSwerve extends KinematicSwerve {
     public void periodic() {
         updateOdometry();
     }
+    public void enableWheelWrap(boolean enable){
+        for(var module : odometricWheelModules){
+            module.wheelWrapEnabled = enable;
+        }
+    }
+    public void enableWheelInversion(boolean enable){
+        for(var module : odometricWheelModules){
+            module.wheelInversionEnabled = enable;
+        }
+    }
 }

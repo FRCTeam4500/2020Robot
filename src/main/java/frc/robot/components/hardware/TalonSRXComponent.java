@@ -11,17 +11,16 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.robot.components.IAngleGetterComponent;
 import frc.robot.components.IAngleSetterComponent;
-import frc.robot.components.IAngularVelocityGetterComponent;
-import frc.robot.components.IAngularVelocitySetterComponent;
-import frc.robot.components.IOutputGetterComponent;
+
 import frc.robot.components.IOutputSetterComponent;
+import frc.robot.components.ISmartMotorComponent;
 
 /**
  * An {@link IOutputSetterComponent}, {@link IAngleSetterComponent}, and
  * {@link IAngleGetterComponent} wrapper for {@link TalonSRX}.
  */
 public class TalonSRXComponent extends TalonSRX
-        implements IOutputSetterComponent, IAngleSetterComponent, IAngleGetterComponent, IAngularVelocityGetterComponent, IAngularVelocitySetterComponent, IOutputGetterComponent {
+        implements ISmartMotorComponent {
 
     public static final double TICKS_PER_DEGREE = 4096 / 360.0;
     public static final double TICKS_PER_RADIAN = 4096 / Math.PI / 2.0;

@@ -1,11 +1,16 @@
 package frc.robot.subsystems.turret.factory;
 
-import frc.robot.components.hardware.TalonFXComponent;
+import frc.robot.components.hardware.TalonSRXComponent;
 import frc.robot.subsystems.turret.Turret;
-import frc.robot.subsystems.turret.TurretMap;
 
 public class DefaultTurretFactory implements ITurretFactory{
+    public final static int TURRET_MOTOR_PORT = 15;
     public Turret makeTurret(){
-        return new Turret(new TalonFXComponent(TurretMap.TURRET_MOTOR_PORT));
+        var srx = new TalonSRXComponent(TURRET_MOTOR_PORT);
+        srx.configForwardSoftLimitEnable(true);
+        srx.configReverseSoftLimitEnable(true);
+        srx.configForwardSoftLimitThreshold(8782);
+        srx.configReverseSoftLimitThreshold(-8564);
+        return new Turret(srx);
     }
 }
