@@ -12,6 +12,7 @@ public class TurretTrackingCommand extends CommandBase {
 
     public TurretTrackingCommand(Vision vision, ITurretOI oi) {
         this.vision = vision;
+        this.oi = oi;
         addRequirements(vision);
     }
 
