@@ -28,6 +28,19 @@ public class RobotContainerTwo implements IRobotContainer {
     private Joystick joystick = new Joystick(0);
     private JoystickButton button1 = new JoystickButton(joystick, 1);
     private JoystickButton button10 = new JoystickButton(joystick , 10);
+    private Joystick joystick2 = new Joystick(1);
+    private JoystickButton j2button1 = new JoystickButton(joystick2, 1);
+    private JoystickButton j2button2 = new JoystickButton(joystick2, 2);
+    private JoystickButton j2button3 = new JoystickButton(joystick2, 3);
+    private JoystickButton j2button4 = new JoystickButton(joystick2, 4);
+    private JoystickButton j2button5 = new JoystickButton(joystick2, 5);
+    private JoystickButton j2button6 = new JoystickButton(joystick2, 6);
+    private JoystickButton j2button7 = new JoystickButton(joystick2, 7);
+    private JoystickButton j2button8 = new JoystickButton(joystick2, 8);
+    private JoystickButton j2button9 = new JoystickButton(joystick2, 9);
+    private JoystickButton j2button10 = new JoystickButton(joystick2, 10);
+    private JoystickButton j2button11 = new JoystickButton(joystick2, 11);
+    private JoystickButton j2button12 = new JoystickButton(joystick2, 12);
     private JoystickButton button2 = getButton(2), button3 = getButton(3), button4 = getButton(4), button5 = getButton(5), button6 = getButton (6), button7 = getButton (7), button8 = getButton(8), button9 = getButton(9), button11 = getButton(11), button12 = getButton(12);
     private Arm arm;
     private Intake intake;
@@ -58,6 +71,7 @@ public class RobotContainerTwo implements IRobotContainer {
         button6.whenReleased(() -> intake.setSpeed(0), intake);
         button4.whenPressed(() -> intake.setSpeed(-1), intake);
         button4.whenReleased(() -> intake.setSpeed(0),intake);
+        
 
 
 
@@ -92,6 +106,9 @@ public class RobotContainerTwo implements IRobotContainer {
     }
     private JoystickButton getButton(int id){
         return new JoystickButton(joystick, id);
+    }
+    private JoystickButton getButton2(int id) {
+        return new JoystickButton(joystick2, id);
     }
     private void configureTurretAuton(){
         factory = new DefaultTurretFactory();

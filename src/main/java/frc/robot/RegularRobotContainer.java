@@ -42,6 +42,8 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   private ITurretFactory turretFactory;
   private Turret turret;
   private SetTurretAngleCommand turretAngleCommand;
+  private Joystick joystick;
+  
   
   public RegularRobotContainer() {
     shooterFactory = new DefaultShooterFactory();
