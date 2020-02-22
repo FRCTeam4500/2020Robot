@@ -1,5 +1,6 @@
 package frc.robot.subsystems.shooter.command;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.shooter.IShooterOI;
 import frc.robot.subsystems.shooter.Shooter;
@@ -9,8 +10,7 @@ public class ShootStraightCommand extends CommandBase {
     private Shooter shooter;
     private IShooterOI oi;
 
-    private double topFlywheelSpeed;
-    private double bottomFlywheelSpeed;
+    
 
     public ShootStraightCommand(Shooter shooter, IShooterOI oi) {
         this.shooter = shooter;
@@ -25,8 +25,11 @@ public class ShootStraightCommand extends CommandBase {
 
     @Override
     public void execute() {
+        var topSpeed = SmartDashboard.getNumber("topSpeed", 0.0);
+        var bottomSpeed = SmartDashboard.getNumber("bottomSpeed", 0.0);
+        var k = SmartDashboard.getNumber("coefficient", 1.0);
         if (oi.getShooterActive()) {
-            shooter.run(1, 1);
+            shooter.run(topSpeed*k, bottomSpeed*k);
         }
         else{
             shooter.run(0,0);
