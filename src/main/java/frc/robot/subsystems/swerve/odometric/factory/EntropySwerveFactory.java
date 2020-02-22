@@ -21,7 +21,7 @@ import frc.robot.subsystems.swerve.odometric.OdometricWheelModule;
  */
 public class EntropySwerveFactory {
 
-    private static final double DRIVE_ROTATIONS_PER_MOTOR_ROTATIONS = 0.05;
+    private static final double DRIVE_ROTATIONS_PER_MOTOR_ROTATIONS = 1/8.33333333333333333333333333333333333333333333;
     private static final double ANGLE_ROTATIONS_PER_MOTOR_ROTATIONS = 4096.0/5851.0 ;
     private static final double MAX_SURFACE_SPEED = 1;
     private static final int BR_DRIVE_PORT = 10;

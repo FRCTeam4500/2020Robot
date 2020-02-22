@@ -10,6 +10,7 @@ public class ShootStraightCommand extends CommandBase {
     private Shooter shooter;
     private IShooterOI oi;
 
+
     
 
     public ShootStraightCommand(Shooter shooter, IShooterOI oi) {
@@ -20,7 +21,9 @@ public class ShootStraightCommand extends CommandBase {
 
     @Override
     public void initialize() {
-
+        SmartDashboard.putNumber("topSpeed", 0.0);
+        SmartDashboard.putNumber("bottomSpeed", 0.0);
+        SmartDashboard.putNumber("coefficient", 1.0);
     }
 
     @Override
