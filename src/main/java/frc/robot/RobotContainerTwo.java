@@ -6,12 +6,16 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.components.hardware.LimelightVisionComponent;
+import frc.robot.components.hardware.SparkMaxComponent;
 import frc.robot.components.hardware.TalonSRXComponent;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.NetworkTableBallSensor;
 import frc.robot.subsystems.indexer.command.IndexBallsCommand;
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.command.ShootStraightCommand;
 import frc.robot.subsystems.swerve.odometric.OdometricSwerve;
 import frc.robot.subsystems.swerve.odometric.factory.EntropySwerveFactory;
 import frc.robot.subsystems.turret.Turret;
@@ -20,6 +24,8 @@ import frc.robot.subsystems.turret.factory.ITurretFactory;
 import frc.robot.subsystems.vision.VisionSubsystem;
 
 import static frc.robot.utility.ExtendedMath.withDeadzone;
+
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class RobotContainerTwo implements IRobotContainer {
     private Turret turret;
@@ -46,13 +52,28 @@ public class RobotContainerTwo implements IRobotContainer {
     private Intake intake;
     private Indexer indexer;
     private OdometricSwerve swerve = new EntropySwerveFactory().makeSwerve();
+    private Shooter shooter;
+    private Climber climber;
 
     private boolean armDown = false;
 
     public RobotContainerTwo(){
         arm = new Arm(new TalonSRXComponent(8));
         intake = new Intake(new TalonSRXComponent(5));
-        
+        shooter = new Shooter(
+            new SparkMaxComponent(14, MotorType.kBrushless), 
+        new SparkMaxComponent(13, MotorType.kBrushless));
+        // climber = new Climber(new );
+
+        // j2button11.whenPressed(() -> climber.setSpeed(1.0),climber);
+        // j2button11.whenReleased(() -> climber.setSpeed(0.0),climber);
+
+        // j2button9.whenPressed(() -> climber.setSpeed(-1.0),climber);
+        // j2button9.whenReleased(() -> climber.setSpeed(0.0,climber));
+
+        shooter.setDefaultCommand(new ShootStraightCommand(shooter, button1::get));
+
+
         indexer = new Indexer(
             new TalonSRXComponent(12), 
             new NetworkTableBallSensor("Sensor0", 40), 
@@ -63,16 +84,36 @@ public class RobotContainerTwo implements IRobotContainer {
             new NetworkTableBallSensor("Sensor5", 40)
         );
 
-        button5.whenPressed(() -> indexer.setSpeed(1), indexer);
-        button5.whenReleased(() -> indexer.setSpeed(0), indexer);
-        button3.whenPressed(() -> indexer.setSpeed(-1),indexer);
-        button3.whenReleased(() -> indexer.setSpeed(0),indexer);
-        button6.whenPressed(() -> intake.setSpeed(1), intake);
-        button6.whenReleased(() -> intake.setSpeed(0), intake);
-        button4.whenPressed(() -> intake.setSpeed(-1), intake);
-        button4.whenReleased(() -> intake.setSpeed(0),intake);
-        
+        button6.whenPressed(() -> indexer.setSpeed(1), indexer);
+        button6.whenReleased(() -> indexer.setSpeed(0), indexer);
 
+        button4.whenPressed(() -> indexer.setSpeed(-1),indexer);
+        button4.whenReleased(() -> indexer.setSpeed(0),indexer);
+
+        button5.whenPressed(() -> intake.setSpeed(1), intake);
+        button5.whenReleased(() -> intake.setSpeed(0), intake);
+        button3.whenPressed(() -> intake.setSpeed(-1), intake);
+        button3.whenReleased(() -> intake.setSpeed(0),intake);
+        
+        j2button1.whenHeld(new IndexBallsCommand(indexer, intake, 1));
+        j2button1.whenPressed(() -> arm.setAngle(Math.PI/2.5), arm);
+        j2button1.whenReleased(() -> arm.setAngle(0.0),arm);
+
+        j2button6.whenPressed(() -> indexer.setSpeed(1.0),indexer);
+        j2button6.whenReleased(() -> indexer.setSpeed(0.0),indexer);
+        j2button4.whenPressed(() -> indexer.setSpeed(-1.0), indexer);
+        j2button4.whenPressed(() -> indexer.setSpeed(0.0),indexer);
+        
+        j2button2.whenPressed(() -> {
+            indexer.setSpeed(1.0);
+            shooter.run(-3300 * 0.8, -2800 * 0.8);
+        }, indexer,shooter);
+
+        j2button5.whenPressed(() -> intake.setSpeed(1), intake);//take ball in
+        j2button5.whenReleased(() -> intake.setSpeed(0), intake);
+
+        j2button3.whenPressed(() -> intake.setSpeed(-1), intake);
+        j2button3.whenPressed(() -> intake.setSpeed(0),intake);
 
 
         button9.whenPressed(() -> swerve.resetGyro(),swerve);
@@ -82,6 +123,7 @@ public class RobotContainerTwo implements IRobotContainer {
                 armDown = false;
                 arm.setAngle(0.0);
             }else{
+
                 armDown = true;
                 arm.setAngle(Math.PI/3);
             }
@@ -93,9 +135,9 @@ public class RobotContainerTwo implements IRobotContainer {
   
         swerve.setDefaultCommand(new FunctionalCommand(() -> swerve.enableWheelInversion(true),() -> {
             swerve.moveFieldCentric(
-                withDeadzone(-joystick.getY(),0.3), 
-                withDeadzone(-joystick.getX(),0.3), 
-                withDeadzone(joystick.getZ()*1.5, 0.3));
+                withDeadzone(-joystick.getY()*1.5,0.3), 
+                withDeadzone(-joystick.getX()*1.5,0.3), 
+                withDeadzone(joystick.getZ()*2.5, 0.3*2));
         }, (interrupted) -> {
 
             swerve.enableWheelInversion(false);
