@@ -8,23 +8,34 @@
 package frc.robot.subsystems.swerve.odometric.command;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.swerve.odometric.OdometricSwerve;
 
 public class OdometricSwerve_AdvancedFollowTrajectoryCommand extends CommandBase {
+  private OdometricSwerve swerve;
+  private AdvancedSwerveController controller;
   /**
    * Creates a new OdometricSwerve_AdvancedFollowTrajectoryCommand.
    */
-  public OdometricSwerve_AdvancedFollowTrajectoryCommand() {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public OdometricSwerve_AdvancedFollowTrajectoryCommand(OdometricSwerve swerve, AdvancedSwerveController controller) {
+    this.swerve = swerve;
+    this.controller = controller;
+    addRequirements(swerve);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    controller.reset(swerve.getCurrentPose().getTranslation());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    var pose = swerve.getCurrentPose();
+    var transOutput = controller.calculateTranslationOutput(pose.getTranslation());
+    var rotOutput = controller.calculateRotationOutput(pose.getRotation());
+    var direction = controller.getUnitDirectionVector(pose.getTranslation());
+    swerve.moveFieldCentric(direction.getX() * transOutput, direction.getY() * transOutput, rotOutput);
   }
 
   // Called once the command ends or is interrupted.
@@ -35,6 +46,6 @@ public class OdometricSwerve_AdvancedFollowTrajectoryCommand extends CommandBase
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return controller.atPose(swerve.getCurrentPose());
   }
 }

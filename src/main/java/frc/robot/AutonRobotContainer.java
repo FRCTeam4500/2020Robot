@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -32,6 +33,8 @@ import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.swerve.odometric.OdometricSwerve;
 import frc.robot.subsystems.swerve.odometric.OdometricSwerveDashboardUtility;
 import frc.robot.subsystems.swerve.odometric.factory.EntropySwerveFactory;
+import frc.robot.subsystems.swerve.odometric.command.AdvancedSwerveController;
+import frc.robot.subsystems.swerve.odometric.command.OdometricSwerve_AdvancedFollowTrajectoryCommand;
 import frc.robot.subsystems.swerve.odometric.command.OdometricSwerve_FollowTrajecoryCommand;
 import frc.robot.subsystems.swerve.odometric.command.OdometricSwerve_ResetPoseCommand;
 
@@ -83,8 +86,9 @@ public class AutonRobotContainer implements IRobotContainer{
 
         SmartDashboard.putData("Swerve Positions",new OdometricSwerveDashboardUtility(swerve));
 
-        var resetPose = new OdometricSwerve_ResetPoseCommand(new Pose2d(13, -5.75, new Rotation2d()), swerve);
-        resetPose.schedule();
+        var basePose = new Pose2d(13, -5.75, new Rotation2d());
+        var resetPose = new OdometricSwerve_ResetPoseCommand(basePose, swerve);
+        swerve.resetPose(basePose);
 
         SmartDashboard.putData("Reset Pose",resetPose);
 
@@ -109,15 +113,19 @@ public class AutonRobotContainer implements IRobotContainer{
         pid.setTolerance(0.1);
         return new OdometricSwerve_FollowTrajecoryCommand(swerve, pid, ExtendedTrajectoryUtilities.tryGetDeployedTrajectory(trajectoryName));
     }
+    private CommandBase makeAdvancedMoveToTranslationCommand(String trajectoryName){
+        var controller = new AdvancedSwerveController(0.1, 0.1, false, 0.1, true, 3, 0, new Rotation2d(), ExtendedTrajectoryUtilities.tryGetDeployedTrajectory(trajectoryName).getStates().toArray(Trajectory.State[]::new));
+        return new OdometricSwerve_AdvancedFollowTrajectoryCommand(swerve, controller);
+    }
     private void addAutonCommand(String trajectoryName){
-        SmartDashboard.putData("Run "+trajectoryName, makeMoveToTranslationCommand(trajectoryName));
+        SmartDashboard.putData("Run "+trajectoryName, makeAdvancedMoveToTranslationCommand(trajectoryName));
     }
     private void addShootAndCrossTheLineCommand(){
         SmartDashboard.putData("Auton Shoot and Cross The Line", 
         new Autonomous_StartShootingCommand(indexer, shooter, -3000, -3000)
         .andThen(new WaitCommand(2))
         .andThen(new Autonomous_StopShootingCommand(indexer, shooter))
-        .andThen(makeMoveToTranslationCommand("CrossTheLine"))
+        .andThen(makeAdvancedMoveToTranslationCommand("CrossTheLine"))
         );
     }
     private void addCitrusCompatabileCommand(){
@@ -125,13 +133,13 @@ public class AutonRobotContainer implements IRobotContainer{
         new Autonomous_StartShootingCommand(indexer, shooter, -3000, -3000)
         .andThen(new WaitCommand(2))
         .andThen(new Autonomous_StopShootingCommand(indexer, shooter))
-        .andThen(makeMoveToTranslationCommand("CitrusCompatabile"))
+        .andThen(makeAdvancedMoveToTranslationCommand("CitrusCompatabile"))
         );
         
     }
     private void addAwayFromCenterCommand(){
         SmartDashboard.putData("Auton Away From Center Forward",
-        makeMoveToTranslationCommand("AwayFromCenterForward")
+        makeAdvancedMoveToTranslationCommand("AwayFromCenterForward")
         .andThen(new Autonomous_StartShootingCommand(indexer, shooter, -3000, -3000))
         .andThen(() -> swerve.moveFieldCentric(0, 0, 0))
         .andThen(new WaitCommand(2))
@@ -140,7 +148,7 @@ public class AutonRobotContainer implements IRobotContainer{
     }
     private void addAwayFromCenterBackwardCommand(){
         SmartDashboard.putData("Auton Away From Center Backward",
-        makeMoveToTranslationCommand("AwayFromCenterBackward")
+        makeAdvancedMoveToTranslationCommand("AwayFromCenterBackward")
         .andThen(new Autonomous_StartShootingCommand(indexer, shooter, -3000, -3000))
         .andThen(() -> swerve.moveFieldCentric(0, 0, 0))
         .andThen(new WaitCommand(2))
@@ -153,12 +161,12 @@ public class AutonRobotContainer implements IRobotContainer{
         .andThen(new WaitCommand(2))
         .andThen(new Autonomous_StopShootingCommand(indexer, shooter))
         .andThen(new WaitCommand(3))
-        .andThen(makeMoveToTranslationCommand("CitrusCompatabile"))
+        .andThen(makeAdvancedMoveToTranslationCommand("CitrusCompatabile"))
         .andThen(() -> swerve.moveFieldCentric(0, 0, 0))
         .andThen(() -> arm.setAngle(Math.PI/2),arm)
         .andThen(new IndexBallsCommand(indexer, intake, 1)).withTimeout(3)
         .andThen(new WaitCommand(3))
         .andThen(() -> arm.setAngle(0.0),arm)
-        .andThen(makeMoveToTranslationCommand("CitrusCompatibleComeBackPlease")));
+        .andThen(makeAdvancedMoveToTranslationCommand("CitrusCompatibleComeBackPlease")));
     }
 }
