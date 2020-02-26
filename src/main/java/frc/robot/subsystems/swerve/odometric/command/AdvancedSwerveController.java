@@ -44,6 +44,9 @@ public class AdvancedSwerveController {
             deltaAllowableTranslationalErrorPerState = (finalAllowableTranslationError - initialAllowableTranslationError
                     ) / states.length;
         }
+        public AdvancedSwerveController(double initialAllowableTranslationError, double finalAllowableTranslationError, boolean enableRotation, double allowableRotationError, boolean enableTranslation, double kP, double kW, Rotation2d endRotation, Trajectory trajectory){
+            this(initialAllowableTranslationError,finalAllowableTranslationError, enableRotation, allowableRotationError, enableTranslation, kP, kW, endRotation, trajectory.getStates().toArray(Trajectory.State[]::new));
+        }
         public double calculateTranslationOutput(Translation2d position){
             double valueToReturn = 0.0;
             if(enableTranslation)

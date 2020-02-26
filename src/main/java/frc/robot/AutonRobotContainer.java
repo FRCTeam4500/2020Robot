@@ -11,11 +11,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -34,6 +32,7 @@ import frc.robot.subsystems.swerve.odometric.OdometricSwerve;
 import frc.robot.subsystems.swerve.odometric.OdometricSwerveDashboardUtility;
 import frc.robot.subsystems.swerve.odometric.factory.EntropySwerveFactory;
 import frc.robot.subsystems.swerve.odometric.command.AdvancedSwerveController;
+import frc.robot.subsystems.swerve.odometric.command.AdvancedSwerveControllerBuilder;
 import frc.robot.subsystems.swerve.odometric.command.OdometricSwerve_AdvancedFollowTrajectoryCommand;
 import frc.robot.subsystems.swerve.odometric.command.OdometricSwerve_FollowTrajecoryCommand;
 import frc.robot.subsystems.swerve.odometric.command.OdometricSwerve_ResetPoseCommand;
@@ -102,7 +101,13 @@ public class AutonRobotContainer implements IRobotContainer{
         addCitrusCompatibleAndShootAgainCommand();
 
 
-        addAutonCommand("CrossTheLine");
+        addAutonCommand("CrossTheLine", 
+        new AdvancedSwerveControllerBuilder()
+        .withInitialAllowableTranslationError(0.5)
+        .withFinalAllowableTranslationError(0.1)
+        .withTranslationsEnabled(true)
+        .with_kP(3)
+        );
         addAutonCommand("CitrusCompatabile");
         addAutonCommand("AwayFromCenterForward");
         
@@ -119,6 +124,9 @@ public class AutonRobotContainer implements IRobotContainer{
     }
     private void addAutonCommand(String trajectoryName){
         SmartDashboard.putData("Run "+trajectoryName, makeAdvancedMoveToTranslationCommand(trajectoryName));
+    }
+    private void addAutonCommand(String trajectoryName, AdvancedSwerveControllerBuilder builder){
+        SmartDashboard.putData("Run "+trajectoryName, new OdometricSwerve_AdvancedFollowTrajectoryCommand(swerve, builder.withTrajectory(ExtendedTrajectoryUtilities.tryGetDeployedTrajectory(trajectoryName)).buildController()));
     }
     private void addShootAndCrossTheLineCommand(){
         SmartDashboard.putData("Auton Shoot and Cross The Line", 
