@@ -7,32 +7,33 @@
 
 package frc.robot.subsystems.swerve.odometric.command;
 
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Transform2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.swerve.odometric.OdometricSwerve;
 
-public class OdometricSwerve_AdvancedFollowTrajectoryCommand extends CommandBase {
+public class OdometricSwerve_AdvancedFollowTrajectoryUsingOffsetCommand extends CommandBase {
+  /**
+   * Creates a new OdometricSwerve_AdvancedFollowTrajectoryUsingOffsetCommand.
+   */
   private OdometricSwerve swerve;
   private AdvancedSwerveController controller;
-  /**
-   * Creates a new OdometricSwerve_AdvancedFollowTrajectoryCommand.
-   */
-  public OdometricSwerve_AdvancedFollowTrajectoryCommand(OdometricSwerve swerve, AdvancedSwerveController controller) {
-    this.swerve = swerve;
-    this.controller = controller;
-    addRequirements(swerve);
+  private Transform2d localOffset;
+  public OdometricSwerve_AdvancedFollowTrajectoryUsingOffsetCommand() {
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    controller.reset(swerve.getCurrentPose().getTranslation());
+    controller.reset(getOffsetSwervePose().getTranslation());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    var output = controller.calculateFieldCentricChassisSpeeds(swerve.getCurrentPose());
-    swerve.moveFieldCentric(output.vxMetersPerSecond,output.vyMetersPerSecond,output.omegaRadiansPerSecond);
+    var output = controller.calculateFieldCentricChassisSpeeds(getOffsetSwervePose());
+    swerve.moveFieldCentric(output.vxMetersPerSecond, output.vyMetersPerSecond, output.omegaRadiansPerSecond, localOffset.getTranslation());
   }
 
   // Called once the command ends or is interrupted.
@@ -43,6 +44,9 @@ public class OdometricSwerve_AdvancedFollowTrajectoryCommand extends CommandBase
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return controller.atFinalPose(swerve.getCurrentPose());
+    return controller.atFinalPose(getOffsetSwervePose());
+  }
+  private Pose2d getOffsetSwervePose(){
+    return swerve.getCurrentPose().plus(localOffset);
   }
 }

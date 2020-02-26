@@ -54,12 +54,15 @@ public class KinematicSwerve extends SubsystemBase {
    * @see #moveRobotCentric(double, double, double)
    */
   public void moveRobotCentric(ChassisSpeeds chassisSpeeds){
-    var states = kinematics.toSwerveModuleStates(chassisSpeeds);
+    moveRobotCentric(chassisSpeeds, new Translation2d());
+  }
+  public void moveRobotCentric(ChassisSpeeds chassisSpeeds, Translation2d centerOfRotation){
+    var states = kinematics.toSwerveModuleStates(chassisSpeeds, centerOfRotation);
     SwerveDriveKinematics.normalizeWheelSpeeds(states, lowestMaximumWheelSpeed);
 
     for(int i = 0;i<wheelModules.length;i++){
       wheelModules[i].drive(states[i]);
-    }  
+    }   
   }
   /**
    * A wrapper for {@link #moveAngleCentric(double, double, double, Rotation2d)}
@@ -75,12 +78,17 @@ public class KinematicSwerve extends SubsystemBase {
    * @param robotAngle the angle of the robot relative to the described coordinate system
    */
   public void moveAngleCentric(double xSpeed, double ySpeed, double wSpeed, Rotation2d robotAngle){
-    
+    moveAngleCentric(xSpeed, ySpeed, wSpeed, robotAngle, new Translation2d());
+  }
+  public void moveAngleCentric(double xSpeed, double ySpeed, double wSpeed, Rotation2d robotAngle, Translation2d centerOfRotation){
     var chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, wSpeed, robotAngle);
-    moveRobotCentric(chassisSpeeds);
+    moveRobotCentric(chassisSpeeds, centerOfRotation);
   }
   public void moveFieldCentric(double xSpeed, double ySpeed, double wSpeed){
     moveAngleCentric(xSpeed, ySpeed, wSpeed, gyro.getAngle());
+  }
+  public void moveFieldCentric(double xSpeed, double ySpeed, double wSpeed, Translation2d centerOfRotation){
+    moveAngleCentric(xSpeed, ySpeed, wSpeed, new Rotation2d(gyro.getAngle()),centerOfRotation);
   }
 
   private Translation2d[] getTranslations(KinematicWheelModule[] wheelModules){

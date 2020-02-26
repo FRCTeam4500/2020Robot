@@ -10,6 +10,7 @@ package frc.robot.subsystems.swerve.odometric.command;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import frc.robot.utility.ExtendedMath;
 
@@ -67,6 +68,12 @@ public class AdvancedSwerveController {
           else
             return 0.0;
         }
+        public ChassisSpeeds calculateFieldCentricChassisSpeeds(Pose2d pose){
+            var translationalOutput = calculateTranslationOutput(pose.getTranslation());
+            var rotationOutput = calculateRotationOutput(pose.getRotation());
+            var direction = getUnitDirectionVector(pose.getTranslation());
+            return new ChassisSpeeds(translationalOutput * direction.getX(), translationalOutput * direction.getY(), rotationOutput);
+        }
         public void reset(Translation2d currentTranslation){
             currentStateIndex = 0;
             currentAllowableTranslationalError = initialAllowableTranslationError + deltaAllowableTranslationalErrorPerState;
@@ -101,7 +108,7 @@ public class AdvancedSwerveController {
             }
             }
         }
-        public boolean atPose(Pose2d currentPose){
+        public boolean atFinalPose(Pose2d currentPose){
             return atFinalStateTranslation(currentPose.getTranslation()) && atTargetRotation(currentPose.getRotation());
         }
         private void initializeCurrentState(Translation2d currentTranslation){
