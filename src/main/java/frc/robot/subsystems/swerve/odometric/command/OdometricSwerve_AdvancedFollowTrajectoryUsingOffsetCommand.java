@@ -19,9 +19,7 @@ public class OdometricSwerve_AdvancedFollowTrajectoryUsingOffsetCommand extends 
   private OdometricSwerve swerve;
   private AdvancedSwerveController controller;
   private Transform2d localOffset;
-  public OdometricSwerve_AdvancedFollowTrajectoryUsingOffsetCommand() {
-    // Use addRequirements() here to declare subsystem dependencies.
-  }
+
 
   // Called when the command is initially scheduled.
   @Override
@@ -48,5 +46,13 @@ public class OdometricSwerve_AdvancedFollowTrajectoryUsingOffsetCommand extends 
   }
   private Pose2d getOffsetSwervePose(){
     return swerve.getCurrentPose().plus(localOffset);
+  }
+
+  public OdometricSwerve_AdvancedFollowTrajectoryUsingOffsetCommand(OdometricSwerve swerve,
+      AdvancedSwerveController controller, Transform2d localOffset) {
+    this.swerve = swerve;
+    this.controller = controller;
+    this.localOffset = localOffset;
+    addRequirements(swerve);
   }
 }
