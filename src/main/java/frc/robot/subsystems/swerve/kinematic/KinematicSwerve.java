@@ -19,7 +19,7 @@ public class KinematicSwerve extends SubsystemBase {
   protected SwerveDriveKinematics kinematics;
   protected KinematicWheelModule[] wheelModules;
   protected double lowestMaximumWheelSpeed;
-
+  protected double currentGyroZero = 0.0;
   protected IGyroComponent gyro;
   /**
    * Creates a new KinematicSwerve.
@@ -85,10 +85,10 @@ public class KinematicSwerve extends SubsystemBase {
     moveRobotCentric(chassisSpeeds, centerOfRotation);
   }
   public void moveFieldCentric(double xSpeed, double ySpeed, double wSpeed){
-    moveAngleCentric(xSpeed, ySpeed, wSpeed, gyro.getAngle());
+    moveAngleCentric(xSpeed, ySpeed, wSpeed, gyro.getAngle() - currentGyroZero);
   }
   public void moveFieldCentric(double xSpeed, double ySpeed, double wSpeed, Translation2d centerOfRotation){
-    moveAngleCentric(xSpeed, ySpeed, wSpeed, new Rotation2d(gyro.getAngle()),centerOfRotation);
+    moveAngleCentric(xSpeed, ySpeed, wSpeed, new Rotation2d(gyro.getAngle() - currentGyroZero),centerOfRotation);
   }
 
   private Translation2d[] getTranslations(KinematicWheelModule[] wheelModules){
@@ -107,5 +107,11 @@ public class KinematicSwerve extends SubsystemBase {
   }
   protected void resetGyro(){
     gyro.reset();
+  }
+  public void resetRobotAngle(){
+    currentGyroZero = gyro.getAngle();
+  }
+  public void resetRobotAngle(double angle){
+    currentGyroZero = gyro.getAngle() - angle;
   }
 }
