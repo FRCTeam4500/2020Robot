@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -116,7 +117,7 @@ public class RobotContainerTwo implements IRobotContainer {
         j2button3.whenPressed(() -> intake.setSpeed(0),intake);
 
 
-        button9.whenPressed(() -> swerve.resetGyro(),swerve);
+        button9.whenPressed(() -> swerve.resetPose(new Translation2d()),swerve);
         
         /*button7.whenPressed(() -> {
             if(armDown){

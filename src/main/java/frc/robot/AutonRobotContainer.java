@@ -11,9 +11,11 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -35,7 +37,6 @@ import frc.robot.subsystems.swerve.odometric.command.AdvancedSwerveController;
 import frc.robot.subsystems.swerve.odometric.command.AdvancedSwerveControllerBuilder;
 import frc.robot.subsystems.swerve.odometric.command.OdometricSwerve_AdvancedFollowTrajectoryCommand;
 import frc.robot.subsystems.swerve.odometric.command.OdometricSwerve_FollowTrajecoryCommand;
-import frc.robot.subsystems.swerve.odometric.command.OdometricSwerve_ResetPoseCommand;
 
 import static frc.robot.utility.ExtendedMath.withDeadzone;
 
@@ -72,46 +73,57 @@ public class AutonRobotContainer implements IRobotContainer{
         joystick = new Joystick(0);
         
         resetGyro = new JoystickButton(joystick, 1);
-        resetGyro.whenPressed(() -> swerve.resetGyro(),swerve);
+        resetGyro.whenPressed(() -> swerve.resetPose(new Translation2d()),swerve);
 
         swerve.setDefaultCommand(new RunCommand(() -> {
             swerve.moveFieldCentric(
                 withDeadzone(-joystick.getY()*2, 0.3*2),
                 withDeadzone(-joystick.getX()*2, 0.3*2),
-                withDeadzone(joystick.getZ()*2, 0.3*2)
+                withDeadzone(-joystick.getZ()*2, 0.3*2)
             );
         }
         , swerve));
 
         SmartDashboard.putData("Swerve Positions",new OdometricSwerveDashboardUtility(swerve));
 
-        var basePose = new Pose2d(13, -5.75, new Rotation2d());
-        var resetPose = new OdometricSwerve_ResetPoseCommand(basePose, swerve);
-        swerve.resetPose(basePose);
+        var baseTranslation = new Translation2d(13, -5.75);
+        var resetPose = new InstantCommand(() -> swerve.resetPose(baseTranslation),swerve);
+        swerve.resetPose(baseTranslation);
 
         SmartDashboard.putData("Reset Pose",resetPose);
 
         SmartDashboard.putData("Stop Shooting", new Autonomous_StopShootingCommand(indexer, shooter));
         SmartDashboard.putData("Start Shooting", new Autonomous_StartShootingCommand(indexer, shooter, -3000, -3000));
+        SmartDashboard.putData("Stop Intake", new InstantCommand(() -> intake.setSpeed(0),intake));
 
-        addShootAndCrossTheLineCommand();
-        addCitrusCompatabileCommand();
-        addAwayFromCenterCommand();
-        addAwayFromCenterBackwardCommand();
-        addCitrusCompatibleAndShootAgainCommand();
 
+        SmartDashboard.putData("Outtake Ball", new InstantCommand(() -> intake.setSpeed(1),intake));
 
         addAutonCommand("CrossTheLine", 
-        new AdvancedSwerveControllerBuilder()
-        .withInitialAllowableTranslationError(0.5)
-        .withFinalAllowableTranslationError(0.1)
-        .withTranslationsEnabled(true)
-        .with_kP(3)
+        createDefaultControllerBuilder()
         );
-        addAutonCommand("CitrusCompatabile");
-        addAutonCommand("AwayFromCenterForward");
+        addAutonCommand("CitrusCompatabile",
+        createDefaultControllerBuilder().withEndRotation(new Rotation2d(Math.PI + Math.PI/6))
+        );
+        addAutonCommand("AwayFromCenterForward",
+        createDefaultControllerBuilder().withEndRotation(new Rotation2d(Math.PI))
+        );
+        addAutonCommand("AwayFromCenterBackward", createDefaultControllerBuilder().withEndRotation(new Rotation2d(Math.PI)));
+
+        addCitrusCompatabileCommand();
         
 
+    }
+    private AdvancedSwerveControllerBuilder createDefaultControllerBuilder(){
+        return         new AdvancedSwerveControllerBuilder()
+        .withInitialAllowableTranslationError(0.1)
+        .withFinalAllowableTranslationError(0.1)
+        .withAllowableRotationError(0.1)
+        .withTranslationsEnabled(true)
+        .with_kP(3)
+        .with_kW(3)
+        .withRotationsEnabled(true)
+        .withEndRotation(new Rotation2d());
     }
     private CommandBase makeMoveToTranslationCommand(String trajectoryName) {
         var pid = new PIDController(3, 0, 0);
@@ -123,10 +135,10 @@ public class AutonRobotContainer implements IRobotContainer{
         return new OdometricSwerve_AdvancedFollowTrajectoryCommand(swerve, controller);
     }
     private void addAutonCommand(String trajectoryName){
-        SmartDashboard.putData("Run "+trajectoryName, makeAdvancedMoveToTranslationCommand(trajectoryName));
+        SmartDashboard.putData("Run Path "+trajectoryName, makeAdvancedMoveToTranslationCommand(trajectoryName));
     }
     private void addAutonCommand(String trajectoryName, AdvancedSwerveControllerBuilder builder){
-        SmartDashboard.putData("Run "+trajectoryName, new OdometricSwerve_AdvancedFollowTrajectoryCommand(swerve, builder.withTrajectory(ExtendedTrajectoryUtilities.tryGetDeployedTrajectory(trajectoryName)).buildController()));
+        SmartDashboard.putData("Run Path "+trajectoryName, new OdometricSwerve_AdvancedFollowTrajectoryCommand(swerve, builder.withTrajectory(ExtendedTrajectoryUtilities.tryGetDeployedTrajectory(trajectoryName)).buildController()));
     }
     private void addShootAndCrossTheLineCommand(){
         SmartDashboard.putData("Auton Shoot and Cross The Line", 
@@ -138,10 +150,24 @@ public class AutonRobotContainer implements IRobotContainer{
     }
     private void addCitrusCompatabileCommand(){
         SmartDashboard.putData("Auton Citrus Compatabile",
-        new Autonomous_StartShootingCommand(indexer, shooter, -3000, -3000)
+        new Autonomous_StartShootingCommand(indexer, shooter, -0, -0)
         .andThen(new WaitCommand(2))
         .andThen(new Autonomous_StopShootingCommand(indexer, shooter))
-        .andThen(makeAdvancedMoveToTranslationCommand("CitrusCompatabile"))
+        .andThen(new WaitCommand(4))
+        .andThen(
+            new OdometricSwerve_AdvancedFollowTrajectoryCommand(
+                swerve, 
+                createDefaultControllerBuilder().withEndRotation(new Rotation2d(Math.PI + Math.PI/6))
+                .withTrajectory(ExtendedTrajectoryUtilities.tryGetDeployedTrajectory("CitrusCompatabile"))
+                .buildController()
+            )
+        )
+        .andThen(() -> swerve.moveFieldCentric(0, 0, 0),swerve)
+        .andThen(() -> arm.setAngle(Math.PI/2),arm)
+        .andThen(() -> intake.setSpeed(-1), intake)
+        .andThen(new WaitCommand(3))
+        .andThen(() -> intake.setSpeed(0), intake)
+        .andThen(() -> arm.setAngle(0), arm)
         );
         
     }

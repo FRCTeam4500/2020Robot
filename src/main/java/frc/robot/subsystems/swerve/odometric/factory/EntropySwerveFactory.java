@@ -23,25 +23,25 @@ public class EntropySwerveFactory {
 
     private static final double DRIVE_ROTATIONS_PER_MOTOR_ROTATIONS = 1/8.33333333333333333333333333333333333333333333;
     private static final double ANGLE_ROTATIONS_PER_MOTOR_ROTATIONS = 4096.0/5851.0 ;
-    private static final double MAX_SURFACE_SPEED_METERS_PER_SECOND = 1.5;
-    private static final int BR_DRIVE_PORT = 4; //10
-    private static final int BL_DRIVE_PORT = 7; //1
-    private static final int FR_DRIVE_PORT = 1; //7
-    private static final int FL_DRIVE_PORT = 10; //4
+    private static final double MAX_SURFACE_SPEED_METERS_PER_SECOND = 2.4;
+    private static final int BR_DRIVE_PORT = 10; //10
+    private static final int BL_DRIVE_PORT = 1; //1
+    private static final int FR_DRIVE_PORT = 7; //7
+    private static final int FL_DRIVE_PORT = 4; //4
     
-    private static final int BR_ANGLE_PORT = 3; //11
-    private static final int BL_ANGLE_PORT = 6; //2
-    private static final int FR_ANGLE_PORT = 2; //6
-    private static final int FL_ANGLE_PORT = 11; //3
+    private static final int BR_ANGLE_PORT = 11; //11
+    private static final int BL_ANGLE_PORT = 2; //2
+    private static final int FR_ANGLE_PORT = 6; //6
+    private static final int FL_ANGLE_PORT = 3; //3
     public double WHEEL_DIAMETER_METERS = Units.inchesToMeters(6.0);
     public double DRIVE_LEFTWARD = Units.inchesToMeters(24.5 - 1.75);
     public double DRIVE_FORWARD = Units.inchesToMeters(24.5 - 1.75);
     public OdometricSwerve makeSwerve(){
 
-        var fl = makeWheelModule(FL_ANGLE_PORT, FL_DRIVE_PORT, new Translation2d(DRIVE_FORWARD / 2, DRIVE_LEFTWARD/2), true, true,false);
-        var fr = makeWheelModule(FR_ANGLE_PORT, FR_DRIVE_PORT, new Translation2d(DRIVE_FORWARD / 2, -DRIVE_LEFTWARD / 2), true, true,true);
-        var bl = makeWheelModule(BL_ANGLE_PORT, BL_DRIVE_PORT, new Translation2d(-DRIVE_FORWARD / 2, DRIVE_LEFTWARD / 2), false, false,false);
-        var br = makeWheelModule(BR_ANGLE_PORT, BR_DRIVE_PORT, new Translation2d(-DRIVE_FORWARD / 2, -DRIVE_LEFTWARD / 2), true, true,true);
+        var fl = makeWheelModule(FL_ANGLE_PORT, FL_DRIVE_PORT, new Translation2d(DRIVE_FORWARD / 2, DRIVE_LEFTWARD/2), true, true,true);
+        var fr = makeWheelModule(FR_ANGLE_PORT, FR_DRIVE_PORT, new Translation2d(DRIVE_FORWARD / 2, -DRIVE_LEFTWARD / 2), true, true,false);
+        var bl = makeWheelModule(BL_ANGLE_PORT, BL_DRIVE_PORT, new Translation2d(-DRIVE_FORWARD / 2, DRIVE_LEFTWARD / 2), false, false,true);
+        var br = makeWheelModule(BR_ANGLE_PORT, BR_DRIVE_PORT, new Translation2d(-DRIVE_FORWARD / 2, -DRIVE_LEFTWARD / 2), true, true,false);
 
         return new OdometricSwerve(
             new AHRSAngleGetterComponent(Port.kMXP),

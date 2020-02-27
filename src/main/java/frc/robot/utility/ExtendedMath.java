@@ -39,7 +39,12 @@ public class ExtendedMath {
         return Math.acos(dot(a,b)/(a.getNorm()*b.getNorm()));
     }
     public static double scalarProjectionOf(Translation2d a, Translation2d b){
-        return dot(a,b)/b.getNorm();
+        var norm = b.getNorm();
+        if(norm == 0){
+            return 0;
+        }else{
+        return dot(a,b)/norm;
+        }
     }
     public static Translation2d normalize(Translation2d a){
         return a.div(a.getNorm());
