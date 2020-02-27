@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot;
+package frc.robot.containers;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.controller.PIDController;
