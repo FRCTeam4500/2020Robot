@@ -120,8 +120,8 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    button5.whenPressed(new InstantCommand(() -> {intakeActive = true; armActive = true;}));
-    button5.whenReleased(new InstantCommand(() -> {intakeActive = false; armActive = false;}));
+    button1.whenPressed(new InstantCommand(() -> {intakeActive = true; armActive = true;}));
+    button1.whenReleased(new InstantCommand(() -> {intakeActive = false; armActive = false;}));
   }
 
 
