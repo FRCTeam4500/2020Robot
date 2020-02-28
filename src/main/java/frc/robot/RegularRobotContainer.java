@@ -128,10 +128,10 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    button1.whenPressed(() -> {intakeActive = true; armActive = true;});
-    button1.whenReleased(() -> {intakeActive = false; armActive = false;});
-    button2.whenPressed(() -> {shooterActive = true; indexer.setSpeed(1);});
-    button2.whenReleased(() -> {shooterActive = true; indexer.setSpeed(0);});
+    button2.whenPressed(() -> {intakeActive = true; armActive = true;});
+    button2.whenReleased(() -> {intakeActive = false; armActive = false;});
+    button1.whenPressed(() -> {shooterActive = true; indexer.setSpeed(1);});
+    button1.whenReleased(() -> {shooterActive = true; indexer.setSpeed(0);});
     button9.whenPressed(() -> swerve.resetGyro());
   }
 
@@ -188,7 +188,7 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
     }
     else{
       return number;
-      }
+    }
   }
 
   public void onDisable(){
