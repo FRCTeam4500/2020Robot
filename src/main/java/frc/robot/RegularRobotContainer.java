@@ -80,6 +80,7 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   private JoystickButton button1;
   private JoystickButton button2;
   private JoystickButton button5;
+  private JoystickButton button9;
 
   
   public RegularRobotContainer() {
@@ -105,12 +106,17 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
     indexer.setDefaultCommand(indexerCommand);
 
 
-    swerve.setDefaultCommand(new RunCommand(() -> swerve.moveRobotCentric(joystick.getX(),joystick.getY(),joystick.getZ()),swerve));
+    swerve.setDefaultCommand(new RunCommand(() -> swerve.moveRobotCentric(withDeadzone(joystick.getX()),
+            withDeadzone(joystick.getY()),
+            withDeadzone(joystick.getZ())),
+            swerve));
     // Configure the button bindings
     joystick = new Joystick(0);
     button1 = new JoystickButton(joystick, 1);
     button2 = new JoystickButton(joystick,2);
     button5 = new JoystickButton(joystick, 5);
+    button9 = new JoystickButton(joystick,9);
+
 
     configureButtonBindings();
   }
@@ -126,6 +132,7 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
     button1.whenReleased(() -> {intakeActive = false; armActive = false;});
     button2.whenPressed(() -> {shooterActive = true; indexer.setSpeed(1);});
     button2.whenReleased(() -> {shooterActive = true; indexer.setSpeed(0);});
+    button9.whenPressed(() -> swerve.resetGyro());
   }
 
 
@@ -173,5 +180,14 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
 
   public boolean getArmActive(){
     return armActive;
+  }
+
+  public double withDeadzone(double number){
+    if (Math.abs(number) <= 0.2){
+      return 0;
+    }
+    else{
+      return number;
+      }
   }
 }
