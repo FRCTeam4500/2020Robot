@@ -8,13 +8,17 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.subsystems.shooter.IShooterOI;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.command.ShootStraightCommand;
 import frc.robot.subsystems.shooter.factory.DefaultShooterFactory;
 import frc.robot.subsystems.shooter.factory.IShooterFactory;
+import frc.robot.subsystems.swerve.ISwerveOI;
+import frc.robot.subsystems.swerve.normal.NormalSwerve;
 import frc.robot.subsystems.turret.ITurretOI;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.command.SetTurretAngleCommand;
@@ -32,7 +36,7 @@ import frc.robot.subsystems.vision.factory.IVisionFactory;
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
-public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotContainer {
+public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotContainer, ISwerveOI {
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -51,6 +55,9 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   private IVisionFactory visionFactory;
   private Vision vision;
   private TurretTrackingCommand turretTrackingCommand;
+  private NormalSwerve swerve;
+  private Joystick joystick;
+
   
   public RegularRobotContainer() {
     turretAngle = 0;
@@ -68,6 +75,8 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
     vision = visionFactory.makeVision();
     turretTrackingCommand = new TurretTrackingCommand(vision, this);
     vision.setDefaultCommand(turretTrackingCommand);
+
+    swerve.setDefaultCommand(new RunCommand(() -> swerve.moveRobotCentric(joystick.getX(),joystick.getY(),joystick.getZ()),swerve));
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -105,5 +114,17 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
 
   public void setTurretDesiredAngle(double turretDesiredAngle) {
     this.turretDesiredAngle = turretDesiredAngle;
+  }
+
+  public double getX(){
+    return joystick.getX();
+  }
+
+  public double getY(){
+    return joystick.getY();
+  }
+
+  public double getZ(){
+    return joystick.getZ();
   }
 }
