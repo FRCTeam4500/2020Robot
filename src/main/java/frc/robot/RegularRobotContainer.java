@@ -55,7 +55,7 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   public RegularRobotContainer() {
     turretAngle = 0;
     shooterAngle = 0;
-    turretActive = 0;
+    turretActive = false;
     shooterFactory = new DefaultShooterFactory();
     shooter = shooterFactory.makeShooter();
     shootCommand = new ShootStraightCommand(shooter, this);
