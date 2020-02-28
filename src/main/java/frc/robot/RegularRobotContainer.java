@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.arm.IArmOI;
 import frc.robot.subsystems.arm.factory.DefaultArmFactory;
 import frc.robot.subsystems.intake.IIntakeOI;
 import frc.robot.subsystems.shooter.IShooterOI;
@@ -33,6 +34,7 @@ import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.command.TurretTrackingCommand;
 import frc.robot.subsystems.vision.factory.DefaultVisionFactory;
 import frc.robot.subsystems.vision.factory.IVisionFactory;
+import frc.robot.subsystems.arm.command.ArmRunCommand;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -40,7 +42,7 @@ import frc.robot.subsystems.vision.factory.IVisionFactory;
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
-public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotContainer, ISwerveOI, IIntakeOI {
+public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotContainer, ISwerveOI, IIntakeOI, IArmOI {
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -51,6 +53,7 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   private boolean turretActive;
   private double turretDesiredAngle;
   private boolean intakeActive;
+  private boolean armActive;
   private IShooterFactory shooterFactory;
   private Shooter shooter;
   private ShootStraightCommand shootCommand;
@@ -62,6 +65,7 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   private TurretTrackingCommand turretTrackingCommand;
   private Arm arm;
   private DefaultArmFactory armFactory;
+  private ArmRunCommand armCommand;
   private NormalSwerve swerve;
 
 
@@ -100,8 +104,8 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    button1.whenPressed(new InstantCommand(() -> {intakeActive = true;}));
-    button1.whenReleased(new InstantCommand(() -> {intakeActive = false;}));
+    button1.whenPressed(new InstantCommand(() -> {intakeActive = true; armActive = true;}));
+    button1.whenReleased(new InstantCommand(() -> {intakeActive = false; armActive = false;}));
   }
 
 
@@ -142,7 +146,11 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
     return joystick.getZ();
   }
 
-  public boolean getIntakeActive(){
+  public boolean getIntakeActive() {
     return intakeActive;
+  }
+
+  public boolean getArmActive(){
+    return armActive;
   }
 }

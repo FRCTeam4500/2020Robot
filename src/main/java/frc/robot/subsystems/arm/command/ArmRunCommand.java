@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems.arm.commands;
+package frc.robot.subsystems.arm.command;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.ArmMap;
 import frc.robot.subsystems.arm.IArmOI;
