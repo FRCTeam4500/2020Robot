@@ -71,4 +71,7 @@ public class XboxTestRobotContainer implements IRobotContainer {
     private CommandBase makeCitrusAuton(int partId){
         return makeMoveToTranslationCommand("CitrusAutonPart"+String.valueOf(partId));
     }
+    public void onDisable(){
+        swerve.moveFieldCentric(0,0,0);
+    }
 }
