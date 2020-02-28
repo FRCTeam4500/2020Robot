@@ -1,8 +1,8 @@
-package frc.robot.subsystems.Intake.command;
+package frc.robot.subsystems.intake.command;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake.IIntakeOI;
-import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.intake.IIntakeOI;
+import frc.robot.subsystems.intake.Intake;
 
 
 public class IntakeRunCommand extends CommandBase {
