@@ -11,22 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-<<<<<<< HEAD
 import edu.wpi.first.wpilibj2.command.RunCommand;
-=======
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.subsystems.arm.Arm;
-import frc.robot.subsystems.arm.IArmOI;
-import frc.robot.subsystems.arm.commands.ArmRunCommand;
-import frc.robot.subsystems.arm.factory.DefaultArmFactory;
-import frc.robot.subsystems.arm.factory.IArmFactory;
-import frc.robot.subsystems.intake.IIntakeOI;
-import frc.robot.subsystems.intake.Intake;
-import frc.robot.subsystems.intake.command.IntakeRunCommand;
-import frc.robot.subsystems.intake.factory.DefaultIntakeFactory;
-import frc.robot.subsystems.intake.factory.IIntakeFactory;
->>>>>>> IntakeControl
 import frc.robot.subsystems.shooter.IShooterOI;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.command.ShootStraightCommand;
@@ -51,11 +36,7 @@ import frc.robot.subsystems.vision.factory.IVisionFactory;
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
-<<<<<<< HEAD
 public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotContainer, ISwerveOI {
-=======
-public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotContainer, IIntakeOI, IArmOI {
->>>>>>> IntakeControl
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -64,18 +45,12 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   private double turretAngle;
   private double shooterAngle;
   private boolean turretActive;
-<<<<<<< HEAD
   private double turretDesiredAngle;
-=======
-  private boolean intakeActive;
-  private boolean armActive;
->>>>>>> IntakeControl
   private IShooterFactory shooterFactory;
   private Shooter shooter;
   private ShootStraightCommand shootCommand;
   private ITurretFactory turretFactory;
   private Turret turret;
-<<<<<<< HEAD
   private ChangeTurretAngleCommand turretAngleCommand;
   private IVisionFactory visionFactory;
   private Vision vision;
@@ -84,20 +59,6 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   private Joystick joystick;
 
   
-=======
-  private SetTurretAngleCommand turretAngleCommand;
-  private IIntakeFactory intakeFactory;
-  private Intake intake;
-  private IntakeRunCommand intakeCommand;
-  private IArmFactory armFactory;
-  private Arm arm;
-  private ArmRunCommand armRunCommand;
-
-
-  private Joystick joystick;
-  private JoystickButton button1;
-
->>>>>>> IntakeControl
   public RegularRobotContainer() {
     turretAngle = 0;
     shooterAngle = 0;
@@ -110,26 +71,12 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
     turret = turretFactory.makeTurret();
     turretAngleCommand = new ChangeTurretAngleCommand(turret, this);
     turret.setDefaultCommand(turretAngleCommand);
-<<<<<<< HEAD
     visionFactory = new DefaultVisionFactory();
     vision = visionFactory.makeVision();
     turretTrackingCommand = new TurretTrackingCommand(vision, this);
     vision.setDefaultCommand(turretTrackingCommand);
 
     swerve.setDefaultCommand(new RunCommand(() -> swerve.moveRobotCentric(joystick.getX(),joystick.getY(),joystick.getZ()),swerve));
-=======
-    intakeFactory = new DefaultIntakeFactory();
-    intake = intakeFactory.makeIntake();
-    intakeCommand = new IntakeRunCommand(intake, this);
-    intake.setDefaultCommand(intakeCommand);
-    armFactory = new DefaultArmFactory();
-    arm = armFactory.makeArm();
-    armRunCommand = new ArmRunCommand(arm, this);
-    arm.setDefaultCommand(armRunCommand);
-
-    joystick = new Joystick(0);
-    button1 = new JoystickButton(joystick, 1);
->>>>>>> IntakeControl
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -141,8 +88,6 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    button1.whenPressed(new InstantCommand(() -> {this.setIntakeActive(true); this.setArmActive(true);}));
-    button1.whenReleased(new InstantCommand(() -> {this.setIntakeActive(false); this.setArmActive(false);}));
   }
 
 
@@ -163,7 +108,6 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   public boolean getShooterActive(){
       return this.turretActive;
   }
-<<<<<<< HEAD
   public double getTurretDesiredAngle() {
     return this.turretDesiredAngle;
   }
@@ -182,21 +126,5 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
 
   public double getZ(){
     return joystick.getZ();
-=======
-
-  public void setIntakeActive(boolean intakeActive){
-    this.intakeActive = intakeActive;
-  }
-  public boolean getIntakeActive(){
-    return intakeActive;
-  }
-
-  public void setArmActive(boolean armActive){
-    this.armActive = armActive;
-  }
-
-  public boolean getArmActive(){
-    return armActive;
->>>>>>> IntakeControl
   }
 }
