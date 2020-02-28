@@ -16,4 +16,5 @@ public interface IRobotContainer {
     default Command getAutonomousCommand(){
         return null;
     }
+    public void onDisable();
 }

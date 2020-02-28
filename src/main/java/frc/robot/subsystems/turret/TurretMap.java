@@ -5,6 +5,6 @@ public class TurretMap {
     public static final int TURRET_MOTOR_PORT = 15;
     public static final int TURRET_MAXMIMUM_TICKS = 9176;
     public static final int TURRET_MINIMUM_TICKS = -7646;
-    public static final double TURRET_MAXIMUM_VALUE = 14.07580771;
-    public static final double TURRET_MINIMUM_VALUE = 11.7288171;
+    public static final double TURRET_MAXIMUM_VALUE = 14.0;
+    public static final double TURRET_MINIMUM_VALUE = 11.6;
 }

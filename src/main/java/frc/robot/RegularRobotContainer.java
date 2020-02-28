@@ -190,4 +190,8 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
       return number;
       }
   }
+
+  public void onDisable(){
+    swerve.moveFieldCentric(0,0,0);
+  }
 }
