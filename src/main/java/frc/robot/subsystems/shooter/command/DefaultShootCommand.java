@@ -3,16 +3,17 @@ package frc.robot.subsystems.shooter.command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.shooter.IShooterOI;
 import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterMap;
 
 
-public class ShootStraightCommand extends CommandBase {
+public class DefaultShootCommand extends CommandBase {
     private Shooter shooter;
     private IShooterOI oi;
 
     private double topFlywheelSpeed;
     private double bottomFlywheelSpeed;
 
-    public ShootStraightCommand(Shooter shooter, IShooterOI oi) {
+    public DefaultShootCommand(Shooter shooter, IShooterOI oi) {
         this.shooter = shooter;
         this.oi = oi;
         addRequirements(shooter);
@@ -26,7 +27,7 @@ public class ShootStraightCommand extends CommandBase {
     @Override
     public void execute() {
         if (oi.getShooterActive()) {
-            shooter.run(0.8, 0.8);
+            shooter.run(ShooterMap.TOP_SPEED * ShooterMap.COEFFICIENT, ShooterMap.BOTTOM_SPEED * ShooterMap.COEFFICIENT);
         }
         else{
             shooter.run(0,0);

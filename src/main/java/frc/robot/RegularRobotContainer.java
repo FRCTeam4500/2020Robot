@@ -24,7 +24,7 @@ import frc.robot.subsystems.indexer.factory.IIndexerFactory;
 import frc.robot.subsystems.intake.IIntakeOI;
 import frc.robot.subsystems.shooter.IShooterOI;
 import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.shooter.command.ShootStraightCommand;
+import frc.robot.subsystems.shooter.command.DefaultShootCommand;
 import frc.robot.subsystems.shooter.factory.DefaultShooterFactory;
 import frc.robot.subsystems.shooter.factory.IShooterFactory;
 import frc.robot.subsystems.swerve.ISwerveOI;
@@ -53,14 +53,14 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
    */
 
   private double turretAngle;
-  private double shooterAngle;
+  private boolean shooterActive;
   private boolean turretActive;
   private double turretDesiredAngle;
   private boolean intakeActive;
   private boolean armActive;
   private IShooterFactory shooterFactory;
   private Shooter shooter;
-  private ShootStraightCommand shootCommand;
+  private DefaultShootCommand shootCommand;
   private ITurretFactory turretFactory;
   private Turret turret;
   private ChangeTurretAngleCommand turretAngleCommand;
@@ -78,17 +78,18 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
 
   private Joystick joystick;
   private JoystickButton button1;
+  private JoystickButton button2;
   private JoystickButton button5;
 
   
   public RegularRobotContainer() {
     turretAngle = 0;
-    shooterAngle = 0;
+    shooterActive = false;
     turretActive = false;
     intakeActive = false;
     shooterFactory = new DefaultShooterFactory();
     shooter = shooterFactory.makeShooter();
-    shootCommand = new ShootStraightCommand(shooter, this);
+    shootCommand = new DefaultShootCommand(shooter, this);
     shooter.setDefaultCommand(shootCommand);
     turretFactory = new DefaultTurretFactory();
     turret = turretFactory.makeTurret();
@@ -108,6 +109,7 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
     // Configure the button bindings
     joystick = new Joystick(0);
     button1 = new JoystickButton(joystick, 1);
+    button2 = new JoystickButton(joystick,2);
     button5 = new JoystickButton(joystick, 5);
 
     configureButtonBindings();
@@ -120,8 +122,10 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    button1.whenPressed(new InstantCommand(() -> {intakeActive = true; armActive = true;}));
-    button1.whenReleased(new InstantCommand(() -> {intakeActive = false; armActive = false;}));
+    button1.whenPressed(() -> {intakeActive = true; armActive = true;});
+    button1.whenReleased(() -> {intakeActive = false; armActive = false;});
+    button2.whenPressed(() -> {shooterActive = true; indexer.setSpeed(1);});
+    button2.whenReleased(() -> {shooterActive = true; indexer.setSpeed(0);});
   }
 
 
@@ -140,8 +144,9 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   }
 
   public boolean getShooterActive(){
-    return this.turretActive;
+    return this.shooterActive;
   }
+
   public double getTurretDesiredAngle() {
     return this.turretDesiredAngle;
   }
