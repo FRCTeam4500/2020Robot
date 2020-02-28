@@ -17,6 +17,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.IArmOI;
 import frc.robot.subsystems.arm.factory.DefaultArmFactory;
+import frc.robot.subsystems.indexer.Indexer;
+import frc.robot.subsystems.indexer.command.IndexBallsCommand;
+import frc.robot.subsystems.indexer.factory.DefaultIndexerFactory;
+import frc.robot.subsystems.indexer.factory.IIndexerFactory;
 import frc.robot.subsystems.intake.IIntakeOI;
 import frc.robot.subsystems.shooter.IShooterOI;
 import frc.robot.subsystems.shooter.Shooter;
@@ -64,6 +68,9 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   private Vision vision;
   private TurretTrackingCommand turretTrackingCommand;
   private Arm arm;
+  private IIndexerFactory indexerFactory;
+  private Indexer indexer;
+  private IndexBallsCommand indexerCommand;
   private DefaultArmFactory armFactory;
   private ArmRunCommand armCommand;
   private NormalSwerve swerve;
@@ -71,7 +78,7 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
 
   private Joystick joystick;
   private JoystickButton button1;
-
+  private JoystickButton button5;
 
   
   public RegularRobotContainer() {
@@ -91,9 +98,18 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
     vision = visionFactory.makeVision();
     turretTrackingCommand = new TurretTrackingCommand(vision, this);
     vision.setDefaultCommand(turretTrackingCommand);
+    indexerFactory = new DefaultIndexerFactory();
+    indexer = indexerFactory.makeIndexer();
+    indexerCommand = new IndexBallsCommand(indexer, 0.5);
+    indexer.setDefaultCommand(indexerCommand);
+
 
     swerve.setDefaultCommand(new RunCommand(() -> swerve.moveRobotCentric(joystick.getX(),joystick.getY(),joystick.getZ()),swerve));
     // Configure the button bindings
+    joystick = new Joystick(0);
+    button1 = new JoystickButton(joystick, 1);
+    button5 = new JoystickButton(joystick, 5);
+
     configureButtonBindings();
   }
 
@@ -104,8 +120,8 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    button1.whenPressed(new InstantCommand(() -> {intakeActive = true; armActive = true;}));
-    button1.whenReleased(new InstantCommand(() -> {intakeActive = false; armActive = false;}));
+    button5.whenPressed(new InstantCommand(() -> {intakeActive = true; armActive = true;}));
+    button5.whenReleased(new InstantCommand(() -> {intakeActive = false; armActive = false;}));
   }
 
 
@@ -124,7 +140,7 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   }
 
   public boolean getShooterActive(){
-      return this.turretActive;
+    return this.turretActive;
   }
   public double getTurretDesiredAngle() {
     return this.turretDesiredAngle;
