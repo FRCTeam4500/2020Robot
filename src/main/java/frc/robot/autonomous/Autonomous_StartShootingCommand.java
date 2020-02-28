@@ -23,6 +23,7 @@ public class Autonomous_StartShootingCommand extends CommandBase {
     this.shooter = shooter;
     this.topWheelSpeed = topWheelSpeed;
     this.bottomWheelSpeed = bottomWheelSpeed;
+    addRequirements(indexer, shooter);
   }
 
   // Called when the command is initially scheduled.

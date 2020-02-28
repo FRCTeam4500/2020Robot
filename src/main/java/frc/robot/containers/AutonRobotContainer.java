@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autonomous.Autonomous_StartShootingCommand;
 import frc.robot.autonomous.Autonomous_StopShootingCommand;
-import frc.robot.autonomous.ExtendedTrajectoryUtilities;
 import frc.robot.components.hardware.SparkMaxComponent;
 import frc.robot.components.hardware.TalonSRXComponent;
 import frc.robot.subsystems.Intake.Intake;
@@ -39,6 +38,7 @@ import frc.robot.subsystems.swerve.odometric.command.OdometricSwerve_AdvancedFol
 import frc.robot.subsystems.swerve.odometric.command.OdometricSwerve_FollowTrajecoryCommand;
 
 import static frc.robot.utility.ExtendedMath.withDeadzone;
+import static frc.robot.autonomous.ExtendedTrajectoryUtilities.tryGetDeployedTrajectory;
 
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 /**
@@ -47,11 +47,12 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 public class AutonRobotContainer implements IRobotContainer{
     private OdometricSwerve swerve;
     private Joystick joystick;
-    private JoystickButton resetGyro;
+    private JoystickButton resetGyro, indexCommand;
     private Intake intake;
     private Shooter shooter;
     private Arm arm;
     private Indexer indexer;
+    private CommandBase citrusCompatible;
     public AutonRobotContainer(){
         swerve = new EntropySwerveFactory().makeSwerve();
 
@@ -73,8 +74,11 @@ public class AutonRobotContainer implements IRobotContainer{
         joystick = new Joystick(0);
         
         resetGyro = new JoystickButton(joystick, 1);
-        resetGyro.whenPressed(() -> swerve.resetPose(new Translation2d()),swerve);
+        resetGyro.whenPressed(() -> swerve.resetPose(swerve.getCurrentPose().getTranslation()),swerve);
 
+        indexCommand = new JoystickButton(joystick, 2);
+        indexCommand.whenHeld(new IndexBallsCommand(indexer, intake, 1));
+        
         swerve.setDefaultCommand(new RunCommand(() -> {
             swerve.moveFieldCentric(
                 withDeadzone(-joystick.getY()*2, 0.3*2),
@@ -87,8 +91,9 @@ public class AutonRobotContainer implements IRobotContainer{
         SmartDashboard.putData("Swerve Positions",new OdometricSwerveDashboardUtility(swerve));
 
         var baseTranslation = new Translation2d(13, -5.75);
-        var resetPose = new InstantCommand(() -> swerve.resetPose(baseTranslation),swerve);
-        swerve.resetPose(baseTranslation);
+        var basePose = new Pose2d(new Translation2d(13,-5.75),new Rotation2d(Math.PI));
+        var resetPose = new InstantCommand(() -> swerve.resetPose(basePose),swerve);
+        swerve.resetPose(basePose);
 
         SmartDashboard.putData("Reset Pose",resetPose);
 
@@ -99,10 +104,11 @@ public class AutonRobotContainer implements IRobotContainer{
 
         SmartDashboard.putData("Outtake Ball", new InstantCommand(() -> intake.setSpeed(1),intake));
 
+        SmartDashboard.putData("Zero Arm", new InstantCommand(() -> arm.setAngle(0),arm));
         addAutonCommand("CrossTheLine", 
         createDefaultControllerBuilder()
         );
-        addAutonCommand("CitrusCompatabile",
+        addAutonCommand("CitrusCompatublePart1",
         createDefaultControllerBuilder().withEndRotation(new Rotation2d(Math.PI + Math.PI/6))
         );
         addAutonCommand("AwayFromCenterForward",
@@ -128,17 +134,17 @@ public class AutonRobotContainer implements IRobotContainer{
     private CommandBase makeMoveToTranslationCommand(String trajectoryName) {
         var pid = new PIDController(3, 0, 0);
         pid.setTolerance(0.1);
-        return new OdometricSwerve_FollowTrajecoryCommand(swerve, pid, ExtendedTrajectoryUtilities.tryGetDeployedTrajectory(trajectoryName));
+        return new OdometricSwerve_FollowTrajecoryCommand(swerve, pid, tryGetDeployedTrajectory(trajectoryName));
     }
     private CommandBase makeAdvancedMoveToTranslationCommand(String trajectoryName){
-        var controller = new AdvancedSwerveController(0.1, 0.1, false, 0.1, true, 3, 0, new Rotation2d(), ExtendedTrajectoryUtilities.tryGetDeployedTrajectory(trajectoryName).getStates().toArray(Trajectory.State[]::new));
+        var controller = new AdvancedSwerveController(0.1, 0.1, false, 0.1, true, 3, 0, new Rotation2d(),tryGetDeployedTrajectory(trajectoryName).getStates().toArray(Trajectory.State[]::new));
         return new OdometricSwerve_AdvancedFollowTrajectoryCommand(swerve, controller);
     }
     private void addAutonCommand(String trajectoryName){
         SmartDashboard.putData("Run Path "+trajectoryName, makeAdvancedMoveToTranslationCommand(trajectoryName));
     }
     private void addAutonCommand(String trajectoryName, AdvancedSwerveControllerBuilder builder){
-        SmartDashboard.putData("Run Path "+trajectoryName, new OdometricSwerve_AdvancedFollowTrajectoryCommand(swerve, builder.withTrajectory(ExtendedTrajectoryUtilities.tryGetDeployedTrajectory(trajectoryName)).buildController()));
+        SmartDashboard.putData("Run Path "+trajectoryName, new OdometricSwerve_AdvancedFollowTrajectoryCommand(swerve, builder.withTrajectory(tryGetDeployedTrajectory(trajectoryName)).buildController()));
     }
     private void addShootAndCrossTheLineCommand(){
         SmartDashboard.putData("Auton Shoot and Cross The Line", 
@@ -149,26 +155,61 @@ public class AutonRobotContainer implements IRobotContainer{
         );
     }
     private void addCitrusCompatabileCommand(){
-        SmartDashboard.putData("Auton Citrus Compatabile",
-        new Autonomous_StartShootingCommand(indexer, shooter, -0, -0)
+        citrusCompatible = new Autonomous_StartShootingCommand(indexer, shooter, -800, -800)
         .andThen(new WaitCommand(2))
         .andThen(new Autonomous_StopShootingCommand(indexer, shooter))
         .andThen(new WaitCommand(4))
         .andThen(
             new OdometricSwerve_AdvancedFollowTrajectoryCommand(
                 swerve, 
-                createDefaultControllerBuilder().withEndRotation(new Rotation2d(Math.PI + Math.PI/6))
-                .withTrajectory(ExtendedTrajectoryUtilities.tryGetDeployedTrajectory("CitrusCompatabile"))
+                createDefaultControllerBuilder().withEndRotation(new Rotation2d(Math.PI + Math.PI * 1.2/7))
+                .withTrajectory(tryGetDeployedTrajectory("CitrusCompatublePart1"))
                 .buildController()
             )
         )
         .andThen(() -> swerve.moveFieldCentric(0, 0, 0),swerve)
         .andThen(() -> arm.setAngle(Math.PI/2),arm)
         .andThen(() -> intake.setSpeed(-1), intake)
-        .andThen(new WaitCommand(3))
-        .andThen(() -> intake.setSpeed(0), intake)
+        .andThen(() -> indexer.setSpeed(1), indexer)
+        .andThen(
+            //new IndexBallsCommand(indexer, intake, 1)
+            new RunCommand(() -> swerve.moveFieldCentric(0.1, -0.25*2, 0), swerve)
+            .withTimeout(2)
+            .andThen(new RunCommand(() -> swerve.moveFieldCentric(0.1*2.4, -0.25*2.4, 0), swerve).withTimeout(0.7)
+            .andThen(new RunCommand(() -> swerve.moveFieldCentric(0,0,1)).withTimeout(1))
+            )
+            )
+
         .andThen(() -> arm.setAngle(0), arm)
-        );
+        .andThen(() -> intake.setSpeed(0), intake)
+        .andThen(() -> indexer.setSpeed(0), indexer)
+        .andThen(
+            new OdometricSwerve_AdvancedFollowTrajectoryCommand(
+                swerve, 
+                createDefaultControllerBuilder()
+                .withEndRotation(new Rotation2d(Math.PI))
+                .withInitialAllowableTranslationError(0.5)
+                .withFinalAllowableTranslationError(0.02)
+                .withTrajectory(tryGetDeployedTrajectory("CitrusCompatiblePart3"))
+                .buildController()
+            )
+        )
+        .andThen(() -> swerve.moveFieldCentric(0, 0, 0), swerve)
+        .andThen(
+            new Autonomous_StartShootingCommand(indexer, shooter, -800, -800)
+        )
+        .andThen(new WaitCommand(2))
+        .andThen(new Autonomous_StopShootingCommand(indexer, shooter))
+        .andThen(() -> indexer.setSpeed(-1), indexer)
+        .andThen(() -> intake.setSpeed(1),intake)
+        .andThen(new WaitCommand(4))
+        .andThen(() -> indexer.setSpeed(0),indexer)
+        .andThen(() -> intake.setSpeed(0),intake);
+
+        
+        
+        SmartDashboard.putData("Auton Citrus Compatible", citrusCompatible);
+        
         
     }
     private void addAwayFromCenterCommand(){

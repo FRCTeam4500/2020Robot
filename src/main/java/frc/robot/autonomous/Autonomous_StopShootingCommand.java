@@ -21,6 +21,7 @@ public class Autonomous_StopShootingCommand extends InstantCommand {
     // Use addRequirements() here to declare subsystem dependencies.
     this.indexer =  indexer;
     this.shooter = shooter;
+    addRequirements(indexer, shooter);
   }
 
   // Called when the command is initially scheduled.
