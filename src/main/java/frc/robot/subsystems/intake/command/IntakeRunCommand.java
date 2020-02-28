@@ -21,7 +21,12 @@ public class IntakeRunCommand extends CommandBase {
 
     @Override
     public void execute() {
-        intake.setSpeed(oi.getIntakeSpeed());
+        if (oi.getIntakeActive()){
+            intake.setSpeed(1);
+        }
+        else{
+            intake.setSpeed(0);
+        }
     }
 
     @Override
