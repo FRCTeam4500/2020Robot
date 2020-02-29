@@ -88,7 +88,6 @@ public class RegularRobotContainer implements IRobotContainer {
 
   
   public RegularRobotContainer() {
-<<<<<<< HEAD
     joystick = new Joystick(0);
     button1 = new JoystickButton(joystick, 1);
     button2 = new JoystickButton(joystick,2);
@@ -99,19 +98,6 @@ public class RegularRobotContainer implements IRobotContainer {
     shooterFactory = new DefaultShooterFactory();
     shooter = shooterFactory.makeShooter();
     shootCommand = new DefaultShootCommand(shooter, button1::get);
-=======
-    turretAngle = 0;
-    shooterActive = false;
-    turretActive = false;
-    intakeActive = false;
-    indexerFactory = new DefaultIndexerFactory();
-    indexer = indexerFactory.makeIndexer();
-    indexerCommand = new IndexBallsCommand(indexer, 0.5);
-    indexer.setDefaultCommand(indexerCommand);
-    shooterFactory = new DefaultShooterFactory();
-    shooter = shooterFactory.makeShooter();
-    shootCommand = new DefaultShootCommand(shooter, this, indexer);
->>>>>>> 2b3b9fd... stuff
     shooter.setDefaultCommand(shootCommand);
     visionFactory = new DefaultVisionFactory();
     vision = visionFactory.makeVision();
@@ -119,18 +105,10 @@ public class RegularRobotContainer implements IRobotContainer {
     turret = turretFactory.makeTurret();
     turretAngleCommand = new ChangeTurretAngleCommand(turret, vision::getHorizontalOffset);
     turret.setDefaultCommand(turretAngleCommand);
-<<<<<<< HEAD
     indexerFactory = new DefaultIndexerFactory();
     indexer = indexerFactory.makeIndexer();
     indexerCommand = new IndexBallsCommand(indexer, 0.5);
     indexer.setDefaultCommand(indexerCommand);
-=======
-    visionFactory = new DefaultVisionFactory();
-    vision = visionFactory.makeVision();
-    turretTrackingCommand = new TurretTrackingCommand(vision, this);
-    vision.setDefaultCommand(turretTrackingCommand);
-
->>>>>>> 2b3b9fd... stuff
     swerveFactory = new NormalSwerveFactory();
     swerve = swerveFactory.makeSwerve();
     swerve.setDefaultCommand(new RunCommand(() -> swerve.moveFieldCentric(withDeadzone(joystick.getX()),
@@ -157,15 +135,8 @@ public class RegularRobotContainer implements IRobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-<<<<<<< HEAD
     button1.whenPressed(() -> {indexer.setSpeed(1);});
     button1.whenReleased(() -> {indexer.setSpeed(0);});
-=======
-    button2.whenPressed(() -> {intakeActive = true; armActive = true;});
-    button2.whenReleased(() -> {intakeActive = false; armActive = false;});
-    button1.whenPressed(() -> shooterActive = true);
-    button1.whenReleased(() -> {shooterActive = true; indexer.setSpeed(0);});
->>>>>>> 2b3b9fd... stuff
     button9.whenPressed(() -> swerve.resetGyro());
   }
 

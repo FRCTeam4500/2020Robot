@@ -7,6 +7,5 @@ public class ShooterMap {
     public static final int TOP_SPEED = -2870;
     public static final int BOTTOM_SPEED = -2520;
     public static final double COEFFICIENT = 1;
-    public static final double THRESHOLD = 80;
 
 }
