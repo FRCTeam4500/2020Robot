@@ -179,7 +179,7 @@ public class RobotContainerTwo implements IRobotContainer {
         SmartDashboard.putNumber("vision offset", 3.4);
         turret.setDefaultCommand(
             new PIDCommand(
-                new PIDController(-6, 0.15, 0), 
+                new PIDController(-6, 0, 0), 
                 vision::getHorizontalOffset, 
                 () -> Units.degreesToRadians(SmartDashboard.getNumber("vision offset", 0.0)), 
                 turret::setTurretOutput, 
