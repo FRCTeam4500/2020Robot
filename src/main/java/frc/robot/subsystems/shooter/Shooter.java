@@ -3,11 +3,12 @@ package frc.robot.subsystems.shooter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.components.IAngularVelocitySetterComponent;
 import frc.robot.components.IOutputSetterComponent;
+import frc.robot.components.ISmartMotorComponent;
 
 public class Shooter extends SubsystemBase {
-    private IAngularVelocitySetterComponent topMotor;
-    private IAngularVelocitySetterComponent bottomMotor;
-    public Shooter(IAngularVelocitySetterComponent topMotor, IAngularVelocitySetterComponent bottomMotor) {
+    private ISmartMotorComponent topMotor;
+    private ISmartMotorComponent bottomMotor;
+    public Shooter(ISmartMotorComponent topMotor, ISmartMotorComponent bottomMotor) {
         this.topMotor = topMotor;
         this.bottomMotor = bottomMotor;
     }
