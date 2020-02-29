@@ -123,11 +123,7 @@ public class RegularRobotContainer implements IRobotContainer {
     intake.setDefaultCommand(intakeCommand);
 
 
-
-
     // Configure the button bindings
-
-
 
     configureButtonBindings();
   }
