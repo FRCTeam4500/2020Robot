@@ -104,6 +104,7 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
     indexer = indexerFactory.makeIndexer();
     indexerCommand = new IndexBallsCommand(indexer, 0.5);
     indexer.setDefaultCommand(indexerCommand);
+    //TODO: MAKE A SWERVE YOU IDIOT
 
 
     swerve.setDefaultCommand(new RunCommand(() -> swerve.moveRobotCentric(withDeadzone(joystick.getX()),
