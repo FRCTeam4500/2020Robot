@@ -3,9 +3,13 @@ package frc.robot.containers;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.autonomous.Autonomous_PreciseShootingCommand;
+import frc.robot.autonomous.VisionDistanceCalculator;
 import frc.robot.components.hardware.LimelightVisionComponent;
 import frc.robot.components.hardware.SparkMaxComponent;
 import frc.robot.components.hardware.TalonSRXComponent;
@@ -72,8 +76,6 @@ public class RobotContainerTwo implements IRobotContainer {
         // j2button9.whenPressed(() -> climber.setSpeed(-1.0),climber);
         // j2button9.whenReleased(() -> climber.setSpeed(0.0,climber));
 
-        shooter.setDefaultCommand(new ShootStraightCommand(shooter, button1::get));
-
 
         indexer = new Indexer(
             new TalonSRXComponent(12), 
@@ -127,23 +129,40 @@ public class RobotContainerTwo implements IRobotContainer {
 
                 armDown = true;
                 arm.setAngle(Math.PI/3);
-            }
+            }sdxza
         },arm);*/
         button7.whenPressed(() -> arm.setAngle(Math.PI/2.5), arm);
         button7.whenReleased(() -> arm.setAngle(0.0),arm);
 
-        button2.whileHeld(new IndexBallsCommand(indexer, intake, 1));
+        //button2.whileHeld(new IndexBallsCommand(indexer, intake, 1));
+        button2.whenPressed(() -> {
+            intake.setSpeed(-1);
+            indexer.setSpeed(1);
+        }, intake, indexer);
   
         swerve.setDefaultCommand(new FunctionalCommand(() -> swerve.enableWheelInversion(true),() -> {
             swerve.moveFieldCentric(
                 withDeadzone(-joystick.getY()*1.5,0.3), 
                 withDeadzone(-joystick.getX()*1.5,0.3), 
-                withDeadzone(joystick.getZ()*2.5, 0.3*2));
+                withDeadzone(-joystick.getZ()*2.5, 0.3*2));
         }, (interrupted) -> {
 
             swerve.enableWheelInversion(false);
             swerve.moveFieldCentric(0, 0, 0);
         }, () -> false,  swerve));
+
+        configureTurretAuton();
+
+        var preciseShooting = new Autonomous_PreciseShootingCommand(shooter, indexer);
+        preciseShooting.createSmartDashboardEntries();
+        button1.whenHeld(preciseShooting);
+
+        var calculator = new VisionDistanceCalculator(
+            Math.atan(Units.feetToMeters(7.5)-Units.inchesToMeters(34.5)/Units.feetToMeters(11.66))+Units.degreesToRadians(3.28), 
+            Units.inchesToMeters(34.5), 
+            Units.feetToMeters(7.5), 
+            new LimelightVisionComponent());
+        SmartDashboard.putData("Swerve Distance Calculator", calculator);
 
 
     }
@@ -157,12 +176,17 @@ public class RobotContainerTwo implements IRobotContainer {
         factory = new DefaultTurretFactory();
         turret = factory.makeTurret();
         vision = new VisionSubsystem(new LimelightVisionComponent());
+        SmartDashboard.putNumber("vision offset", 3.4);
         turret.setDefaultCommand(
             new PIDCommand(
-                new PIDController(-2, 0, 0), 
+                new PIDController(-6, 0.15, 0), 
                 vision::getHorizontalOffset, 
-                0, 
+                () -> Units.degreesToRadians(SmartDashboard.getNumber("vision offset", 0.0)), 
                 turret::setTurretOutput, 
                 turret, vision));
+    }
+    public void onDisabled(){
+        swerve.enableWheelInversion(false);
+        swerve.moveFieldCentric(0, 0, 0);
     }
 }
