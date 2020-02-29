@@ -113,6 +113,10 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
     swerve = swerveFactory.makeSwerve();
     swerveCommand = new MoveFieldCentricCommand(swerve, this);
     swerve.setDefaultCommand(swerveCommand);
+    armFactory = new DefaultArmFactory();
+    arm = armFactory.makeArm();
+    armCommand = new ArmRunCommand(arm, this);
+    arm.setDefaultCommand(armCommand);
 
 
 
