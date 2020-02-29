@@ -31,8 +31,8 @@ public class DefaultShootCommand extends CommandBase {
     public void execute() {
         if (oi.getShooterActive()) {
             if (shooter.atSpeeds(ShooterMap.THRESHOLD)){
-            shooter.run(ShooterMap.TOP_SPEED * ShooterMap.COEFFICIENT, ShooterMap.BOTTOM_SPEED * ShooterMap.COEFFICIENT);
-            indexer.setSpeed(1);
+                shooter.run(ShooterMap.TOP_SPEED * ShooterMap.COEFFICIENT, ShooterMap.BOTTOM_SPEED * ShooterMap.COEFFICIENT);
+                indexer.setSpeed(1);
             }
         }
         else{
