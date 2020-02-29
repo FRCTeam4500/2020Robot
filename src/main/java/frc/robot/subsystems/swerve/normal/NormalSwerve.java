@@ -9,6 +9,7 @@ package frc.robot.subsystems.swerve.normal;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.components.IGyroComponent;
+import frc.robot.subsystems.swerve.ISwerve;
 
 /**
  * The subsystem representing the swerve drive on the robot. A swerve drive is a
@@ -16,7 +17,7 @@ import frc.robot.components.IGyroComponent;
  * axes. This implementation consists of four {@link NormalWheelModule}s on each
  * corner of the robot.
  */
-public class NormalSwerve extends SubsystemBase {
+public class NormalSwerve extends SubsystemBase implements ISwerve {
 
     private double length, width;
     private NormalWheelModule fl, fr, bl, br;

@@ -18,4 +18,6 @@ public class NormalSwerveMap {
     public static final int BR_SPEED_PORT = 1;
     public static final int FL_SPEED_PORT = 7;
     public static final int FR_SPEED_PORT = 4;
+    public static final double SWERVE_LENGTH = 0;
+    public static final double SWERVE_WIDTH = 0;
 }

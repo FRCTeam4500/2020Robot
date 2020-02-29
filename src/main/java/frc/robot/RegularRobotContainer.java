@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.arm.Arm;
@@ -27,8 +26,11 @@ import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.command.DefaultShootCommand;
 import frc.robot.subsystems.shooter.factory.DefaultShooterFactory;
 import frc.robot.subsystems.shooter.factory.IShooterFactory;
+import frc.robot.subsystems.swerve.ISwerve;
+import frc.robot.subsystems.swerve.ISwerveFactory;
 import frc.robot.subsystems.swerve.ISwerveOI;
-import frc.robot.subsystems.swerve.normal.NormalSwerve;
+import frc.robot.subsystems.swerve.normal.command.MoveFieldCentricCommand;
+import frc.robot.subsystems.swerve.normal.factory.NormalSwerveFactory;
 import frc.robot.subsystems.turret.ITurretOI;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.factory.DefaultTurretFactory;
@@ -73,7 +75,10 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   private IndexBallsCommand indexerCommand;
   private DefaultArmFactory armFactory;
   private ArmRunCommand armCommand;
-  private NormalSwerve swerve;
+  private ISwerveFactory swerveFactory;
+  private ISwerve swerve;
+  private MoveFieldCentricCommand swerveCommand;
+
 
 
   private Joystick joystick;
@@ -104,13 +109,13 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
     indexer = indexerFactory.makeIndexer();
     indexerCommand = new IndexBallsCommand(indexer, 0.5);
     indexer.setDefaultCommand(indexerCommand);
-    //TODO: MAKE A SWERVE YOU IDIOT
+    swerveFactory = new NormalSwerveFactory();
+    swerve = swerveFactory.makeSwerve();
+    swerveCommand = new MoveFieldCentricCommand(swerve, this);
+    swerve.setDefaultCommand(swerveCommand);
 
 
-    swerve.setDefaultCommand(new RunCommand(() -> swerve.moveRobotCentric(withDeadzone(joystick.getX()),
-            withDeadzone(joystick.getY()),
-            withDeadzone(joystick.getZ())),
-            swerve));
+
     // Configure the button bindings
     joystick = new Joystick(0);
     button1 = new JoystickButton(joystick, 1);
@@ -164,15 +169,15 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   }
 
   public double getX(){
-    return joystick.getX();
+    return withDeadzone(joystick.getX());
   }
 
   public double getY(){
-    return joystick.getY();
+    return withDeadzone(joystick.getY());
   }
 
   public double getZ(){
-    return joystick.getZ();
+    return withDeadzone(joystick.getZ());
   }
 
   public boolean getIntakeActive() {
