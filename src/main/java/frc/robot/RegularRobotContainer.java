@@ -93,11 +93,15 @@ public class RegularRobotContainer implements IRobotContainer {
     button2 = new JoystickButton(joystick,2);
     button5 = new JoystickButton(joystick, 5);
     button9 = new JoystickButton(joystick,9);
-
-
+    
+    
+    indexerFactory = new DefaultIndexerFactory();
+    indexer = indexerFactory.makeIndexer();
+    indexerCommand = new IndexBallsCommand(indexer, 0.5);
+    indexer.setDefaultCommand(indexerCommand);
     shooterFactory = new DefaultShooterFactory();
     shooter = shooterFactory.makeShooter();
-    shootCommand = new DefaultShootCommand(shooter, button1::get);
+    shootCommand = new DefaultShootCommand(shooter, button1::get, indexer);
     shooter.setDefaultCommand(shootCommand);
     visionFactory = new DefaultVisionFactory();
     vision = visionFactory.makeVision();
@@ -105,10 +109,6 @@ public class RegularRobotContainer implements IRobotContainer {
     turret = turretFactory.makeTurret();
     turretAngleCommand = new ChangeTurretAngleCommand(turret, vision::getHorizontalOffset);
     turret.setDefaultCommand(turretAngleCommand);
-    indexerFactory = new DefaultIndexerFactory();
-    indexer = indexerFactory.makeIndexer();
-    indexerCommand = new IndexBallsCommand(indexer, 0.5);
-    indexer.setDefaultCommand(indexerCommand);
     swerveFactory = new NormalSwerveFactory();
     swerve = swerveFactory.makeSwerve();
     swerve.setDefaultCommand(new RunCommand(() -> swerve.moveFieldCentric(withDeadzone(joystick.getX()),
@@ -150,18 +150,7 @@ public class RegularRobotContainer implements IRobotContainer {
     // An ExampleCommand will run in autonomous
     return null;
   }
-
-
-
-  public double getTurretDesiredAngle() {
-    return this.turretDesiredAngle;
-  }
-
-  public void setTurretDesiredAngle(double turretDesiredAngle) {
-    this.turretDesiredAngle = turretDesiredAngle;
-  }
-
-
+  
 
 
   public double withDeadzone(double number){
