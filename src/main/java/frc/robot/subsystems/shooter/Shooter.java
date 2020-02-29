@@ -8,12 +8,16 @@ import frc.robot.components.ISmartMotorComponent;
 public class Shooter extends SubsystemBase {
     private ISmartMotorComponent topMotor;
     private ISmartMotorComponent bottomMotor;
+    private double desiredTopSpeed;
+    private double desiredBottomSpeed;
     public Shooter(ISmartMotorComponent topMotor, ISmartMotorComponent bottomMotor) {
         this.topMotor = topMotor;
         this.bottomMotor = bottomMotor;
     }
 
     public void run(double topSpeed, double bottomSpeed){
+        desiredTopSpeed = topSpeed;
+        desiredBottomSpeed = bottomSpeed;
         this.topMotor.setAngularVelocity(topSpeed / 60 * 2 * Math.PI);
         this.bottomMotor.setAngularVelocity(bottomSpeed / 60 * 2 * Math.PI);
     }
@@ -24,8 +28,6 @@ public class Shooter extends SubsystemBase {
     public double radPerSecToRotPerMin(double radPerSec){
         return radPerSec / Math.PI / 2.0 * 60;
     }
-    public double rotPerMinToRadPerSec(double rotPerMin){
-        return rotPerMin / 60 * 2 * Math.PI;
-    }
+
 }
 
