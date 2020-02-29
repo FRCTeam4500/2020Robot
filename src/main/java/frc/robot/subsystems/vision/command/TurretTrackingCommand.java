@@ -3,16 +3,19 @@ package frc.robot.subsystems.vision.command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.turret.ITurretOI;
 import frc.robot.subsystems.turret.Turret;
+import frc.robot.subsystems.turret.TurretMap;
 import frc.robot.subsystems.vision.Vision;
 
 
 public class TurretTrackingCommand extends CommandBase {
     private Vision vision;
     private ITurretOI oi;
+    private Turret turret;
+    private double turretChangeAngle;
 
-    public TurretTrackingCommand(Vision vision, ITurretOI oi) {
+    public TurretTrackingCommand(Vision vision, Turret turret) {
         this.vision = vision;
-        this.oi = oi;
+        this.turret = turret;
         addRequirements(vision);
     }
 
@@ -23,12 +26,15 @@ public class TurretTrackingCommand extends CommandBase {
 
     @Override
     public void execute() {
+        double turretAngle = turret.getTurretAngle();
         if (vision.hasValidTargets()) {
-            oi.setTurretDesiredAngle(vision.getHorizontalOffset());
+            turretChangeAngle = vision.getHorizontalOffset();
         }
         else{
-            oi.setTurretDesiredAngle(0);
+            turretChangeAngle = 0;
         }
+
+
     }
 
     @Override

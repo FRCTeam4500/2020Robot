@@ -21,6 +21,9 @@ import frc.robot.subsystems.indexer.command.IndexBallsCommand;
 import frc.robot.subsystems.indexer.factory.DefaultIndexerFactory;
 import frc.robot.subsystems.indexer.factory.IIndexerFactory;
 import frc.robot.subsystems.intake.IIntakeOI;
+import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.command.IntakeRunCommand;
+import frc.robot.subsystems.intake.factory.DefaultIntakeFactory;
 import frc.robot.subsystems.shooter.IShooterOI;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.command.DefaultShootCommand;
@@ -48,18 +51,13 @@ import frc.robot.subsystems.arm.command.ArmRunCommand;
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
-public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotContainer, ISwerveOI, IIntakeOI, IArmOI {
+public class RegularRobotContainer implements IRobotContainer {
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
 
-  private double turretAngle;
-  private boolean shooterActive;
-  private boolean turretActive;
   private double turretDesiredAngle;
-  private boolean intakeActive;
-  private boolean armActive;
   private IShooterFactory shooterFactory;
   private Shooter shooter;
   private DefaultShootCommand shootCommand;
@@ -68,7 +66,6 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   private ChangeTurretAngleCommand turretAngleCommand;
   private IVisionFactory visionFactory;
   private Vision vision;
-  private TurretTrackingCommand turretTrackingCommand;
   private Arm arm;
   private IIndexerFactory indexerFactory;
   private Indexer indexer;
@@ -77,7 +74,9 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   private ArmRunCommand armCommand;
   private ISwerveFactory swerveFactory;
   private ISwerve swerve;
-  private MoveFieldCentricCommand swerveCommand;
+  private DefaultIntakeFactory intakeFactory;
+  private Intake intake;
+  private IntakeRunCommand intakeCommand;
 
 
 
@@ -89,43 +88,45 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
 
   
   public RegularRobotContainer() {
-    turretAngle = 0;
-    shooterActive = false;
-    turretActive = false;
-    intakeActive = false;
+    joystick = new Joystick(0);
+    button1 = new JoystickButton(joystick, 1);
+    button2 = new JoystickButton(joystick,2);
+    button5 = new JoystickButton(joystick, 5);
+    button9 = new JoystickButton(joystick,9);
+
+
     shooterFactory = new DefaultShooterFactory();
     shooter = shooterFactory.makeShooter();
-    shootCommand = new DefaultShootCommand(shooter, this);
+    shootCommand = new DefaultShootCommand(shooter, button1::get);
     shooter.setDefaultCommand(shootCommand);
-    turretFactory = new DefaultTurretFactory();
-    turret = turretFactory.makeTurret();
-    turretAngleCommand = new ChangeTurretAngleCommand(turret, this);
-    turret.setDefaultCommand(turretAngleCommand);
     visionFactory = new DefaultVisionFactory();
     vision = visionFactory.makeVision();
-    turretTrackingCommand = new TurretTrackingCommand(vision, this);
-    vision.setDefaultCommand(turretTrackingCommand);
+    turretFactory = new DefaultTurretFactory();
+    turret = turretFactory.makeTurret();
+    turretAngleCommand = new ChangeTurretAngleCommand(turret, vision::getHorizontalOffset);
+    turret.setDefaultCommand(turretAngleCommand);
     indexerFactory = new DefaultIndexerFactory();
     indexer = indexerFactory.makeIndexer();
     indexerCommand = new IndexBallsCommand(indexer, 0.5);
     indexer.setDefaultCommand(indexerCommand);
     swerveFactory = new NormalSwerveFactory();
     swerve = swerveFactory.makeSwerve();
-    swerveCommand = new MoveFieldCentricCommand(swerve, this);
-    swerve.setDefaultCommand(swerveCommand);
+    swerve.setDefaultCommand(new RunCommand(() -> swerve.moveFieldCentric(withDeadzone(joystick.getX()),
+            withDeadzone(joystick.getY()),withDeadzone(joystick.getZ()))));
     armFactory = new DefaultArmFactory();
     arm = armFactory.makeArm();
-    armCommand = new ArmRunCommand(arm, this);
+    armCommand = new ArmRunCommand(arm, button2::get);
     arm.setDefaultCommand(armCommand);
+    intakeFactory = new DefaultIntakeFactory();
+    intake = intakeFactory.makeIntake();
+    intakeCommand = new IntakeRunCommand(intake, button2::get);
+    intake.setDefaultCommand(intakeCommand);
+
 
 
 
     // Configure the button bindings
-    joystick = new Joystick(0);
-    button1 = new JoystickButton(joystick, 1);
-    button2 = new JoystickButton(joystick,2);
-    button5 = new JoystickButton(joystick, 5);
-    button9 = new JoystickButton(joystick,9);
+
 
 
     configureButtonBindings();
@@ -138,10 +139,8 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    button2.whenPressed(() -> {intakeActive = true; armActive = true;});
-    button2.whenReleased(() -> {intakeActive = false; armActive = false;});
-    button1.whenPressed(() -> {shooterActive = true; indexer.setSpeed(1);});
-    button1.whenReleased(() -> {shooterActive = true; indexer.setSpeed(0);});
+    button1.whenPressed(() -> {indexer.setSpeed(1);});
+    button1.whenReleased(() -> {indexer.setSpeed(0);});
     button9.whenPressed(() -> swerve.resetGyro());
   }
 
@@ -156,13 +155,7 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
     return null;
   }
 
-  public double getTurretAngle(){
-    return this.turretAngle;
-  }
 
-  public boolean getShooterActive(){
-    return this.shooterActive;
-  }
 
   public double getTurretDesiredAngle() {
     return this.turretDesiredAngle;
@@ -172,25 +165,8 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
     this.turretDesiredAngle = turretDesiredAngle;
   }
 
-  public double getX(){
-    return withDeadzone(joystick.getX());
-  }
 
-  public double getY(){
-    return withDeadzone(joystick.getY());
-  }
 
-  public double getZ(){
-    return withDeadzone(joystick.getZ());
-  }
-
-  public boolean getIntakeActive() {
-    return intakeActive;
-  }
-
-  public boolean getArmActive(){
-    return armActive;
-  }
 
   public double withDeadzone(double number){
     if (Math.abs(number) <= 0.2){
