@@ -14,12 +14,12 @@ import frc.robot.Robot;
 import frc.robot.subsystems.shooter.IShooterOI;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.command.ShootStraightCommand;
-import frc.robot.subsystems.shooter.factory.DefaultShooterFactory;
+import frc.robot.subsystems.shooter.factory.HardwareShooterFactory;
 import frc.robot.subsystems.shooter.factory.IShooterFactory;
 import frc.robot.subsystems.turret.ITurretOI;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.command.SetTurretAngleCommand;
-import frc.robot.subsystems.turret.factory.DefaultTurretFactory;
+import frc.robot.subsystems.turret.factory.HardwareTurretFactory;
 import frc.robot.subsystems.turret.factory.ITurretFactory;
 
 /**
@@ -47,11 +47,11 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   
   
   public RegularRobotContainer() {
-    shooterFactory = new DefaultShooterFactory();
+    shooterFactory = new HardwareShooterFactory();
     shooter = shooterFactory.makeShooter();
     shootCommand = new ShootStraightCommand(shooter, this);
     shooter.setDefaultCommand(shootCommand);
-    turretFactory = new DefaultTurretFactory();
+    turretFactory = new HardwareTurretFactory();
     turret = turretFactory.makeTurret();
     turretAngleCommand = new SetTurretAngleCommand(turret, this);
     turret.setDefaultCommand(turretAngleCommand);

@@ -15,6 +15,7 @@ import frc.robot.subsystems.shooter.Shooter;
 public class Autonomous_PreciseShootingCommand extends CommandBase {
   private Shooter shooter;
   private Indexer indexer;
+  private boolean runBothMotors;
   /**
    * Creates a new Autonomous_PreciseShootingCommand.
    */
@@ -29,10 +30,11 @@ public class Autonomous_PreciseShootingCommand extends CommandBase {
   public void initialize() {
   }
   public void createSmartDashboardEntries(){
-    SmartDashboard.putNumber("topSpeed", -3090);
-    SmartDashboard.putNumber("bottomSpeed", -2520);
-    SmartDashboard.putNumber("coefficient", 0.9);
-    SmartDashboard.putNumber("threshold", 85);
+    SmartDashboard.putNumber("topSpeed", -0);
+    SmartDashboard.putNumber("bottomSpeed", -0);
+    SmartDashboard.putNumber("coefficient", 1);
+    SmartDashboard.putNumber("threshold", 45);
+    runBothMotors = false;
 
   }
   // Called every time the scheduler runs while the command is scheduled.
@@ -42,6 +44,16 @@ public class Autonomous_PreciseShootingCommand extends CommandBase {
     var bottomSpeed = SmartDashboard.getNumber("bottomSpeed", 0.0);
     var k = SmartDashboard.getNumber("coefficient", 1.0);
     var threshold = SmartDashboard.getNumber("threshold", 0.0);
+
+    /*if(runBothMotors){
+      shooter.run(topSpeed * k, bottomSpeed * k);
+    } else {
+      shooter.run(topSpeed * k, 0);
+      if(shooter.topAtSpeed(threshold)){
+        runBothMotors = true;
+      }
+    }*/
+
     shooter.run(topSpeed * k, bottomSpeed * k);
     if(shooter.atSpeeds(threshold)){
       indexer.setSpeed(1);
@@ -53,7 +65,7 @@ public class Autonomous_PreciseShootingCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.run(0, 0);
+    shooter.disableMotors();
     indexer.setSpeed(0);
   }
 

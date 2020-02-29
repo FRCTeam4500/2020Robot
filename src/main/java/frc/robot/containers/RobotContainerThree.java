@@ -6,17 +6,17 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.autonomous.IndexBallsCommand;
 import frc.robot.components.hardware.LimelightVisionComponent;
 import frc.robot.components.hardware.TalonSRXComponent;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.NetworkTableBallSensor;
-import frc.robot.subsystems.indexer.command.IndexBallsCommand;
 import frc.robot.subsystems.swerve.odometric.OdometricSwerve;
 import frc.robot.subsystems.swerve.odometric.factory.EntropySwerveFactory;
 import frc.robot.subsystems.turret.Turret;
-import frc.robot.subsystems.turret.factory.DefaultTurretFactory;
+import frc.robot.subsystems.turret.factory.HardwareTurretFactory;
 import frc.robot.subsystems.turret.factory.ITurretFactory;
 import frc.robot.subsystems.vision.VisionSubsystem;
 
@@ -97,7 +97,7 @@ public class RobotContainerThree implements IRobotContainer {
         return new JoystickButton(joystick, id);
     }
     private void configureTurretAuton(){
-        factory = new DefaultTurretFactory();
+        factory = new HardwareTurretFactory();
         turret = factory.makeTurret();
         vision = new VisionSubsystem(new LimelightVisionComponent());
         turret.setDefaultCommand(

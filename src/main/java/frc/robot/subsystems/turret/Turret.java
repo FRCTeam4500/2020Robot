@@ -6,8 +6,10 @@ import frc.robot.components.ISmartMotorComponent;
 
 public class Turret extends SubsystemBase {
     private ISmartMotorComponent turnMotor;
-    public Turret(ISmartMotorComponent turnMotor) {
+    private double motorRotsPerTurretRots;
+    public Turret(ISmartMotorComponent turnMotor, double motorRotsPerTurretRots) {
         this.turnMotor = turnMotor;
+        this.motorRotsPerTurretRots = motorRotsPerTurretRots;
     }
 
     public void setTurretAngle(double turnAngle){
@@ -15,6 +17,9 @@ public class Turret extends SubsystemBase {
     }
     public void setTurretOutput(double turretSpeed){
         turnMotor.setOutput(turretSpeed);
+    }
+    public double getTurretAngle(){
+        return turnMotor.getAngle() / motorRotsPerTurretRots;
     }
 
 }

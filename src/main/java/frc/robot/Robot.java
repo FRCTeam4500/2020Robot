@@ -10,11 +10,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.containers.AutonRobotContainer;
 import frc.robot.containers.IRobotContainer;
 import frc.robot.containers.RegularRobotContainer;
 import frc.robot.containers.RobotContainerTwo;
-import frc.robot.containers.ScratchpadRobotContainer;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,7 +23,7 @@ import frc.robot.containers.ScratchpadRobotContainer;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  private RobotContainerTwo m_robotContainer;
+  private IRobotContainer m_robotContainer;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -59,7 +57,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    m_robotContainer.onDisabled();
   }
 
   @Override

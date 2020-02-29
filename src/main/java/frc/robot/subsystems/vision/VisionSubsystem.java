@@ -24,6 +24,10 @@ public class VisionSubsystem extends SubsystemBase {
   public double getHorizontalOffset(){
     return vision.getHorizontalOffsetFromCrosshair();
   }
+  public double getVerticalOffset(){
+    return vision.getVerticalOffsetFromCrosshar();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

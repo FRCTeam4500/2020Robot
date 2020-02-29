@@ -1,7 +1,6 @@
 package frc.robot.subsystems.shooter;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.components.IAngularVelocitySetterComponent;
 import frc.robot.components.ISmartMotorComponent;
 
 public class Shooter extends SubsystemBase {
@@ -21,13 +20,23 @@ public class Shooter extends SubsystemBase {
         this.bottomMotor.setAngularVelocity(rotPerMinToRadPerSec(bottomSpeed));
     }
     public boolean atSpeeds(double threshold){
-        return Math.abs(desiredTopSpeed - radPerSecToRotPerMin(topMotor.getAngularVelocity())) < threshold && Math.abs(desiredBottomSpeed - radPerSecToRotPerMin(bottomMotor.getAngularVelocity())) < threshold;
+        return  topAtSpeed(threshold) && bottomAtSpeed(threshold);
     }
     public double radPerSecToRotPerMin(double radPerSec){
         return radPerSec / Math.PI / 2.0 * 60;
     }
     public double rotPerMinToRadPerSec(double rotPerMin){
         return rotPerMin / 60 * 2 * Math.PI;
+    }
+    public boolean topAtSpeed(double threshold){
+        return Math.abs(desiredTopSpeed - radPerSecToRotPerMin(topMotor.getAngularVelocity())) < threshold;
+    }
+    public boolean bottomAtSpeed(double threshold){
+        return Math.abs(desiredBottomSpeed - radPerSecToRotPerMin(bottomMotor.getAngularVelocity())) < threshold;
+    }
+    public void disableMotors(){
+        topMotor.setOutput(0);
+        bottomMotor.setOutput(0);
     }
 }
 

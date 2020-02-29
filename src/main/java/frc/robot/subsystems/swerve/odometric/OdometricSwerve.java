@@ -48,6 +48,10 @@ public class OdometricSwerve extends KinematicSwerve {
     public Translation2d getCurrentVelocity(){
         return getCurrentPose().getTranslation().minus(lastTranslation).div(Timer.getFPGATimestamp() - lastTime);
     }
+    public void resetPose(){
+        resetRobotAngle();
+        odometry.resetPosition(new Pose2d(getCurrentPose().getTranslation(),new Rotation2d()), new Rotation2d(gyro.getAngle()));
+    }
     public void resetPose(Translation2d translation){
         resetRobotAngle();
         odometry.resetPosition(new Pose2d(translation, new Rotation2d()), new Rotation2d(gyro.getAngle()));

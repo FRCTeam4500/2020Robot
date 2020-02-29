@@ -9,22 +9,27 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autonomous.Autonomous_PreciseShootingCommand;
+import frc.robot.autonomous.GenericAutonUtilities;
+import frc.robot.autonomous.IndexBallsCommand;
 import frc.robot.autonomous.VisionDistanceCalculator;
 import frc.robot.components.hardware.LimelightVisionComponent;
 import frc.robot.components.hardware.SparkMaxComponent;
 import frc.robot.components.hardware.TalonSRXComponent;
 import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.Intake.factory.HardwareIntakeFactory;
 import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.arm.factory.HardwareArmFactory;
 import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.NetworkTableBallSensor;
-import frc.robot.subsystems.indexer.command.IndexBallsCommand;
+import frc.robot.subsystems.indexer.factory.DefaultIndexerFactory;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.command.ShootStraightCommand;
+import frc.robot.subsystems.shooter.factory.HardwareShooterFactory;
 import frc.robot.subsystems.swerve.odometric.OdometricSwerve;
 import frc.robot.subsystems.swerve.odometric.factory.EntropySwerveFactory;
 import frc.robot.subsystems.turret.Turret;
-import frc.robot.subsystems.turret.factory.DefaultTurretFactory;
+import frc.robot.subsystems.turret.factory.HardwareTurretFactory;
 import frc.robot.subsystems.turret.factory.ITurretFactory;
 import frc.robot.subsystems.vision.VisionSubsystem;
 
@@ -63,11 +68,9 @@ public class RobotContainerTwo implements IRobotContainer {
     private boolean armDown = false;
 
     public RobotContainerTwo(){
-        arm = new Arm(new TalonSRXComponent(8));
-        intake = new Intake(new TalonSRXComponent(5));
-        shooter = new Shooter(
-            new SparkMaxComponent(14, MotorType.kBrushless), 
-        new SparkMaxComponent(13, MotorType.kBrushless));
+        arm = new HardwareArmFactory().makeArm();
+        intake = new HardwareIntakeFactory().makeIntake();
+        shooter = new HardwareShooterFactory().makeShooter();
         // climber = new Climber(new );
 
         // j2button11.whenPressed(() -> climber.setSpeed(1.0),climber);
@@ -77,15 +80,7 @@ public class RobotContainerTwo implements IRobotContainer {
         // j2button9.whenReleased(() -> climber.setSpeed(0.0,climber));
 
 
-        indexer = new Indexer(
-            new TalonSRXComponent(12), 
-            new NetworkTableBallSensor("Sensor0", 40), 
-            new NetworkTableBallSensor("Sensor1", 40), 
-            new NetworkTableBallSensor("Sensor2", 40), 
-            new NetworkTableBallSensor("Sensor3", 40), 
-            new NetworkTableBallSensor("Sensor4", 40), 
-            new NetworkTableBallSensor("Sensor5", 40)
-        );
+        indexer = new DefaultIndexerFactory().makeIndexer();
 
         button6.whenPressed(() -> indexer.setSpeed(1), indexer);
         button6.whenReleased(() -> indexer.setSpeed(0), indexer);
@@ -157,12 +152,7 @@ public class RobotContainerTwo implements IRobotContainer {
         preciseShooting.createSmartDashboardEntries();
         button1.whenHeld(preciseShooting);
 
-        var calculator = new VisionDistanceCalculator(
-            Math.atan(Units.feetToMeters(7.5)-Units.inchesToMeters(34.5)/Units.feetToMeters(11.66))+Units.degreesToRadians(3.28), 
-            Units.inchesToMeters(34.5), 
-            Units.feetToMeters(7.5), 
-            new LimelightVisionComponent());
-        SmartDashboard.putData("Swerve Distance Calculator", calculator);
+        SmartDashboard.putData("Swerve Distance Calculator", GenericAutonUtilities.makeEntropyVisionDistanceCalculator(vision));
 
 
     }
@@ -173,10 +163,10 @@ public class RobotContainerTwo implements IRobotContainer {
         return new JoystickButton(joystick2, id);
     }
     private void configureTurretAuton(){
-        factory = new DefaultTurretFactory();
+        factory = new HardwareTurretFactory();
         turret = factory.makeTurret();
         vision = new VisionSubsystem(new LimelightVisionComponent());
-        SmartDashboard.putNumber("vision offset", 3.4);
+        SmartDashboard.putNumber("vision offset", 0.0);
         turret.setDefaultCommand(
             new PIDCommand(
                 new PIDController(-6, 0, 0), 
@@ -184,9 +174,5 @@ public class RobotContainerTwo implements IRobotContainer {
                 () -> Units.degreesToRadians(SmartDashboard.getNumber("vision offset", 0.0)), 
                 turret::setTurretOutput, 
                 turret, vision));
-    }
-    public void onDisabled(){
-        swerve.enableWheelInversion(false);
-        swerve.moveFieldCentric(0, 0, 0);
     }
 }
