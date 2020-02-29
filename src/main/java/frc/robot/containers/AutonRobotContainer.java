@@ -129,7 +129,8 @@ public class AutonRobotContainer implements IRobotContainer{
         .with_kP(3)
         .with_kW(3)
         .withRotationsEnabled(true)
-        .withEndRotation(new Rotation2d());
+        .withEndRotation(new Rotation2d())
+        .withMaxVelocity(2.4);
     }
     private CommandBase makeMoveToTranslationCommand(String trajectoryName) {
         var pid = new PIDController(3, 0, 0);
@@ -137,7 +138,7 @@ public class AutonRobotContainer implements IRobotContainer{
         return new OdometricSwerve_FollowTrajecoryCommand(swerve, pid, tryGetDeployedTrajectory(trajectoryName));
     }
     private CommandBase makeAdvancedMoveToTranslationCommand(String trajectoryName){
-        var controller = new AdvancedSwerveController(0.1, 0.1, false, 0.1, true, 3, 0, new Rotation2d(),tryGetDeployedTrajectory(trajectoryName).getStates().toArray(Trajectory.State[]::new));
+        var controller = new AdvancedSwerveController(0.1, 0.1, false, 0.1, true, 3, 0, new Rotation2d(),2.4,tryGetDeployedTrajectory(trajectoryName).getStates().toArray(Trajectory.State[]::new));
         return new OdometricSwerve_AdvancedFollowTrajectoryCommand(swerve, controller);
     }
     private void addAutonCommand(String trajectoryName){

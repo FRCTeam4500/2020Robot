@@ -33,7 +33,8 @@ public class AdvancedSwerveController {
         private double projectedDesiredTranslationOffset = 0;
         private double desiredRotationOffset = 0;
         private Rotation2d targetRotation;
-        public AdvancedSwerveController(double initialAllowableTranslationError, double finalAllowableTranslationError, boolean enableRotation, double allowableRotationError, boolean enableTranslation, double kP, double kW, Rotation2d endRotation, Trajectory.State... states){
+        private double maxVelocity;
+        public AdvancedSwerveController(double initialAllowableTranslationError, double finalAllowableTranslationError, boolean enableRotation, double allowableRotationError, boolean enableTranslation, double kP, double kW, Rotation2d endRotation, double maxVelocity, Trajectory.State... states){
             this.initialAllowableTranslationError = initialAllowableTranslationError;
             this.enableRotation = enableRotation;
             this.enableTranslation = enableTranslation;
@@ -42,11 +43,12 @@ public class AdvancedSwerveController {
             this.targetRotation = endRotation;
             this.states = states;
             this.finalAllowableRotationError = allowableRotationError;
+            this.maxVelocity = maxVelocity;
             deltaAllowableTranslationalErrorPerState = (finalAllowableTranslationError - initialAllowableTranslationError
                     ) / states.length;
         }
-        public AdvancedSwerveController(double initialAllowableTranslationError, double finalAllowableTranslationError, boolean enableRotation, double allowableRotationError, boolean enableTranslation, double kP, double kW, Rotation2d endRotation, Trajectory trajectory){
-            this(initialAllowableTranslationError,finalAllowableTranslationError, enableRotation, allowableRotationError, enableTranslation, kP, kW, endRotation, trajectory.getStates().toArray(Trajectory.State[]::new));
+        public AdvancedSwerveController(double initialAllowableTranslationError, double finalAllowableTranslationError, boolean enableRotation, double allowableRotationError, boolean enableTranslation, double kP, double kW, Rotation2d endRotation, double maxVelocity, Trajectory trajectory){
+            this(initialAllowableTranslationError,finalAllowableTranslationError, enableRotation, allowableRotationError, enableTranslation, kP, kW, endRotation, maxVelocity, trajectory.getStates().toArray(Trajectory.State[]::new));
         }
         public double calculateTranslationOutput(Translation2d position){
             double valueToReturn = 0.0;
@@ -69,7 +71,7 @@ public class AdvancedSwerveController {
             return 0.0;
         }
         public ChassisSpeeds calculateFieldCentricChassisSpeeds(Pose2d pose){
-            var translationalOutput = calculateTranslationOutput(pose.getTranslation());
+            var translationalOutput = ExtendedMath.clamp(0, maxVelocity, calculateTranslationOutput(pose.getTranslation()));
             var rotationOutput = calculateRotationOutput(pose.getRotation());
             var direction = getUnitDirectionVector(pose.getTranslation());
             return new ChassisSpeeds(translationalOutput * direction.getX(), translationalOutput * direction.getY(), rotationOutput);

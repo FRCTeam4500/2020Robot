@@ -23,7 +23,7 @@ public class EntropySwerveFactory {
 
     private static final double DRIVE_ROTATIONS_PER_MOTOR_ROTATIONS = 1/8.33333333333333333333333333333333333333333333;
     private static final double ANGLE_ROTATIONS_PER_MOTOR_ROTATIONS = 4096.0/5851.0 ;
-    private static final double MAX_SURFACE_SPEED_METERS_PER_SECOND = 2.4;
+    private static final double MAX_SURFACE_SPEED_METERS_PER_SECOND = 4.8;
     private static final int BR_DRIVE_PORT = 10; //10
     private static final int BL_DRIVE_PORT = 1; //1
     private static final int FR_DRIVE_PORT = 7; //7

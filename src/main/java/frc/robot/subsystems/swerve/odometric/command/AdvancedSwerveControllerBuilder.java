@@ -22,6 +22,7 @@ public class AdvancedSwerveControllerBuilder {
     private double kP = 0.0;
     private double kW = 0.0;
     private Rotation2d endRotation = new Rotation2d();
+    private double maxVelocity = Double.POSITIVE_INFINITY;
     private Trajectory.State[] states = new Trajectory.State[0];
     public AdvancedSwerveController buildController(){
         return new AdvancedSwerveController(
@@ -33,7 +34,12 @@ public class AdvancedSwerveControllerBuilder {
             kP, 
             kW, 
             endRotation, 
+            maxVelocity,
             states);
+    }
+    public AdvancedSwerveControllerBuilder withMaxVelocity(double maxVelocity){
+        this.maxVelocity = maxVelocity;
+        return this;
     }
     public AdvancedSwerveControllerBuilder withInitialAllowableTranslationError(double allowableError){
        this. initialAllowableTranslationError = allowableError;
