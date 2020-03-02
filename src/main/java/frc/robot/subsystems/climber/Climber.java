@@ -9,7 +9,11 @@ public class Climber extends SubsystemBase{
         this.motor = motor;
     }
 
-    private void setAngle(double angle) {
-        motor.setAngle(angle);
+    public void setSpeed(double speed) {
+        motor.setOutput(speed);
+    }
+
+    public double toRadians(double number){
+        return number / 42 * 2 * Math.PI;
     }
 }
