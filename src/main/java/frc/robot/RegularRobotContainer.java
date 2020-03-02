@@ -76,7 +76,10 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    
+    button9.whenPressed(() -> climber.setSpeed(-0.2));
+    button9.whenReleased(() -> climber.setSpeed(0));
+    button11.whenPressed(() -> climber.setSpeed(0.2));
+    button11.whenReleased(() -> climber.setSpeed(0));
   }
 
 
