@@ -30,6 +30,7 @@ import frc.robot.subsystems.indexer.factory.DefaultIndexerFactory;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.factory.HardwareShooterFactory;
 import frc.robot.subsystems.swerve.odometric.OdometricSwerve;
+import frc.robot.subsystems.swerve.odometric.OdometricSwerveDashboardUtility;
 import frc.robot.subsystems.swerve.odometric.factory.EntropySwerveFactory;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.factory.HardwareTurretFactory;
@@ -140,8 +141,11 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
             }, indexer, intake, arm);
         }
 
+        var shootCommand = new Autonomous_PreciseShootingCommand(shooter, indexer);
+        shootCommand.createSmartDashboardEntries();
+
         shootButton
-        .whileHeld(new Autonomous_PreciseShootingCommand(shooter, indexer));
+        .whileHeld(shootCommand);
         
         resetGyroButton
         .whenPressed(() -> swerve.resetPose());
@@ -178,5 +182,7 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
                 builder.addDoubleProperty("Z Axis Deadzone", () -> zDeadzone, value -> zDeadzone = value);
             }
         });
+
+        SmartDashboard.putData("Swerve Transform", new OdometricSwerveDashboardUtility(swerve));
     }
 }
