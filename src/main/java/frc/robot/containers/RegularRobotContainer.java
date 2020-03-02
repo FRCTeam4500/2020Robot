@@ -8,9 +8,13 @@
 package frc.robot.containers;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Robot;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.subsystems.climber.Climber;
+import frc.robot.subsystems.climber.factory.DefaultClimberFactory;
+import frc.robot.subsystems.climber.factory.IClimberFactory;
 import frc.robot.subsystems.shooter.IShooterOI;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.command.ShootStraightCommand;
@@ -43,9 +47,11 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
   private ITurretFactory turretFactory;
   private Turret turret;
   private SetTurretAngleCommand turretAngleCommand;
-  //private Joystick joystick;
-  
-  
+  private IClimberFactory climberFactory;
+  private Climber climber;
+  private Joystick joystick;
+  private JoystickButton button9;
+  private JoystickButton button11;
   public RegularRobotContainer() {
     shooterFactory = new HardwareShooterFactory();
     shooter = shooterFactory.makeShooter();
@@ -55,6 +61,10 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
     turret = turretFactory.makeTurret();
     turretAngleCommand = new SetTurretAngleCommand(turret, this);
     turret.setDefaultCommand(turretAngleCommand);
+    climberFactory = new DefaultClimberFactory();
+    climber = climberFactory.makeClimber();
+    
+
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -66,6 +76,7 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    
   }
 
 
