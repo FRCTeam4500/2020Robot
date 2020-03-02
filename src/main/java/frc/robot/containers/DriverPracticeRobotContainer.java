@@ -8,7 +8,12 @@
 package frc.robot.containers;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -34,7 +39,7 @@ import static frc.robot.utility.ExtendedMath.withDeadzone;
 /**
  * Add your docs here.
  */
-public class DriverPracticeRobotContainer {
+public class DriverPracticeRobotContainer implements IRobotContainer{
     private Joystick driveStick = new Joystick(0), controlStick = new Joystick(1);
     private JoystickButton 
     intakeInButton = new JoystickButton(controlStick, 5),
@@ -85,6 +90,36 @@ public class DriverPracticeRobotContainer {
         .whenPressed(() -> indexer.setSpeed(-1), indexer)
         .whenReleased(() -> indexer.setSpeed(0), indexer);
 
+        mainIntakeButton
+        .whileHeld(new ConditionalCommand(
+            new IndexBallsCommand(indexer, intake, 1)
+            .alongWith(
+                new FunctionalCommand(
+                    () -> arm.setAngle(Math.PI/2), 
+                    () -> {}, 
+                    interrupted -> arm.setAngle(0), 
+                    () -> false, 
+                    arm)
+                ),
+            new FunctionalCommand(
+                () ->{                 
+                    indexer.setSpeed(1);
+                    intake.setSpeed(-1);
+                    arm.setAngle(Math.PI/2);
+                }, 
+                () -> {}, 
+                interrupted -> {
+                    indexer.setSpeed(0);
+                    intake.setSpeed(0);
+                    arm.setAngle(0);
+                }, 
+                () -> false,
+                indexer, arm, intake
+            ),
+            () -> useFancyIntakeCommand
+            )
+        );
+
         if(useFancyIntakeCommand){
             mainIntakeButton
             .whileHeld(
@@ -128,5 +163,20 @@ public class DriverPracticeRobotContainer {
                 turret, vision
             )
         );
+
+
+        SmartDashboard.putData("Control Preferences", new Sendable(){
+        
+            @Override
+            public void initSendable(SendableBuilder builder) {
+                builder.addBooleanProperty("Use Sensors When Indexing", () -> useFancyIntakeCommand, value -> useFancyIntakeCommand = value);
+                builder.addDoubleProperty("X Axis Sensitivity", () -> xSensitivity, value -> xSensitivity = value);
+                builder.addDoubleProperty("Y Axis Sensitivity", () -> ySensitivity, value -> ySensitivity = value);
+                builder.addDoubleProperty("Z Axis Sensitivity", () -> zSensitivity, value -> zSensitivity = value);
+                builder.addDoubleProperty("X Axis Deadzone", () -> xDeadzone, value -> xDeadzone = value);
+                builder.addDoubleProperty("Y Axis Deadzone", () -> yDeadzone, value -> yDeadzone = value);
+                builder.addDoubleProperty("Z Axis Deadzone", () -> zDeadzone, value -> zDeadzone = value);
+            }
+        });
     }
 }
