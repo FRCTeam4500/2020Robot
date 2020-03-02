@@ -135,7 +135,7 @@ public class RegularRobotContainer implements IRobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    button1.whenReleased(() -> {indexer.setSpeed(0);});
+    button1.whenReleased(() ->  indexer.setSpeed(0));
     button9.whenPressed(() -> swerve.resetGyro());
   }
 
