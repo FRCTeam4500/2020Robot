@@ -22,7 +22,7 @@ import frc.robot.subsystems.arm.factory.HardwareArmFactory;
 import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.NetworkTableBallSensor;
-import frc.robot.subsystems.indexer.factory.DefaultIndexerFactory;
+import frc.robot.subsystems.indexer.factory.HardwareIndexerFactory;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.command.ShootStraightCommand;
 import frc.robot.subsystems.shooter.factory.HardwareShooterFactory;
@@ -80,7 +80,7 @@ public class RobotContainerTwo implements IRobotContainer {
         // j2button9.whenReleased(() -> climber.setSpeed(0.0,climber));
 
 
-        indexer = new DefaultIndexerFactory().makeIndexer();
+        indexer = new HardwareIndexerFactory().makeIndexer();
 
         button6.whenPressed(() -> indexer.setSpeed(1), indexer);
         button6.whenReleased(() -> indexer.setSpeed(0), indexer);

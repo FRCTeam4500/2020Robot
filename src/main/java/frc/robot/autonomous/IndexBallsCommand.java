@@ -38,7 +38,7 @@ public class IndexBallsCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(indexer.sensor0RegistersBall()){
+    if(indexer.sensor0RegistersBall() && !indexer.sensor5RegistersBall()){
       indexer.setSpeed(motorSpeed);
       intake.setSpeed(0);
     }

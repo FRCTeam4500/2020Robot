@@ -4,11 +4,11 @@ import frc.robot.components.hardware.TalonSRXComponent;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.NetworkTableBallSensor;
 
-public class DefaultIndexerFactory implements IIndexerFactory{
+public class HardwareIndexerFactory implements IIndexerFactory{
     /**
      *
      */
-    private static final int BALL_SENSOR_THRESHOLD = 40;
+    private static final int BALL_SENSOR_THRESHOLD = 50;
     /**
      *
      */

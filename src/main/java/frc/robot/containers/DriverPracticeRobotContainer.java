@@ -28,7 +28,7 @@ import frc.robot.subsystems.arm.factory.HardwareArmFactory;
 import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.climber.factory.HardwareClimberFactory;
 import frc.robot.subsystems.indexer.Indexer;
-import frc.robot.subsystems.indexer.factory.DefaultIndexerFactory;
+import frc.robot.subsystems.indexer.factory.HardwareIndexerFactory;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.factory.HardwareShooterFactory;
 import frc.robot.subsystems.swerve.odometric.OdometricSwerve;
@@ -59,7 +59,7 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
     private Intake intake = new HardwareIntakeFactory().makeIntake();
     private Arm arm = new HardwareArmFactory().makeArm();
     private OdometricSwerve swerve = new EntropySwerveFactory().makeSwerve();
-    private Indexer indexer = new DefaultIndexerFactory().makeIndexer();
+    private Indexer indexer = new HardwareIndexerFactory().makeIndexer();
     private Shooter shooter = new HardwareShooterFactory().makeShooter();
     private Turret turret = new HardwareTurretFactory().makeTurret();
     private VisionSubsystem vision = new VisionSubsystem(new LimelightVisionComponent());
