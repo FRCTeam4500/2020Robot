@@ -5,7 +5,7 @@ import frc.robot.subsystems.climber.Climber;
 import frc.robot.components.hardware.SparkMaxComponent;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.subsystems.climber.ClimberMap;
-public class DefaultClimberFactory implements IClimberFactory {
+public class HardwareClimberFactory implements IClimberFactory {
     public Climber makeClimber() {
         SparkMaxComponent motor = new SparkMaxComponent(ClimberMap.CLIMBER_MOTOR_PORT, MotorType.kBrushless);
         motor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);

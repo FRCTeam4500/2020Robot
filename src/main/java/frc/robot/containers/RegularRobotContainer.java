@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.climber.Climber;
-import frc.robot.subsystems.climber.factory.DefaultClimberFactory;
+import frc.robot.subsystems.climber.factory.HardwareClimberFactory;
 import frc.robot.subsystems.climber.factory.IClimberFactory;
 import frc.robot.subsystems.shooter.IShooterOI;
 import frc.robot.subsystems.shooter.Shooter;
@@ -61,7 +61,7 @@ public class RegularRobotContainer implements ITurretOI, IShooterOI, IRobotConta
     turret = turretFactory.makeTurret();
     turretAngleCommand = new SetTurretAngleCommand(turret, this);
     turret.setDefaultCommand(turretAngleCommand);
-    climberFactory = new DefaultClimberFactory();
+    climberFactory = new HardwareClimberFactory();
     climber = climberFactory.makeClimber();
     
 
