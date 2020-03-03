@@ -25,6 +25,8 @@ import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.factory.HardwareIntakeFactory;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.factory.HardwareArmFactory;
+import frc.robot.subsystems.climber.Climber;
+import frc.robot.subsystems.climber.factory.HardwareClimberFactory;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.factory.DefaultIndexerFactory;
 import frc.robot.subsystems.shooter.Shooter;
@@ -61,6 +63,7 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
     private Shooter shooter = new HardwareShooterFactory().makeShooter();
     private Turret turret = new HardwareTurretFactory().makeTurret();
     private VisionSubsystem vision = new VisionSubsystem(new LimelightVisionComponent());
+    private Climber climber = new HardwareClimberFactory().makeClimber();
 
     private boolean useFancyIntakeCommand = false;
 
@@ -167,6 +170,15 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
                 turret, vision
             )
         );
+
+        climberUpButton
+        .whenPressed(() -> climber.setSpeed(-1), climber)
+        .whenReleased(() -> climber.setSpeed(0), climber);
+
+        climberDownButton
+        .whenPressed(() -> climber.setSpeed(1), climber)
+        .whenReleased(() -> climber.setSpeed(0), climber);
+        
 
 
         SmartDashboard.putData("Control Preferences", new Sendable(){
