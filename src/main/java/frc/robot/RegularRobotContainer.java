@@ -78,7 +78,7 @@ public class RegularRobotContainer implements IRobotContainer {
   private JoystickButton button1;
   private JoystickButton button2;
   private JoystickButton button5;
-  private JoystickButton button9;
+  private JoystickButton button10;
 
   
   public RegularRobotContainer() {
@@ -86,7 +86,7 @@ public class RegularRobotContainer implements IRobotContainer {
     button1 = new JoystickButton(joystick, 1);
     button2 = new JoystickButton(joystick,2);
     button5 = new JoystickButton(joystick, 5);
-    button9 = new JoystickButton(joystick,9);
+    button10 = new JoystickButton(joystick,10);
     
     
     indexerFactory = new DefaultIndexerFactory();
@@ -130,7 +130,7 @@ public class RegularRobotContainer implements IRobotContainer {
    */
   private void configureButtonBindings() {
     button1.whenReleased(() ->  indexer.setSpeed(0));
-    button9.whenPressed(() -> swerve.resetGyro());
+    button10.whenPressed(() -> swerve.resetGyro());
   }
 
 
