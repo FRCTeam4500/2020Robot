@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.IArmOI;
 import frc.robot.subsystems.arm.factory.DefaultArmFactory;
+import frc.robot.subsystems.climber.Climber;
+import frc.robot.subsystems.climber.factory.IClimberFactory;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.command.IndexBallsCommand;
 import frc.robot.subsystems.indexer.factory.DefaultIndexerFactory;
@@ -71,6 +73,8 @@ public class RegularRobotContainer implements IRobotContainer {
   private DefaultIntakeFactory intakeFactory;
   private Intake intake;
   private IntakeRunCommand intakeCommand;
+  private IClimberFactory climberFactory;
+  private Climber climber;
 
 
 
@@ -78,7 +82,9 @@ public class RegularRobotContainer implements IRobotContainer {
   private JoystickButton button1;
   private JoystickButton button2;
   private JoystickButton button5;
+  private JoystickButton button9;
   private JoystickButton button10;
+  private JoystickButton button11;
 
   
   public RegularRobotContainer() {
@@ -86,7 +92,9 @@ public class RegularRobotContainer implements IRobotContainer {
     button1 = new JoystickButton(joystick, 1);
     button2 = new JoystickButton(joystick,2);
     button5 = new JoystickButton(joystick, 5);
+    button9 = new JoystickButton(joystick,9);
     button10 = new JoystickButton(joystick,10);
+    button11 = new JoystickButton(joystick,11);
     
     
     indexerFactory = new DefaultIndexerFactory();
@@ -130,7 +138,11 @@ public class RegularRobotContainer implements IRobotContainer {
    */
   private void configureButtonBindings() {
     button1.whenReleased(() ->  indexer.setSpeed(0));
+    button9.whenPressed(() -> climber.setSpeed(-0.2));
+    button9.whenReleased(() -> climber.setSpeed(0));
     button10.whenPressed(() -> swerve.resetGyro());
+    button11.whenPressed(() -> climber.setSpeed(0.2));
+    button11.whenReleased(() -> climber.setSpeed(0));
   }
 
 
