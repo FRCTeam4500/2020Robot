@@ -172,12 +172,12 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
         );
 
         climberUpButton
-        .whenPressed(() -> climber.setSpeed(-1), climber)
-        .whenReleased(() -> climber.setSpeed(0), climber);
+        .whenPressed(() -> {climber.setSpeed(-1); climber.disableServo();}, climber)
+        .whenReleased(() -> {climber.setSpeed(0); climber.enableServo();}, climber);
 
         climberDownButton
-        .whenPressed(() -> climber.setSpeed(1), climber)
-        .whenReleased(() -> climber.setSpeed(0), climber);
+        .whenPressed(() -> {climber.setSpeed(1); climber.disableServo();}, climber)
+        .whenReleased(() -> {climber.setSpeed(0); climber.enableServo();}, climber);
         
 
 
