@@ -1,5 +1,6 @@
 package frc.robot.subsystems.climber.factory;
 import com.revrobotics.CANSparkMax;
+import edu.wpi.first.wpilibj.Servo;
 import frc.robot.subsystems.climber.factory.IClimberFactory;
 import frc.robot.subsystems.climber.Climber;
 import frc.robot.components.hardware.SparkMaxComponent;
@@ -12,7 +13,8 @@ public class HardwareClimberFactory implements IClimberFactory {
         motor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, false);
         motor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, ClimberMap.MAX_MOTOR_VALUE);
         motor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, ClimberMap.MIN_MOTOR_VALUE);
-        Climber climber = new Climber(motor);
+        Servo servo = new Servo(ClimberMap.SERVO_MOTOR_PORT);
+        Climber climber = new Climber(motor, servo);
         return climber;
     }
 }
