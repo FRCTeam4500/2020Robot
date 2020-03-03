@@ -8,23 +8,17 @@ import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.autonomous.Autonomous_PreciseShootingCommand;
 import frc.robot.autonomous.GenericAutonUtilities;
 import frc.robot.autonomous.IndexBallsCommand;
-import frc.robot.autonomous.VisionDistanceCalculator;
 import frc.robot.components.hardware.LimelightVisionComponent;
-import frc.robot.components.hardware.SparkMaxComponent;
-import frc.robot.components.hardware.TalonSRXComponent;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.factory.HardwareIntakeFactory;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.factory.HardwareArmFactory;
 import frc.robot.subsystems.climber.Climber;
 import frc.robot.subsystems.indexer.Indexer;
-import frc.robot.subsystems.indexer.NetworkTableBallSensor;
 import frc.robot.subsystems.indexer.factory.HardwareIndexerFactory;
 import frc.robot.subsystems.shooter.Shooter;
-import frc.robot.subsystems.shooter.command.ShootStraightCommand;
 import frc.robot.subsystems.shooter.factory.HardwareShooterFactory;
 import frc.robot.subsystems.swerve.odometric.OdometricSwerve;
 import frc.robot.subsystems.swerve.odometric.factory.EntropySwerveFactory;
@@ -148,9 +142,6 @@ public class RobotContainerTwo implements IRobotContainer {
 
         configureTurretAuton();
 
-        var preciseShooting = new Autonomous_PreciseShootingCommand(shooter, indexer);
-        preciseShooting.createSmartDashboardEntries();
-        button1.whenHeld(preciseShooting);
 
         SmartDashboard.putData("Swerve Distance Calculator", GenericAutonUtilities.makeEntropyVisionDistanceCalculator(vision));
 

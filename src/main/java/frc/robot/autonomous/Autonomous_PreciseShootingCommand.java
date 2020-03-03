@@ -7,7 +7,6 @@
 
 package frc.robot.autonomous;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.shooter.Shooter;
@@ -15,13 +14,14 @@ import frc.robot.subsystems.shooter.Shooter;
 public class Autonomous_PreciseShootingCommand extends CommandBase {
   private Shooter shooter;
   private Indexer indexer;
-  private boolean runBothMotors;
+  private IPreciseShootingOI oi;
   /**
    * Creates a new Autonomous_PreciseShootingCommand.
    */
-  public Autonomous_PreciseShootingCommand(Shooter shooter, Indexer indexer) {
+  public Autonomous_PreciseShootingCommand(Shooter shooter, Indexer indexer, IPreciseShootingOI oi) {
     this.shooter = shooter;
     this.indexer = indexer;
+    this.oi = oi;
     addRequirements(shooter, indexer);
   }
 
@@ -29,30 +29,13 @@ public class Autonomous_PreciseShootingCommand extends CommandBase {
   @Override
   public void initialize() {
   }
-  public void createSmartDashboardEntries(){
-    SmartDashboard.putNumber("topSpeed", -1000);
-    SmartDashboard.putNumber("bottomSpeed", -1000);
-    SmartDashboard.putNumber("coefficient", 1);
-    SmartDashboard.putNumber("threshold", 45);
-    runBothMotors = false;
-
-  }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    var topSpeed = SmartDashboard.getNumber("topSpeed", 0.0);
-    var bottomSpeed = SmartDashboard.getNumber("bottomSpeed", 0.0);
-    var k = SmartDashboard.getNumber("coefficient", 1.0);
-    var threshold = SmartDashboard.getNumber("threshold", 0.0);
-
-    /*if(runBothMotors){
-      shooter.run(topSpeed * k, bottomSpeed * k);
-    } else {
-      shooter.run(topSpeed * k, 0);
-      if(shooter.topAtSpeed(threshold)){
-        runBothMotors = true;
-      }
-    }*/
+    var topSpeed = oi.getTopSpeed(); 
+    var bottomSpeed = oi.getBottomSpeed();
+    var k = oi.getCoefficient();
+    var threshold = oi.getThreshold();
 
     shooter.run(topSpeed * k, bottomSpeed * k);
     if(shooter.atSpeeds(threshold)){
@@ -74,4 +57,5 @@ public class Autonomous_PreciseShootingCommand extends CommandBase {
   public boolean isFinished() {
     return false;
   }
+
 }

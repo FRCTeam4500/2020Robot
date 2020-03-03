@@ -7,7 +7,9 @@
 
 package frc.robot.autonomous;
 
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.util.Units;
+import frc.robot.subsystems.swerve.odometric.command.AdvancedSwerveControllerBuilder;
 import frc.robot.subsystems.vision.VisionSubsystem;
 
 /**
@@ -22,5 +24,17 @@ public class GenericAutonUtilities {
         var cameraAngle = Math.atan((targetHeight - cameraHeight)/horizontalDistanceToTarget)-targetAngleReading;
 
         return new VisionDistanceCalculator(cameraAngle, cameraHeight, targetHeight, vision);
+    }
+    public static AdvancedSwerveControllerBuilder createDefaultControllerBuilder(){
+        return new AdvancedSwerveControllerBuilder()
+        .withInitialAllowableTranslationError(0.1)
+        .withFinalAllowableTranslationError(0.1)
+        .withAllowableRotationError(0.1)
+        .withTranslationsEnabled(true)
+        .with_kP(3)
+        .with_kW(3)
+        .withRotationsEnabled(true)
+        .withEndRotation(new Rotation2d())
+        .withMaxVelocity(2.4);
     }
 }
