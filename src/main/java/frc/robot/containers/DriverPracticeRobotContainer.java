@@ -65,7 +65,7 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
     private VisionSubsystem vision = new VisionSubsystem(new LimelightVisionComponent());
     private Climber climber = new HardwareClimberFactory().makeClimber();
 
-    private boolean useFancyIntakeCommand = false;
+    private boolean useFancyIntakeCommand = true;
 
     private 
     double 

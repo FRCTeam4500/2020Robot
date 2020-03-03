@@ -30,8 +30,8 @@ public class Autonomous_PreciseShootingCommand extends CommandBase {
   public void initialize() {
   }
   public void createSmartDashboardEntries(){
-    SmartDashboard.putNumber("topSpeed", -0);
-    SmartDashboard.putNumber("bottomSpeed", -0);
+    SmartDashboard.putNumber("topSpeed", -1000);
+    SmartDashboard.putNumber("bottomSpeed", -1000);
     SmartDashboard.putNumber("coefficient", 1);
     SmartDashboard.putNumber("threshold", 45);
     runBothMotors = false;
