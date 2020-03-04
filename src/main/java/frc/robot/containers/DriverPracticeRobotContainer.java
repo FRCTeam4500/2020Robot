@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,7 +28,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autonomous.Autonomous_PreciseShootingCommand;
 import frc.robot.autonomous.Autonomous_StartShootingCommand;
 import frc.robot.autonomous.Autonomous_StopShootingCommand;
-import frc.robot.autonomous.ExtendedTrajectoryUtilities;
 import frc.robot.autonomous.GenericAutonUtilities;
 import frc.robot.autonomous.IPreciseShootingOI;
 import frc.robot.autonomous.IndexBallsCommand;
@@ -117,6 +115,9 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
         configureSmartDashboardControls();
 
         configureAutonomous();
+
+        SmartDashboard.putData("Enable Servo", new InstantCommand(() -> climber.enableServo(),climber));
+        SmartDashboard.putData("Disable Servo", new InstantCommand(() -> climber.disableServo(), climber));
     }
     private void configureAutonomous() {
         autonomousChooser = new SendableChooser<>();
@@ -135,6 +136,9 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
         autonomousChooser.addOption(
             "Citrus Compatible", 
             createCitrusCompatibleCommand());
+
+        
+        SmartDashboard.putData("Selected Auto", autonomousChooser);
     }
     private SequentialCommandGroup createCitrusCompatibleCommand() {
         return new InstantCommand(
@@ -320,12 +324,12 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
     }
     private void configureClimber() {
         climberUpButton
-        .whenPressed(() -> climber.setSpeed(1), climber)
-        .whenReleased(() -> {climber.setSpeed(0); climber.enableServo();}, climber);
+        .whenPressed(() -> {climber.setSpeed(1);climber.enableServo();}, climber)
+        .whenReleased(() -> {climber.setSpeed(0); climber.disableServo();}, climber);
 
         climberDownButton
-        .whenPressed(() -> {climber.setSpeed(-1); climber.disableServo();}, climber)
-        .whenReleased(() -> {climber.setSpeed(0); climber.enableServo();}, climber);
+        .whenPressed(() -> {climber.setSpeed(-1); climber.enableServo();}, climber)
+        .whenReleased(() -> {climber.setSpeed(0); climber.disableServo();}, climber);
     }
     private void configureTurret() {
         turret.setDefaultCommand(
@@ -361,18 +365,18 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
                 ),
             new FunctionalCommand(
                 () ->{                 
-                    //indexer.setSpeed(1);
+                    indexer.setSpeed(1);
                     intake.setSpeed(-1);
                     arm.setAngle(Math.PI/2);
                 }, 
                 () -> {}, 
                 interrupted -> {
-                    // indexer.setSpeed(0);
+                    indexer.setSpeed(0);
                     intake.setSpeed(0);
                     arm.setAngle(0);
                 }, 
                 () -> false,
-                // indexer, 
+                indexer, 
                 arm, intake
             ),
             () -> useFancyIntakeCommand
