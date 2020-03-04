@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -90,10 +91,10 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
     double 
     xSensitivity = 4,
     ySensitivity = 4,
-    zSensitivity = 6,
+    zSensitivity = 4,
     xDeadzone = 0.2,
     yDeadzone = 0.2,
-    zDeadzone = 0.2;
+    zDeadzone = 0.3;
     
     public DriverPracticeRobotContainer(){
 
@@ -137,8 +138,63 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
             "Citrus Compatible", 
             createCitrusCompatibleCommand());
 
-        
+        autonomousChooser.addOption(
+            "Trench Citrus Compatible A", 
+            createTrenchCitrusCompatiblePartACommand()
+        );
+
+        autonomousChooser.addOption(
+            "Trench Citrus Compatible B",
+            createTrenchCitrusCompatibleBCommand()                                                                     
+        );
         SmartDashboard.putData("Selected Auto", autonomousChooser);
+    }
+    private SequentialCommandGroup createTrenchCitrusCompatibleBCommand() {
+        return createTrenchCitrusPart1Command()
+        .andThen(new OdometricSwerve_AdvancedFollowTrajectoryCommand(
+            swerve,
+            createDefaultControllerBuilder()
+            .withTrajectory(tryGetDeployedTrajectory("TrenchCitrusCompatiblePart2B")) 
+            .withEndRotation(new Rotation2d(7 * Math.PI/6))
+            .buildController()))
+        .andThen(() -> arm.setAngle(Math.PI/2), arm)
+        .andThen(new IndexBallsCommand(indexer, intake, 1).withTimeout(5))
+        .andThen(() -> arm.setAngle(0), arm)
+        .andThen(new OdometricSwerve_AdvancedFollowTrajectoryCommand(
+            swerve, 
+            createDefaultControllerBuilder()
+            .withTrajectory(tryGetDeployedTrajectory("TrenchCitrusCompatiblePart3B"))
+            .withEndRotation(new Rotation2d(Math.PI))
+            .buildController()))
+        .andThen(new Autonomous_StartShootingCommand(indexer, shooter, -800, -800))
+        .andThen(new WaitCommand(4))
+        .andThen(new Autonomous_StopShootingCommand(indexer, shooter));
+    }
+    private SequentialCommandGroup createTrenchCitrusCompatiblePartACommand() {
+        return createTrenchCitrusPart1Command()
+        .andThen(createTrenchCitrusPart1Command())
+        .andThen(new OdometricSwerve_AdvancedFollowTrajectoryCommand(
+            swerve, 
+            createDefaultControllerBuilder()
+            .withEndRotation(new Rotation2d(Math.PI))
+            .withTrajectory(tryGetDeployedTrajectory("TrenchCitrusCompatiblePart2A"))
+            .buildController()))
+        .andThen(new Autonomous_StartShootingCommand(indexer, shooter, -800, -800))
+        .andThen(new WaitCommand(3))
+        .andThen(new Autonomous_StopShootingCommand(indexer, shooter));
+    }
+    private CommandGroupBase createTrenchCitrusPart1Command() {
+        return new InstantCommand(() -> swerve.resetPose(new Pose2d(13,-7.5,new Rotation2d(Math.PI))), swerve)
+        .andThen(() -> arm.setAngle(Math.PI / 2),arm)
+        .andThen(new IndexBallsCommand(indexer, intake, 1).withTimeout(4)
+        .alongWith(new OdometricSwerve_AdvancedFollowTrajectoryCommand(
+            swerve, 
+            createDefaultControllerBuilder()
+            .withEndRotation(new Rotation2d(Math.PI))
+            .withTrajectory(tryGetDeployedTrajectory("TrenchCitrusCompatiblePart1"))
+            .buildController()
+        )))
+        .andThen(() -> arm.setAngle(0), arm);
     }
     private SequentialCommandGroup createCitrusCompatibleCommand() {
         return new InstantCommand(
