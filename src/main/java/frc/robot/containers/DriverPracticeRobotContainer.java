@@ -34,6 +34,7 @@ import frc.robot.autonomous.GenericAutonUtilities;
 import frc.robot.autonomous.IPreciseShootingOI;
 import frc.robot.autonomous.IndexBallsCommand;
 import frc.robot.autonomous.VisionDistanceCalculator;
+import frc.robot.components.hardware.CameraVisionComponent;
 import frc.robot.components.hardware.LimelightVisionComponent;
 import frc.robot.components.virtual.VirtualSmartMotorComponent;
 import frc.robot.subsystems.Intake.Intake;
@@ -46,13 +47,17 @@ import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.factory.HardwareIndexerFactory;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.factory.HardwareShooterFactory;
+import frc.robot.subsystems.swerve.TrackLoadingCommand;
 import frc.robot.subsystems.swerve.odometric.OdometricSwerve;
 import frc.robot.subsystems.swerve.odometric.OdometricSwerveDashboardUtility;
 import frc.robot.subsystems.swerve.odometric.command.OdometricSwerve_AdvancedFollowTrajectoryCommand;
 import frc.robot.subsystems.swerve.odometric.factory.EntropySwerveFactory;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.factory.HardwareTurretFactory;
+import frc.robot.subsystems.vision.CameraVisionSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
+
+import javax.sound.midi.Track;
 
 import static frc.robot.utility.ExtendedMath.withDeadzone;
 import static frc.robot.autonomous.ExtendedTrajectoryUtilities.tryGetDeployedTrajectory;
@@ -76,8 +81,7 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
     climberUpButton = new JoystickButton(controlStick, 9),
     climberDownButton = new JoystickButton(controlStick, 11),
     resetGyroButton = new JoystickButton(driveStick, 5),
-    alignWithLoadingBayButton = new JoystickButton(driveStick, 2)
-    ;
+    alignToLoadButton = new JoystickButton(driveStick, 3);
     
     private Intake intake = new HardwareIntakeFactory().makeIntake();
     private Arm arm = new HardwareArmFactory().makeArm();
@@ -88,6 +92,9 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
     private VisionSubsystem limelight = new VisionSubsystem(new LimelightVisionComponent());
 
     private Climber climber = new HardwareClimberFactory().makeClimber();
+
+    private CameraVisionSubsystem cameraVision = new CameraVisionSubsystem(new CameraVisionComponent());
+    private TrackLoadingCommand trackLoadingCommand = new TrackLoadingCommand(swerve, cameraVision);
     
     private boolean useFancyIntakeCommand = true;
     private VisionDistanceCalculator visionDistanceCalculator;
@@ -413,6 +420,7 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
                 withDeadzone(-driveStick.getZ() , zDeadzone)*zSensitivity
             );
         }, swerve));
+        alignToLoadButton.whenHeld(trackLoadingCommand);
     }
     private void configureMainIntakeButton() {
         mainIntakeButton
