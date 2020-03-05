@@ -117,8 +117,6 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
 
         configureAutonomous();
 
-        SmartDashboard.putData("Enable Servo", new InstantCommand(() -> climber.enableServo(),climber));
-        SmartDashboard.putData("Disable Servo", new InstantCommand(() -> climber.disableServo(), climber));
     }
     private void configureAutonomous() {
         autonomousChooser = new SendableChooser<>();
@@ -380,12 +378,12 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
     }
     private void configureClimber() {
         climberUpButton
-        .whenPressed(() -> {climber.setSpeed(1);climber.enableServo();}, climber)
-        .whenReleased(() -> {climber.setSpeed(0); climber.disableServo();}, climber);
+        .whenPressed(() -> climber.setSpeed(1), climber)
+        .whenReleased(() -> climber.setSpeed(0), climber);
 
         climberDownButton
-        .whenPressed(() -> {climber.setSpeed(-1); climber.enableServo();}, climber)
-        .whenReleased(() -> {climber.setSpeed(0); climber.disableServo();}, climber);
+        .whenPressed(() -> climber.setSpeed(-1), climber)
+        .whenReleased(() -> climber.setSpeed(0), climber);
     }
     private void configureTurret() {
         turret.setDefaultCommand(
