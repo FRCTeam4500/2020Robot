@@ -27,6 +27,9 @@ public class VisionSubsystem extends SubsystemBase {
   public double getVerticalOffset(){
     return vision.getVerticalOffsetFromCrosshar();
   }
+  public double getSkew(){
+    return vision.getSkew();
+  }
 
   @Override
   public void periodic() {

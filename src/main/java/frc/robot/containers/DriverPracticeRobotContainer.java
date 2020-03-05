@@ -34,6 +34,7 @@ import frc.robot.autonomous.IPreciseShootingOI;
 import frc.robot.autonomous.IndexBallsCommand;
 import frc.robot.autonomous.VisionDistanceCalculator;
 import frc.robot.components.hardware.LimelightVisionComponent;
+import frc.robot.components.virtual.VirtualSmartMotorComponent;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.factory.HardwareIntakeFactory;
 import frc.robot.subsystems.arm.Arm;
@@ -69,10 +70,12 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
     indexerInButton  = new JoystickButton(controlStick,6),
     indexerOutButton = new JoystickButton(controlStick, 4),
     mainIntakeButton = new JoystickButton(controlStick, 1),
+    backupIndexer = new JoystickButton(controlStick, 8),
     shootButton = new JoystickButton(controlStick,2),
     climberUpButton = new JoystickButton(controlStick, 9),
     climberDownButton = new JoystickButton(controlStick, 11),
-    resetGyroButton = new JoystickButton(driveStick, 5)
+    resetGyroButton = new JoystickButton(driveStick, 5),
+    alignWithLoadingBayButton = new JoystickButton(driveStick, 2)
     ;
     
     private Intake intake = new HardwareIntakeFactory().makeIntake();
@@ -81,7 +84,9 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
     private Indexer indexer = new HardwareIndexerFactory().makeIndexer();
     private Shooter shooter = new HardwareShooterFactory().makeShooter();
     private Turret turret = new HardwareTurretFactory().makeTurret();
-    private VisionSubsystem vision = new VisionSubsystem(new LimelightVisionComponent());
+    private VisionSubsystem limelight = new VisionSubsystem(new LimelightVisionComponent());
+    private VisionSubsystem picam = new VisionSubsystem(vision);
+
     private Climber climber = new HardwareClimberFactory().makeClimber();
     
     private boolean useFancyIntakeCommand = true;
@@ -119,6 +124,22 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
 
         SmartDashboard.putData("Enable Servo", new InstantCommand(() -> climber.enableServo(),climber));
         SmartDashboard.putData("Disable Servo", new InstantCommand(() -> climber.disableServo(), climber));
+
+        backupIndexer.whileHeld(new IndexBallsCommand(indexer, new Intake(new VirtualSmartMotorComponent()), 1));
+
+        alignWithLoadingBayButton.whenPressed(
+            new PIDCommand(
+                new PIDController(1, 0, 0), 
+                () -> swerve.getCurrentPose().getRotation().getRadians(),
+                Math.PI, 
+                output -> swerve.moveRobotCentric(0, 0, output), 
+                swerve)
+            .andThen(new PIDCommand(
+                new PIDController(1, 0, 0), 
+                picam::getHorizontalOffset, 
+                0, 
+                output -> swerve.moveRobotCentric(0, output, 0);, requirements))
+        )
     }
     private void configureAutonomous() {
         autonomousChooser = new SendableChooser<>();
@@ -300,7 +321,7 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
         );
     }
     private void configureShooter() {
-        visionDistanceCalculator = GenericAutonUtilities.makeEntropyVisionDistanceCalculator(vision);
+        visionDistanceCalculator = GenericAutonUtilities.makeEntropyVisionDistanceCalculator(limelight);
         var shootCommand = new Autonomous_PreciseShootingCommand(shooter, indexer,
             // new frc.robot.autonomous.IPreciseShootingOI() {
             
@@ -391,10 +412,10 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
         turret.setDefaultCommand(
             new PIDCommand(
                 new PIDController(-6, 0, 0), 
-                vision::getHorizontalOffset, 
+                limelight::getHorizontalOffset, 
                 () -> 0, 
                 turret::setTurretOutput, 
-                turret, vision
+                turret, limelight
             )
         );
     }
