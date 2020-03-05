@@ -114,7 +114,7 @@ public class RegularRobotContainer implements IRobotContainer {
     swerveFactory = new NormalSwerveFactory();
     swerve = swerveFactory.makeSwerve();
     swerve.setDefaultCommand(new RunCommand(() -> swerve.moveFieldCentric(withDeadzone(joystick.getX()),
-            withDeadzone(joystick.getY()),withDeadzone(joystick.getZ())), swerve));
+            withDeadzone(joystick.getY()),withDeadzone(joystick.getZ()))));
     armFactory = new DefaultArmFactory();
     arm = armFactory.makeArm();
     armCommand = new ArmRunCommand(arm, button2::get);
@@ -137,12 +137,12 @@ public class RegularRobotContainer implements IRobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    button1.whenReleased(() ->  indexer.setSpeed(0), indexer);
-    button9.whenPressed(() -> {climber.setSpeed(-0.2); climber.disableServo();}, climber);
-    button9.whenReleased(() -> {climber.setSpeed(0); climber.disableServo();}, climber);
-    button10.whenPressed(() -> swerve.resetGyro(), swerve);
-    button11.whenPressed(() -> {climber.setSpeed(0.2); climber.disableServo();}, climber);
-    button11.whenReleased(() -> {climber.setSpeed(0); climber.enableServo();}, climber);
+    button1.whenReleased(() ->  indexer.setSpeed(0));
+    button9.whenPressed(() -> climber.setSpeed(-0.2));
+    button9.whenReleased(() -> climber.setSpeed(0));
+    button10.whenPressed(() -> swerve.resetGyro());
+    button11.whenPressed(() -> climber.setSpeed(0.2));
+    button11.whenReleased(() -> climber.setSpeed(0));
   }
 
 
