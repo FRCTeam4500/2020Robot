@@ -13,7 +13,4 @@ public class Climber extends SubsystemBase{
         motor.setOutput(speed);
     }
 
-    public double toRadians(double number){
-        return number / 42 * 2 * Math.PI;
-    }
 }
