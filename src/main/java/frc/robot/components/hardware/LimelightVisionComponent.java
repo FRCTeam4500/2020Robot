@@ -44,7 +44,7 @@ public class LimelightVisionComponent implements IVisionComponent, I3DSupplierCo
     }
 
     @Override
-    public double getVerticalOffsetFromCrosshar() {
+    public double getVerticalOffsetFromCrosshair() {
         return Math.toRadians(getEntry("ty"));
     }
 
