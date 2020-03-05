@@ -28,8 +28,7 @@ public class HardwareClimberFactory implements IClimberFactory {
                 builder.addDoubleProperty("reverseLimit", () -> motor.getSoftLimit(SoftLimitDirection.kReverse), null);
             }
         });
-        Servo servo = new Servo(ClimberMap.SERVO_MOTOR_PORT);
-        Climber climber = new Climber(motor, servo);
+        Climber climber = new Climber(motor);
         return climber;
     }
 }
