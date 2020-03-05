@@ -85,7 +85,6 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
     private Shooter shooter = new HardwareShooterFactory().makeShooter();
     private Turret turret = new HardwareTurretFactory().makeTurret();
     private VisionSubsystem limelight = new VisionSubsystem(new LimelightVisionComponent());
-    private VisionSubsystem picam = new VisionSubsystem(vision);
 
     private Climber climber = new HardwareClimberFactory().makeClimber();
     
@@ -122,24 +121,7 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
 
         configureAutonomous();
 
-        SmartDashboard.putData("Enable Servo", new InstantCommand(() -> climber.enableServo(),climber));
-        SmartDashboard.putData("Disable Servo", new InstantCommand(() -> climber.disableServo(), climber));
-
         backupIndexer.whileHeld(new IndexBallsCommand(indexer, new Intake(new VirtualSmartMotorComponent()), 1));
-
-        alignWithLoadingBayButton.whenPressed(
-            new PIDCommand(
-                new PIDController(1, 0, 0), 
-                () -> swerve.getCurrentPose().getRotation().getRadians(),
-                Math.PI, 
-                output -> swerve.moveRobotCentric(0, 0, output), 
-                swerve)
-            .andThen(new PIDCommand(
-                new PIDController(1, 0, 0), 
-                picam::getHorizontalOffset, 
-                0, 
-                output -> swerve.moveRobotCentric(0, output, 0);, requirements))
-        )
     }
     private void configureAutonomous() {
         autonomousChooser = new SendableChooser<>();
@@ -401,12 +383,12 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
     }
     private void configureClimber() {
         climberUpButton
-        .whenPressed(() -> {climber.setSpeed(1);climber.enableServo();}, climber)
-        .whenReleased(() -> {climber.setSpeed(0); climber.disableServo();}, climber);
+        .whenPressed(() -> climber.setSpeed(1), climber)
+        .whenReleased(() -> climber.setSpeed(0), climber);
 
         climberDownButton
-        .whenPressed(() -> {climber.setSpeed(-1); climber.enableServo();}, climber)
-        .whenReleased(() -> {climber.setSpeed(0); climber.disableServo();}, climber);
+        .whenPressed(() -> climber.setSpeed(-1), climber)
+        .whenReleased(() -> climber.setSpeed(0), climber);
     }
     private void configureTurret() {
         turret.setDefaultCommand(
