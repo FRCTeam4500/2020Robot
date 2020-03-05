@@ -25,7 +25,7 @@ public class VisionSubsystem extends SubsystemBase {
     return vision.getHorizontalOffsetFromCrosshair();
   }
   public double getVerticalOffset(){
-    return vision.getVerticalOffsetFromCrosshar();
+    return vision.getVerticalOffsetFromCrosshair();
   }
 
   @Override
