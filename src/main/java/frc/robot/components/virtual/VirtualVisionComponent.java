@@ -50,7 +50,7 @@ public class VirtualVisionComponent implements IVisionComponent {
     private double verticalOffsetFromCrosshar = 0;
 
     @Override
-    public double getVerticalOffsetFromCrosshar() {
+    public double getVerticalOffsetFromCrosshair() {
         return verticalOffsetFromCrosshar;
     }
 
