@@ -57,14 +57,17 @@ public class DriverPracticeRobotContainer implements IRobotContainer {
     private SendableChooser<Command> autonomousChooser;
 
     private Joystick driveStick = new Joystick(0), controlStick = new Joystick(1);
-    private JoystickButton intakeInButton = new JoystickButton(controlStick, 5),
-            intakeOutButton = new JoystickButton(controlStick, 3),
-            indexerInButton = new JoystickButton(controlStick, 6),
-            indexerOutButton = new JoystickButton(controlStick, 4),
-            mainIntakeButton = new JoystickButton(controlStick, 1), backupIndexer = new JoystickButton(controlStick, 8),
-            shootButton = new JoystickButton(controlStick, 2), climberUpButton = new JoystickButton(controlStick, 9),
-            climberDownButton = new JoystickButton(controlStick, 11),
-            resetGyroButton = new JoystickButton(driveStick, 5),
+    private JoystickButton 
+    intakeInButton = new JoystickButton(controlStick, 5),
+    intakeOutButton = new JoystickButton(controlStick, 3),
+    indexerInButton  = new JoystickButton(controlStick,6),
+    indexerOutButton = new JoystickButton(controlStick, 4),
+    mainIntakeButton = new JoystickButton(controlStick, 1),
+    shootButton = new JoystickButton(controlStick,2),
+    climberUpButton = new JoystickButton(controlStick, 9),
+    climberDownButton = new JoystickButton(controlStick, 11),
+    resetGyroButton = new JoystickButton(driveStick, 5),
+    backupIndexerButton = new JoystickButton(controlStick, 8),
     alignToLoadButton = new JoystickButton(driveStick, 3);
     
     private Intake intake = new HardwareIntakeFactory().makeIntake();
@@ -113,7 +116,7 @@ public class DriverPracticeRobotContainer implements IRobotContainer {
 
         configureAutonomous();
 
-        backupIndexer.whileHeld(new Autonomous_IndexBallsCommand(indexer, intake, 1, 0));
+        backupIndexerButton.whileHeld(new Autonomous_IndexBallsCommand(indexer, intake, 1, 0));
     }
 
     private double getTurretRadianOffset() {
