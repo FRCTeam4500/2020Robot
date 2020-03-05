@@ -43,8 +43,8 @@ public class VisionDashboardDecorator extends DashboardDecorator implements IVis
     }
 
     @Override
-    public double getVerticalOffsetFromCrosshar() {
-        return vision.getVerticalOffsetFromCrosshar();
+    public double getVerticalOffsetFromCrosshair() {
+        return vision.getVerticalOffsetFromCrosshair();
     }
 
     @Override
@@ -73,7 +73,7 @@ public class VisionDashboardDecorator extends DashboardDecorator implements IVis
     public void initSendable(SendableBuilder builder) {
         builder.addBooleanProperty("Has Valid Targets", this::hasValidTargets, null);
         builder.addDoubleProperty("Horizontal Offset From Crosshair", this::getHorizontalOffsetFromCrosshair, null);
-        builder.addDoubleProperty("Vertical Offset From Crosshair", this::getVerticalOffsetFromCrosshar, null);
+        builder.addDoubleProperty("Vertical Offset From Crosshair", this::getVerticalOffsetFromCrosshair, null);
         builder.addDoubleProperty("Target Area", this::getTargetArea, null);
         builder.addDoubleProperty("Skew", this::getSkew, null);
         builder.addStringProperty("Last Set Camera Mode",
