@@ -13,8 +13,9 @@ import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.components.IGyroComponent;
+import frc.robot.subsystems.swerve.ISwerve;
 
-public class KinematicSwerve extends SubsystemBase {
+public class KinematicSwerve extends SubsystemBase implements ISwerve {
 
   protected SwerveDriveKinematics kinematics;
   protected KinematicWheelModule[] wheelModules;
@@ -96,5 +97,9 @@ public class KinematicSwerve extends SubsystemBase {
       lowestMaxSpeed = Math.min(module.getMaxSurfaceSpeed(), lowestMaxSpeed);
     }
     return lowestMaxSpeed;
+  }
+
+  public void resetGyro(){
+    gyro.reset();
   }
 }
