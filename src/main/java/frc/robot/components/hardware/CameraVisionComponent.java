@@ -28,7 +28,7 @@ public class CameraVisionComponent {
     }
 
     public double getAngleX(){
-        return getEntry("ax");
+        return getEntry("aX");
     }
 
     private double getEntry(String key) {
