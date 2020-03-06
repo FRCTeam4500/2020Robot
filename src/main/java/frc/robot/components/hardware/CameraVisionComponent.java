@@ -11,8 +11,8 @@ public class CameraVisionComponent {
      * hasValidTargets
      * diffX
      * diffY
-     * loadX
-     * loadY
+     * aX
+     * aY
      */
 
 
@@ -28,7 +28,7 @@ public class CameraVisionComponent {
     }
 
     public double getAngleX(){
-        return getEntry("aX");
+        return Math.toRadians(getEntry("aX"));
     }
 
     private double getEntry(String key) {
