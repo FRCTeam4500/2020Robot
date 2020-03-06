@@ -18,11 +18,18 @@ public class TrackLoadingCommand extends CommandBase {
 
     public TrackLoadingCommand(KinematicSwerve swerve, CameraVisionSubsystem vision) {
 
+        SmartDashboard.putNumber("KpOffset",1);
+        SmartDashboard.putNumber("KiOffset",0);
+        SmartDashboard.putNumber("KdOffset",0);
+        SmartDashboard.putNumber("KpAngle",1);
+        SmartDashboard.putNumber("KiAngle",1);
+        SmartDashboard.putNumber("KdAngle",1);
 
         this.kinematicSwerve = swerve;
         this.vision = vision;
-        this.pid = new PIDController(0.75,0,0);
-        this.pid2 = new PIDController(0.75,0,0);
+        this.pid = new PIDController(SmartDashboard.getNumber("KpOffset",0),SmartDashboard.getNumber("KiOffset",0),SmartDashboard.getNumber("KdOffset",0));
+        this.pid2 = new PIDController(SmartDashboard.getNumber("KpAngle",0),SmartDashboard.getNumber("KiAngle",0),SmartDashboard.getNumber("KdAngle",0));
+
         addRequirements(kinematicSwerve, vision);
     }
 
