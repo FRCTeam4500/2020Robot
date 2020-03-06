@@ -79,7 +79,7 @@ public class RobotContainerThree implements IRobotContainer {
             }
         },arm);
 
-        button2.whileHeld(new IndexBallsCommand(indexer, intake, 1.0));
+        button2.whileHeld(new IndexBallsCommand(indexer, intake, 1.0,0.9));
   
         swerve.setDefaultCommand(new FunctionalCommand(() -> swerve.enableWheelInversion(true),() -> {
             swerve.moveFieldCentric(

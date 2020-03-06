@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -110,6 +111,7 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
         
         resetGyroButton
         .whenPressed(() -> swerve.resetPose());
+        swerve.resetPose(new Pose2d(new Translation2d(), new Rotation2d(Math.PI)));
 
         configureSwerve();
 
@@ -121,7 +123,7 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
 
         configureAutonomous();
 
-        backupIndexer.whileHeld(new IndexBallsCommand(indexer, new Intake(new VirtualSmartMotorComponent()), 1));
+        backupIndexer.whileHeld(new IndexBallsCommand(indexer, new Intake(new VirtualSmartMotorComponent()), 1, 0.9));
     }
     private void configureAutonomous() {
         autonomousChooser = new SendableChooser<>();
@@ -142,12 +144,12 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
             createCitrusCompatibleCommand());
 
         autonomousChooser.addOption(
-            "Trench Citrus Compatible A", 
+            "Trench Citrus Compatible Primary", 
             createTrenchCitrusCompatiblePartACommand()
         );
 
         autonomousChooser.addOption(
-            "Trench Citrus Compatible B",
+            "Trench Citrus Compatible Second",
             createTrenchCitrusCompatibleBCommand()                                                                     
         );
         SmartDashboard.putData("Selected Auto", autonomousChooser);
@@ -161,7 +163,7 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
             .withEndRotation(new Rotation2d(7 * Math.PI/6))
             .buildController()))
         .andThen(() -> arm.setAngle(Math.PI/2), arm)
-        .andThen(new IndexBallsCommand(indexer, intake, 1).withTimeout(5))
+        .andThen(new IndexBallsCommand(indexer, intake, 1, 0.9).withTimeout(5))
         .andThen(() -> arm.setAngle(0), arm)
         .andThen(new OdometricSwerve_AdvancedFollowTrajectoryCommand(
             swerve, 
@@ -189,7 +191,7 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
     private CommandGroupBase createTrenchCitrusPart1Command() {
         return new InstantCommand(() -> swerve.resetPose(new Pose2d(13,-7.5,new Rotation2d(Math.PI))), swerve)
         .andThen(() -> arm.setAngle(Math.PI / 2),arm)
-        .andThen(new IndexBallsCommand(indexer, intake, 1).withTimeout(4)
+        .andThen(new IndexBallsCommand(indexer, intake, 1, 0.9).withTimeout(4)
         .alongWith(new OdometricSwerve_AdvancedFollowTrajectoryCommand(
             swerve, 
             createDefaultControllerBuilder()
@@ -380,6 +382,8 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
 
         SmartDashboard.putData("Swerve Transform", new OdometricSwerveDashboardUtility(swerve));
         SmartDashboard.putData("Vision Distance Calculator", visionDistanceCalculator);
+
+        SmartDashboard.putData("Indexer",indexer);
     }
     private void configureClimber() {
         climberUpButton
@@ -413,7 +417,7 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
     private void configureMainIntakeButton() {
         mainIntakeButton
         .whileHeld(new ConditionalCommand(
-            new IndexBallsCommand(indexer, intake, 1)
+            new IndexBallsCommand(indexer, intake, 1, 0.9)
             .alongWith(
                 new FunctionalCommand(
                     () -> arm.setAngle(Math.PI/2), 
@@ -444,12 +448,12 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
     }
     private void configureBasicOverrides() {
         intakeInButton
-        .whenPressed(() -> intake.setSpeed(-1), intake)
-        .whenReleased(() -> intake.setSpeed(0), intake);
+        .whenPressed(() -> {intake.setSpeed(1); arm.setAngle(Math.PI);}, intake , arm)
+        .whenReleased(() -> {intake.setSpeed(0); arm.setAngle(0);}, intake, arm);
 
         intakeOutButton
-        .whenPressed(() -> intake.setSpeed(1), intake)
-        .whenReleased(() -> intake.setSpeed(0));
+        .whenPressed(() -> {intake.setSpeed(-1); arm.setAngle(Math.PI);}, intake, arm)
+        .whenReleased(() -> {intake.setSpeed(0); arm.setAngle(0);}, intake, arm);
 
         indexerInButton
         .whenPressed(() -> indexer.setSpeed(1), indexer)

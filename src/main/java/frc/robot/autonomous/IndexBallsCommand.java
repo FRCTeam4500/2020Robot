@@ -14,15 +14,18 @@ import frc.robot.subsystems.indexer.Indexer;
 public class IndexBallsCommand extends CommandBase {
 
   Indexer indexer;
-  double motorSpeed;
+  double indexerSpeed;
+  double intakeSpeed;
   Intake intake;
+
   /**
    * Creates a new Indexer.
    */
-  public IndexBallsCommand(Indexer indexer, Intake intake, double motorSpeed) {
+  public IndexBallsCommand(Indexer indexer, Intake intake, double motorSpeed, double intakeSpeed) {
     this.indexer = indexer;
-    this.motorSpeed = motorSpeed;
+    this.indexerSpeed = motorSpeed;
     this.intake = intake;
+    this.intakeSpeed = intakeSpeed;
     addRequirements(indexer, intake);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -31,7 +34,7 @@ public class IndexBallsCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intake.setSpeed(-motorSpeed);
+    intake.setSpeed(intakeSpeed);
     indexer.setSpeed(0.0);
   }
 
@@ -39,7 +42,7 @@ public class IndexBallsCommand extends CommandBase {
   @Override
   public void execute() {
     if(indexer.sensor0RegistersBall() && !indexer.sensor5RegistersBall()){
-      indexer.setSpeed(motorSpeed);
+      indexer.setSpeed(indexerSpeed);
       intake.setSpeed(0);
     }
     else if(indexer.sensor1RegistersBall() ||
@@ -48,7 +51,7 @@ public class IndexBallsCommand extends CommandBase {
     indexer.sensor4RegistersBall() ||
     indexer.sensor5RegistersBall()){
       indexer.setSpeed(0);
-      intake.setSpeed(-motorSpeed);
+      intake.setSpeed(intakeSpeed);
     }
   }
 

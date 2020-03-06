@@ -29,8 +29,6 @@ import frc.robot.subsystems.vision.VisionSubsystem;
 
 import static frc.robot.utility.ExtendedMath.withDeadzone;
 
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 public class RobotContainerTwo implements IRobotContainer {
     private Turret turret;
     private ITurretFactory factory;
@@ -87,7 +85,7 @@ public class RobotContainerTwo implements IRobotContainer {
         button3.whenPressed(() -> intake.setSpeed(-1), intake);
         button3.whenReleased(() -> intake.setSpeed(0),intake);
         
-        j2button1.whenHeld(new IndexBallsCommand(indexer, intake, 1));
+        j2button1.whenHeld(new IndexBallsCommand(indexer, intake, 1, 0.9));
         j2button1.whenPressed(() -> arm.setAngle(Math.PI/2.5), arm);
         j2button1.whenReleased(() -> arm.setAngle(0.0),arm);
 

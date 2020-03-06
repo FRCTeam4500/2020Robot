@@ -77,7 +77,7 @@ public class AutonRobotContainer implements IRobotContainer{
         resetGyro.whenPressed(() -> swerve.resetPose(swerve.getCurrentPose().getTranslation()),swerve);
 
         indexCommand = new JoystickButton(joystick, 2);
-        indexCommand.whenHeld(new IndexBallsCommand(indexer, intake, 1));
+        indexCommand.whenHeld(new IndexBallsCommand(indexer, intake, 1,0.9));
         
         swerve.setDefaultCommand(new RunCommand(() -> {
             swerve.moveFieldCentric(
@@ -240,7 +240,7 @@ public class AutonRobotContainer implements IRobotContainer{
         .andThen(makeAdvancedMoveToTranslationCommand("CitrusCompatabile"))
         .andThen(() -> swerve.moveFieldCentric(0, 0, 0))
         .andThen(() -> arm.setAngle(Math.PI/2),arm)
-        .andThen(new IndexBallsCommand(indexer, intake, 1)).withTimeout(3)
+        .andThen(new IndexBallsCommand(indexer, intake, 1,0.9)).withTimeout(3)
         .andThen(new WaitCommand(3))
         .andThen(() -> arm.setAngle(0.0),arm)
         .andThen(makeAdvancedMoveToTranslationCommand("CitrusCompatibleComeBackPlease")));

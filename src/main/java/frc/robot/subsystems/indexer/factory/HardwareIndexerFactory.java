@@ -8,7 +8,7 @@ public class HardwareIndexerFactory implements IIndexerFactory{
     /**
      *
      */
-    private static final int BALL_SENSOR_THRESHOLD = 40;
+    private static final int BALL_SENSOR_THRESHOLD = 45;
     /**
      *
      */
@@ -19,7 +19,7 @@ public class HardwareIndexerFactory implements IIndexerFactory{
             new NetworkTableBallSensor("Sensor0", BALL_SENSOR_THRESHOLD), 
             new NetworkTableBallSensor("Sensor1", BALL_SENSOR_THRESHOLD), 
             new NetworkTableBallSensor("Sensor2", BALL_SENSOR_THRESHOLD), 
-            new NetworkTableBallSensor("Sensor3", 50), 
+            new NetworkTableBallSensor("Sensor3", BALL_SENSOR_THRESHOLD), 
             new NetworkTableBallSensor("Sensor4", BALL_SENSOR_THRESHOLD), 
             new NetworkTableBallSensor("Sensor5", BALL_SENSOR_THRESHOLD)
         );

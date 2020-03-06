@@ -2,7 +2,6 @@ package frc.robot.subsystems.Intake.factory;
 
 import com.revrobotics.CANSparkMaxLowLevel;
 import frc.robot.components.hardware.SparkMaxComponent;
-import frc.robot.components.hardware.TalonSRXComponent;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.IntakeMap;
 

@@ -1,5 +1,6 @@
 package frc.robot.subsystems.indexer;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.components.IOutputSetterComponent;
 
@@ -36,5 +37,15 @@ public class Indexer extends SubsystemBase {
     }
     public boolean sensor5RegistersBall(){
         return sensor5.registersBall();
+    }
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
+        builder.addBooleanProperty("Sensor 5 Detects Ball", this::sensor5RegistersBall, null);
+        builder.addBooleanProperty("Sensor 4 Detects Ball", this::sensor4RegistersBall, null);
+        builder.addBooleanProperty("Sensor 3 Detects Ball", this::sensor3RegistersBall, null);
+        builder.addBooleanProperty("Sensor 2 Detects Ball", this::sensor2RegistersBall, null);
+        builder.addBooleanProperty("Sensor 1 Detects Ball", this::sensor1RegistersBall, null);
+        builder.addBooleanProperty("Sensor 0 Detects Ball", this::sensor0RegistersBall, null);
     }
 }
