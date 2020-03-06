@@ -22,8 +22,8 @@ public class TrackLoadingCommand extends CommandBase {
         SmartDashboard.putNumber("KiOffset",0);
         SmartDashboard.putNumber("KdOffset",0);
         SmartDashboard.putNumber("KpAngle",1);
-        SmartDashboard.putNumber("KiAngle",1);
-        SmartDashboard.putNumber("KdAngle",1);
+        SmartDashboard.putNumber("KiAngle",0);
+        SmartDashboard.putNumber("KdAngle",0);
 
         this.kinematicSwerve = swerve;
         this.vision = vision;
@@ -40,7 +40,7 @@ public class TrackLoadingCommand extends CommandBase {
         pid2.setPID(SmartDashboard.getNumber("KpAngle",0),SmartDashboard.getNumber("KiAngle",0),SmartDashboard.getNumber("KdAngle",0));
         offset = vision.getAngleX();
         pid.setSetpoint(0);
-        pid2.setSetpoint(Math.toRadians(180));
+        pid2.setSetpoint(Math.toRadians(0));
     }
 
     @Override
