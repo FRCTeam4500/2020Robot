@@ -37,8 +37,8 @@ public class TrackLoadingCommand extends CommandBase {
     @Override
     public void initialize() {
         offset = vision.getAngleX();
-        pid.setSetpoint(offset);
-        pid2.setSetpoint(Math.toRadians(180) - kinematicSwerve.getGyroAngle());
+        pid.setSetpoint(0);
+        pid2.setSetpoint(Math.toRadians(180));
     }
 
     @Override
@@ -48,10 +48,9 @@ public class TrackLoadingCommand extends CommandBase {
         offset = vision.getAngleX();
         offset = pid.calculate(offset);
         offset = setBounds(offset);
-        angleOffset = vision.getAngleX();
-        angleOffset = pid2.calculate(angleOffset);
+        angleOffset = pid2.calculate(kinematicSwerve.getGyroAngle());
         angleOffset = setBounds(angleOffset);
-        kinematicSwerve.moveRobotCentric(0,offset,angleOffset);
+        kinematicSwerve.moveRobotCentric(0,offset,-angleOffset);
     }
 
     @Override
