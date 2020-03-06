@@ -43,6 +43,8 @@ public class TrackLoadingCommand extends CommandBase {
 
     @Override
     public void execute() {
+        pid.setPID(SmartDashboard.getNumber("KpOffset",0),SmartDashboard.getNumber("KiOffset",0),SmartDashboard.getNumber("KdOffset",0))
+        pid2.setPID(SmartDashboard.getNumber("KpAngle",0),SmartDashboard.getNumber("KiAngle",0),SmartDashboard.getNumber("KdAngle",0))
         offset = vision.getAngleX();
         offset = pid.calculate(offset);
         offset = setBounds(offset);
