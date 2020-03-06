@@ -1,5 +1,7 @@
 package frc.robot.subsystems.swerve.kinematic;
 
+import edu.wpi.first.wpilibj.util.Units;
+
 public class KinematicSwerveMap {
     public static final double ANGLE_P = 1.03858;
     public static final double ANGLE_I = 0.004;
@@ -17,5 +19,12 @@ public class KinematicSwerveMap {
     public static final int FR_SPEED_PORT = 4;
     public static final double SWERVE_LENGTH = 2;
     public static final double SWERVE_WIDTH = 2;
+<<<<<<< Updated upstream
     public static final double MAX_SURFACE_SPEED = 4.8;
+=======
+
+    public static final double WHEEL_DIAMETER_METERS = Units.inchesToMeters(6.0);
+    public static final double DRIVE_LEFTWARD = Units.inchesToMeters(24.5 - 1.75);
+    public static final double DRIVE_FORWARD = Units.inchesToMeters(24.5 - 1.75);
+>>>>>>> Stashed changes
 }
