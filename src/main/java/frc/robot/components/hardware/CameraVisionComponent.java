@@ -26,7 +26,7 @@ public class CameraVisionComponent {
     }
 
     public double getAngleX(){
-        return getEntry("ax");
+        return getEntry("aX");
     }
 
     public double getTargetArea(){
