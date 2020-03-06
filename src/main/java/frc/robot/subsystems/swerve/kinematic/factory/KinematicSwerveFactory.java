@@ -32,6 +32,6 @@ public class KinematicSwerveFactory implements ISwerveFactory {
                 new AHRSAngleGetterComponent(SPI.Port.kMXP)
             );
 
-        return new KinematicSwerve(gyro, fl, fr, bl, br,);
+        return new KinematicSwerve(gyro, fl, fr, bl, br);
     }
 }
