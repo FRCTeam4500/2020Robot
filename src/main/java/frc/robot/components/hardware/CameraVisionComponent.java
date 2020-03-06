@@ -34,7 +34,6 @@ public class CameraVisionComponent {
     }
 
     private double getEntry(String key) {
-        //return table.getEntry(key).getDouble(0);
         return SmartDashboard.getNumber(key, 0);
     }
 }
