@@ -10,9 +10,6 @@ import frc.robot.subsystems.swerve.ISwerveFactory;
 import frc.robot.subsystems.swerve.kinematic.KinematicSwerve;
 import frc.robot.subsystems.swerve.kinematic.KinematicSwerveMap;
 import frc.robot.subsystems.swerve.kinematic.KinematicWheelModule;
-import frc.robot.subsystems.swerve.normal.KinematicSwerve;
-import frc.robot.subsystems.swerve.normal.KinematicSwerveMap;
-import frc.robot.subsystems.swerve.normal.KinematicWheelModule;
 
 public class KinematicSwerveFactory implements ISwerveFactory {
     @Override
@@ -28,8 +25,6 @@ public class KinematicSwerveFactory implements ISwerveFactory {
                     new AHRSAngleGetterComponent(SPI.Port.kMXP)
             );
 
-            KinematicSwerve swerve = new KinematicSwerve(gyro, fl, fr, bl, br,);
-
-            return swerve;
+        return new KinematicSwerve(gyro, fl, fr, bl, br,);
     }
 }
