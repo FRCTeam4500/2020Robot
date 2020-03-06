@@ -31,11 +31,7 @@ public class LimelightVisionComponent implements IVisionComponent, I3DSupplierCo
     @Override
     public boolean hasValidTargets() {
         double value = getEntry("tv");
-        if (value == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return value == 1;
     }
 
     @Override
