@@ -17,4 +17,5 @@ public class KinematicSwerveMap {
     public static final int FR_SPEED_PORT = 4;
     public static final double SWERVE_LENGTH = 2;
     public static final double SWERVE_WIDTH = 2;
+    public static final double MAX_SURFACE_SPEED = 4.8;
 }
