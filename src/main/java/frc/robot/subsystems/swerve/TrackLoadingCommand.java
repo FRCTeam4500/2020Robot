@@ -29,25 +29,27 @@ public class TrackLoadingCommand extends CommandBase {
         this.vision = vision;
         this.pid = new PIDController(SmartDashboard.getNumber("KpOffset",0),SmartDashboard.getNumber("KiOffset",0),SmartDashboard.getNumber("KdOffset",0));
         this.pid2 = new PIDController(SmartDashboard.getNumber("KpAngle",0),SmartDashboard.getNumber("KiAngle",0),SmartDashboard.getNumber("KdAngle",0));
+        pid2.enableContinuousInput(-Math.toRadians(0),Math.toRadians(360));
 
         addRequirements(kinematicSwerve, vision);
     }
 
     @Override
     public void initialize() {
-
+        offset = vision.getAngleX();
+        pid.setSetpoint(offset);
+        pid2.setSetpoint(Math.toRadians(180) - kinematicSwerve.getGyroAngle());
     }
 
     @Override
     public void execute() {
-        offset = vision.getHorizontalOffset();
+        offset = vision.getAngleX();
         offset = pid.calculate(offset);
         offset = setBounds(offset);
-        pid.setSetpoint(offset);
         angleOffset = vision.getAngleX();
         angleOffset = pid2.calculate(angleOffset);
         angleOffset = setBounds(angleOffset);
-        kinematicSwerve.moveRobotCentric(offset,0,-angleOffset);
+        kinematicSwerve.moveRobotCentric(0,offset,angleOffset);
     }
 
     @Override
