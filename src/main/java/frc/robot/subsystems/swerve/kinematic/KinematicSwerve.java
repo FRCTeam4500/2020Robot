@@ -110,7 +110,7 @@ public class KinematicSwerve extends SubsystemBase {
   }
 
   public double getGyroAngle(){
-    return gyro.getAngle();
+    return gyro.getAngle() - currentGyroZero;
   }
 
   public void resetRobotAngle(){
