@@ -19,10 +19,10 @@ public class TrackLoadingCommand extends CommandBase {
 
     public TrackLoadingCommand(KinematicSwerve swerve, CameraVisionSubsystem vision) {
 
-        SmartDashboard.putNumber("KpOffset",.4);
+        SmartDashboard.putNumber("KpOffset",-.5);
         SmartDashboard.putNumber("KiOffset",0);
         SmartDashboard.putNumber("KdOffset",0);
-        SmartDashboard.putNumber("KpAngle",0.09);
+        SmartDashboard.putNumber("KpAngle",-0.09);
         SmartDashboard.putNumber("KiAngle",0);
         SmartDashboard.putNumber("KdAngle",0);
         SmartDashboard.putNumber("KpForward",1);
