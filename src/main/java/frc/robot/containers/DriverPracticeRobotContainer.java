@@ -387,11 +387,11 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
     }
     private void configureClimber() {
         climberUpButton
-        .whenPressed(() -> climber.setSpeed(0.25), climber)
+        .whenPressed(() -> climber.setSpeed(1), climber)
         .whenReleased(() -> climber.setSpeed(0), climber);
 
         climberDownButton
-        .whenPressed(() -> climber.setSpeed(-0.25), climber)
+        .whenPressed(() -> climber.setSpeed(-1), climber)
         .whenReleased(() -> climber.setSpeed(0), climber);
     }
     private void configureTurret() {
