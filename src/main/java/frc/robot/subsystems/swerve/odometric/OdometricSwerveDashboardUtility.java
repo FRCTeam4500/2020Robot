@@ -24,5 +24,6 @@ public class OdometricSwerveDashboardUtility implements Sendable {
         builder.addDoubleProperty("PoseX", () -> swerve.getCurrentPose().getTranslation().getX(), null);
         builder.addDoubleProperty("PoseY", () -> swerve.getCurrentPose().getTranslation().getY(), null);
         builder.addDoubleProperty("PoseR", () -> swerve.getCurrentPose().getRotation().getRadians(), null);
+        builder.addDoubleProperty("Robot Angle", () -> swerve.getGyroAngle(), null);
     }
 }

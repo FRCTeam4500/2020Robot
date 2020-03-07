@@ -1,6 +1,7 @@
 package frc.robot.subsystems.swerve;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.components.hardware.CameraVisionComponent;
@@ -18,18 +19,17 @@ public class TrackLoadingCommand extends CommandBase {
 
     public TrackLoadingCommand(KinematicSwerve swerve, CameraVisionSubsystem vision) {
 
-        SmartDashboard.putNumber("KpOffset",1);
+        SmartDashboard.putNumber("KpOffset",.25);
         SmartDashboard.putNumber("KiOffset",0);
         SmartDashboard.putNumber("KdOffset",0);
-        SmartDashboard.putNumber("KpAngle",1);
-        SmartDashboard.putNumber("KiAngle",1);
-        SmartDashboard.putNumber("KdAngle",1);
+        SmartDashboard.putNumber("KpAngle",0.1);
+        SmartDashboard.putNumber("KiAngle",0);
+        SmartDashboard.putNumber("KdAngle",0);
 
         this.kinematicSwerve = swerve;
         this.vision = vision;
         this.pid = new PIDController(SmartDashboard.getNumber("KpOffset",0),SmartDashboard.getNumber("KiOffset",0),SmartDashboard.getNumber("KdOffset",0));
         this.pid2 = new PIDController(SmartDashboard.getNumber("KpAngle",0),SmartDashboard.getNumber("KiAngle",0),SmartDashboard.getNumber("KdAngle",0));
-        pid2.enableContinuousInput(-Math.toRadians(0),Math.toRadians(360));
 
         addRequirements(kinematicSwerve, vision);
     }
@@ -39,18 +39,18 @@ public class TrackLoadingCommand extends CommandBase {
         offset = vision.getAngleX();
         pid.setSetpoint(0);
         pid2.setSetpoint(Math.toRadians(180));
+        pid.setPID(SmartDashboard.getNumber("KpOffset",0),SmartDashboard.getNumber("KiOffset",0),SmartDashboard.getNumber("KdOffset",0));
+        pid2.setPID(SmartDashboard.getNumber("KpAngle",0),SmartDashboard.getNumber("KiAngle",0),SmartDashboard.getNumber("KdAngle",0));
     }
 
     @Override
     public void execute() {
-        pid.setPID(SmartDashboard.getNumber("KpOffset",0),SmartDashboard.getNumber("KiOffset",0),SmartDashboard.getNumber("KdOffset",0))
-        pid2.setPID(SmartDashboard.getNumber("KpAngle",0),SmartDashboard.getNumber("KiAngle",0),SmartDashboard.getNumber("KdAngle",0))
-        offset = vision.getAngleX();
+        offset = vision.getHorizontalOffset();
         offset = pid.calculate(offset);
         offset = setBounds(offset);
-        angleOffset = pid2.calculate(kinematicSwerve.getGyroAngle());
+        angleOffset = pid2.getP()*new Rotation2d(Math.PI).minus(new Rotation2d(kinematicSwerve.getGyroAngle())).getRadians();
         angleOffset = setBounds(angleOffset);
-        kinematicSwerve.moveRobotCentric(0,offset,-angleOffset);
+        kinematicSwerve.moveRobotCentric(0,offset,angleOffset);
     }
 
     @Override
