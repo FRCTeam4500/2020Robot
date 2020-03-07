@@ -40,7 +40,7 @@ public class TrackLoadingCommand extends CommandBase {
         pid2.setPID(SmartDashboard.getNumber("KpAngle",0),SmartDashboard.getNumber("KiAngle",0),SmartDashboard.getNumber("KdAngle",0));
         offset = vision.getAngleX();
         pid.setSetpoint(0);
-        pid2.setSetpoint(Math.toRadians(0));
+        pid2.setSetpoint(Math.toRadians(180));
     }
 
     @Override
