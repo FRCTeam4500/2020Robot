@@ -41,8 +41,6 @@ public class OdometricSimulatedSwerveFactory {
             speedMotor, 
             new Translation2d(forwardTranslation, leftwardTranslation), 
             MAX_SURFACE_SPEED, 
-            angleMotor, 
-            speedMotor, 
             WHEEL_DIAMETER,
             1,
             1

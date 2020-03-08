@@ -10,10 +10,7 @@ package frc.robot.subsystems.swerve.odometric;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
-import frc.robot.components.IAngleGetterComponent;
-import frc.robot.components.IAngleSetterComponent;
-import frc.robot.components.IAngularVelocityGetterComponent;
-import frc.robot.components.IAngularVelocitySetterComponent;
+import frc.robot.components.ISmartMotorComponent;
 import frc.robot.subsystems.swerve.kinematic.KinematicWheelModule;
 import static frc.robot.utility.ExtendedMath.getShortestRadianToTarget;
 
@@ -22,32 +19,30 @@ import static frc.robot.utility.ExtendedMath.getShortestRadianToTarget;
  */
 public class OdometricWheelModule extends KinematicWheelModule {
 
-    protected IAngleGetterComponent angleGetterComponent;
-    protected IAngularVelocityGetterComponent angularVelocityGetterComponent;
+    protected ISmartMotorComponent driveMotor;
+    protected ISmartMotorComponent angleMotor;
     protected boolean wheelWrapEnabled = true;
     protected boolean wheelInversionEnabled = true;
 
-    public OdometricWheelModule(IAngleSetterComponent angleSetterComponent,
-            IAngularVelocitySetterComponent angularVelocitySetterComponent, Translation2d translationFromSwerveCenter,
-            double maxSurfaceSpeed, IAngleGetterComponent angleGetterComponent,
-            IAngularVelocityGetterComponent angularVelocityGetterComponent, double wheelDiameter,
+    public OdometricWheelModule(ISmartMotorComponent angleMotor, ISmartMotorComponent driveMotor, Translation2d translationFromSwerveCenter,
+            double maxSurfaceSpeed, double wheelDiameter,
             double angleRotsPerMotorRots, double driveRotsPerMotorRots) {
-        super(angleSetterComponent, angularVelocitySetterComponent, translationFromSwerveCenter, maxSurfaceSpeed,
-                wheelDiameter, angleRotsPerMotorRots, driveRotsPerMotorRots);
-        this.angleGetterComponent = angleGetterComponent;
-        this.angularVelocityGetterComponent = angularVelocityGetterComponent;
+            super(angleMotor, driveMotor, translationFromSwerveCenter, maxSurfaceSpeed, wheelDiameter, angleRotsPerMotorRots, driveRotsPerMotorRots);
+            this.driveMotor = driveMotor;
+            this.angleMotor = angleMotor;
     }
+    
 
     public SwerveModuleState getState() {
-        return new SwerveModuleState(angularVelocityGetterComponent.getAngularVelocity() * driveRotsPerMotorRots / 2
+        return new SwerveModuleState(driveMotor.getAngularVelocity() * driveRotsPerMotorRots / 2
                 / Math.PI * Math.PI * wheelDiameter,
-                new Rotation2d(angleGetterComponent.getAngle() * angleRotsPerMotorRots));
+                new Rotation2d(angleMotor.getAngle() * angleRotsPerMotorRots));
     }
 
     @Override
     public void drive(SwerveModuleState state) {
         if (wheelWrapEnabled) {
-            double currentAngle = angleGetterComponent.getAngle() *angleRotsPerMotorRots;
+            double currentAngle = angleMotor.getAngle() *angleRotsPerMotorRots;
 
             // Get the closest angle equivalent to the target angle. Otherwise the wheel
             // module is going
@@ -81,5 +76,8 @@ public class OdometricWheelModule extends KinematicWheelModule {
             }
         }
         super.drive(state);
+    }
+    public void coast(){
+        driveMotor.setOutput(0);
     }
 }

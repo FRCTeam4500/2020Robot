@@ -1,6 +1,6 @@
 {
   "lengthUnit": "Meter",
-  "maxVelocity": 2.0,
+  "maxVelocity": 4.0,
   "maxAcceleration": 2.0,
   "wheelBase": 1.0,
   "gameName": "Infinite Recharge",

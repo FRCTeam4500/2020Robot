@@ -90,7 +90,6 @@ public class AutonRobotContainer implements IRobotContainer{
 
         SmartDashboard.putData("Swerve Positions",new OdometricSwerveDashboardUtility(swerve));
 
-        var baseTranslation = new Translation2d(13, -5.75);
         var basePose = new Pose2d(new Translation2d(13,-5.75),new Rotation2d(Math.PI));
         var resetPose = new InstantCommand(() -> swerve.resetPose(basePose),swerve);
         swerve.resetPose(basePose);

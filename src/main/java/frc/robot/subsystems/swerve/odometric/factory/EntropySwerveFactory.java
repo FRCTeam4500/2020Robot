@@ -73,9 +73,7 @@ public class EntropySwerveFactory {
             srx, 
             falcon, 
             translationFromSwerveCenter, 
-            MAX_SURFACE_SPEED_METERS_PER_SECOND, 
-            srx, 
-            falcon, 
+            MAX_SURFACE_SPEED_METERS_PER_SECOND,  
             WHEEL_DIAMETER_METERS,
             ANGLE_ROTATIONS_PER_MOTOR_ROTATIONS,
             DRIVE_ROTATIONS_PER_MOTOR_ROTATIONS);

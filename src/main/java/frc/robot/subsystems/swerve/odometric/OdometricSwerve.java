@@ -73,4 +73,9 @@ public class OdometricSwerve extends KinematicSwerve {
             module.wheelInversionEnabled = enable;
         }
     }
+    public void coast(){
+        for(var module : odometricWheelModules){
+            module.coast();
+        }
+    }
 }

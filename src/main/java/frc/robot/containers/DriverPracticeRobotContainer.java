@@ -7,6 +7,10 @@
 
 package frc.robot.containers;
 
+import static frc.robot.autonomous.ExtendedTrajectoryUtilities.tryGetDeployedTrajectory;
+import static frc.robot.autonomous.GenericAutonUtilities.createDefaultControllerBuilder;
+import static frc.robot.utility.ExtendedMath.withDeadzone;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -53,14 +57,12 @@ import frc.robot.subsystems.swerve.odometric.factory.EntropySwerveFactory;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.factory.HardwareTurretFactory;
 import frc.robot.subsystems.vision.VisionSubsystem;
-
-import static frc.robot.utility.ExtendedMath.withDeadzone;
-import static frc.robot.autonomous.ExtendedTrajectoryUtilities.tryGetDeployedTrajectory;
-import static frc.robot.autonomous.GenericAutonUtilities.createDefaultControllerBuilder;
 /**
  * Add your docs here.
  */
 public class DriverPracticeRobotContainer implements IRobotContainer{
+
+    private static final boolean coastingEnabled = false;
 
     private SendableChooser<Command> autonomousChooser;
     
@@ -189,7 +191,8 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
         .andThen(new Autonomous_StopShootingCommand(indexer, shooter));
     }
     private CommandGroupBase createTrenchCitrusPart1Command() {
-        return new InstantCommand(() -> swerve.resetPose(new Pose2d(13,-7.5,new Rotation2d(Math.PI))), swerve)
+        return new InstantCommand(() -> swerve.resetPose(new Pose2d(12.565,-4.875,new Rotation2d(Math.PI))), swerve)
+
         .andThen(() -> arm.setAngle(Math.PI / 2),arm)
         .andThen(new IndexBallsCommand(indexer, intake, 1, 0.9).withTimeout(4)
         .alongWith(new OdometricSwerve_AdvancedFollowTrajectoryCommand(
@@ -202,35 +205,59 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
         .andThen(() -> arm.setAngle(0), arm);
     }
     private SequentialCommandGroup createCitrusCompatibleCommand() {
-        return new InstantCommand(
+        return new InstantCommand(() -> SmartDashboard.putNumber("offset", Units.degreesToRadians(3.5))).andThen(new InstantCommand(
             () -> swerve.resetPose(
-                new Pose2d(13, -5.75, new Rotation2d(Math.PI))), 
-                swerve)
-        .andThen(new Autonomous_StartShootingCommand(indexer, shooter, -800, -800))
-      .andThen(new WaitCommand(2))
+                new Pose2d(12.565,-4.875,new Rotation2d(Math.PI))), 
+                swerve))
+                .andThen(new Autonomous_PreciseShootingCommand(shooter, indexer, new IPreciseShootingOI(){
+        
+                    @Override
+                    public double getTopSpeed() {
+                        return -3390;
+                    }
+                
+                    @Override
+                    public double getThreshold() {
+                        return 500;
+                    }
+                
+                    @Override
+                    public double getCoefficient() {
+                        return 1.47;
+                    }
+                
+                    @Override
+                    public double getBottomSpeed() {
+                        return -2520;
+                    }
+                }).withTimeout(3))
+      
       .andThen(new Autonomous_StopShootingCommand(indexer, shooter))
-      .andThen(new WaitCommand(4))
       .andThen(
         new OdometricSwerve_AdvancedFollowTrajectoryCommand(
             swerve, 
             createDefaultControllerBuilder().withEndRotation(new Rotation2d(Math.PI + Math.PI * 1.2/7))
             .withTrajectory(tryGetDeployedTrajectory("CitrusCompatublePart1"))
+            .withMaxVelocity(4.0)
             .buildController()
         )
       )
       .andThen(() -> swerve.moveFieldCentric(0, 0, 0),swerve)
-      .andThen(() -> arm.setAngle(Math.PI/2),arm)
-      .andThen(() -> intake.setSpeed(-1), intake)
-      .andThen(() -> indexer.setSpeed(1), indexer)
-      .andThen(
+      .andThen(() -> arm.setAngle(Math.PI/2.1),arm)
+      .andThen(new IndexBallsCommand(indexer, intake, 1.0, 0.9)
+      .raceWith(
         //new IndexBallsCommand(indexer, intake, 1)
         new RunCommand(() -> swerve.moveFieldCentric(0.1, -0.25*2, 0), swerve)
         .withTimeout(2)
-        .andThen(new RunCommand(() -> swerve.moveFieldCentric(0.1*2.4, -0.25*2.4, 0), swerve).withTimeout(0.7)
+        .andThen(new RunCommand(() -> swerve.moveFieldCentric(0.1*2.2, -0.25*2.2, 0), swerve).withTimeout(0.7)
         .andThen(new RunCommand(() -> swerve.moveFieldCentric(0,0,1)).withTimeout(1))
+        .andThen(new RunCommand(() -> swerve.moveFieldCentric(-0.1,0,0)).withTimeout(1))
+        .andThen(new WaitCommand(1))
+        .andThen(new RunCommand(() -> swerve.moveFieldCentric(0, 0, -2)).withTimeout(1))
         )
         )
-
+      )
+      .andThen(() -> SmartDashboard.putNumber("offset", 0.0))
       .andThen(() -> arm.setAngle(0), arm)
       .andThen(() -> intake.setSpeed(0), intake)
       .andThen(() -> indexer.setSpeed(0), indexer)
@@ -242,20 +269,36 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
             .withInitialAllowableTranslationError(0.5)
             .withFinalAllowableTranslationError(0.02)
             .withTrajectory(tryGetDeployedTrajectory("CitrusCompatiblePart3"))
+            .withMaxVelocity(4.0)
             .buildController()
-        )
+        ).withTimeout(0)
       )
       .andThen(() -> swerve.moveFieldCentric(0, 0, 0), swerve)
-      .andThen(
-        new Autonomous_StartShootingCommand(indexer, shooter, -800, -800)
-      )
-      .andThen(new WaitCommand(2))
-      .andThen(new Autonomous_StopShootingCommand(indexer, shooter))
-      .andThen(() -> indexer.setSpeed(-1), indexer)
-      .andThen(() -> intake.setSpeed(1),intake)
-      .andThen(new WaitCommand(4))
-      .andThen(() -> indexer.setSpeed(0),indexer)
-      .andThen(() -> intake.setSpeed(0),intake);
+      .andThen(new Autonomous_PreciseShootingCommand(shooter, indexer,             new IPreciseShootingOI(){
+            
+        @Override
+        public double getTopSpeed() {
+            double distance = Units.metersToFeet(visionDistanceCalculator.getDistanceFromTargetMeters());
+            return -12043 + 1244*distance - 60.7 *distance * distance + .905 * distance * distance * distance;
+        }
+    
+        @Override
+        public double getThreshold() {
+            return 500;
+        }
+    
+        @Override
+        public double getCoefficient() {
+            return 1;
+        }
+    
+        @Override
+        public double getBottomSpeed() {
+            double distance = Units.metersToFeet(visionDistanceCalculator.getDistanceFromTargetMeters());
+            return -7179 + 466*distance - 18.1*distance*distance + .211 * distance * distance * distance;
+        }
+    }).withTimeout(4))
+      .andThen(new Autonomous_StopShootingCommand(indexer, shooter));
     }
     private SequentialCommandGroup createAwayFromCenterMoveBackwardAndShootCommand() {
         return new InstantCommand(
@@ -292,8 +335,29 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
             () -> swerve.resetPose(
                 new Pose2d(13, -5.75, new Rotation2d(Math.PI))), 
                 swerve)
-        .andThen(new Autonomous_StartShootingCommand(indexer, shooter, -3000, -3000))
-        .andThen(new WaitCommand(2))
+        //.andThen(new Autonomous_StartShootingCommand(indexer, shooter, -3390, -2520))
+        .andThen(new Autonomous_PreciseShootingCommand(shooter, indexer, new IPreciseShootingOI(){
+        
+            @Override
+            public double getTopSpeed() {
+                return -3390;
+            }
+        
+            @Override
+            public double getThreshold() {
+                return 500;
+            }
+        
+            @Override
+            public double getCoefficient() {
+                return 1.47;
+            }
+        
+            @Override
+            public double getBottomSpeed() {
+                return -2520;
+            }
+        }).withTimeout(4))
         .andThen(new Autonomous_StopShootingCommand(indexer, shooter))
         .andThen(new OdometricSwerve_AdvancedFollowTrajectoryCommand(
             swerve, 
@@ -395,11 +459,12 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
         .whenReleased(() -> climber.setSpeed(0), climber);
     }
     private void configureTurret() {
+        SmartDashboard.putNumber("offset", Units.degreesToRadians(3.5));
         turret.setDefaultCommand(
             new PIDCommand(
-                new PIDController(-6, 0, 0), 
+                new PIDController(-3, 0, 0), 
                 limelight::getHorizontalOffset, 
-                () -> 0, 
+                () -> SmartDashboard.getNumber("offset", Units.degreesToRadians(3.5)), 
                 turret::setTurretOutput, 
                 turret, limelight
             )
@@ -407,11 +472,18 @@ public class DriverPracticeRobotContainer implements IRobotContainer{
     }
     private void configureSwerve() {
         swerve.setDefaultCommand(new RunCommand(() -> {
+            var forwardSpeed = withDeadzone(-driveStick.getY(), yDeadzone)*ySensitivity;
+            var leftwardSpeed = withDeadzone(-driveStick.getX(), xDeadzone)*xSensitivity;
+            var counterClockwardSpeed = withDeadzone(-driveStick.getZ() , zDeadzone)*zSensitivity;
+            if(forwardSpeed == 0 && leftwardSpeed == 0 && counterClockwardSpeed == 0 && coastingEnabled){
+                swerve.coast();
+            }else{
             swerve.moveFieldCentric(
-                withDeadzone(-driveStick.getY(), yDeadzone)*ySensitivity, 
-                withDeadzone(-driveStick.getX(), xDeadzone)*xSensitivity,
-                withDeadzone(-driveStick.getZ() , zDeadzone)*zSensitivity
+                forwardSpeed, 
+                leftwardSpeed,
+                counterClockwardSpeed
             );
+            }
         }, swerve));
     }
     private void configureMainIntakeButton() {

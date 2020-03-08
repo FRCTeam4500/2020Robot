@@ -11,10 +11,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
-import frc.robot.components.dashboard.AngleGetterDashboardDecorator;
-import frc.robot.components.dashboard.AngleSetterDashboardDecorator;
-import frc.robot.components.dashboard.AngularVelocityGetterDashboardDecorator;
-import frc.robot.components.dashboard.AngularVelocitySetterDashboardDecorator;
 import frc.robot.components.dashboard.GyroDashboardDecorator;
 import frc.robot.components.hardware.AHRSAngleGetterComponent;
 import frc.robot.components.hardware.TalonSRXComponent;
@@ -121,11 +117,6 @@ public class GertrudeOdometricSwerveFactory {
         angleMotor.configMotionAcceleration(ANGLE_A, TIMEOUT); // 1800
         angleMotor.setInverted(angleInverted);
 
-        var sentAngle = new AngleSetterDashboardDecorator("Sent Angle", subsystem, angleMotor);
-        var sentAngularVelocity = new AngularVelocitySetterDashboardDecorator("Sent Angular Velocity", subsystem, speedMotor);
-        var actualAngle = new AngleGetterDashboardDecorator("Actual Angle", subsystem, angleMotor);
-        var actualAngularVelocity = new AngularVelocityGetterDashboardDecorator("Actual Angular Velocity", subsystem, speedMotor);
-
-        return new OdometricWheelModule(sentAngle, sentAngularVelocity, translationFromSwerveCenter, MAX_SURFACE_SPEED, actualAngle, actualAngularVelocity,WHEEL_DIAMETER,1,1);
+        return new OdometricWheelModule(angleMotor, speedMotor, translationFromSwerveCenter, MAX_SURFACE_SPEED,WHEEL_DIAMETER,1,1);
     }
 }
