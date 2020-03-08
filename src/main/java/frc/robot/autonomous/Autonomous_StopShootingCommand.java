@@ -11,9 +11,10 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.shooter.Shooter;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
+/**
+ * @deprecated Use {@link frc.robot.autonomous.pshoot.Autonomous_PreciseShootingCommand Autonomous_PreciseShootingCommand} instead.
+ */
+@Deprecated
 public class Autonomous_StopShootingCommand extends InstantCommand {
   Indexer indexer;
   Shooter shooter;

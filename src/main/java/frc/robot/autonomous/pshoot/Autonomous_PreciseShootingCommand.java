@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.autonomous;
+package frc.robot.autonomous.pshoot;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.indexer.Indexer;
@@ -23,6 +23,9 @@ public class Autonomous_PreciseShootingCommand extends CommandBase {
     this.indexer = indexer;
     this.oi = oi;
     addRequirements(shooter, indexer);
+  }
+  public Autonomous_PreciseShootingCommand(Shooter shooter, Indexer indexer, double topSpeed, double bottomSpeed, double coefficient, double threshold){
+    this(shooter, indexer, new SpecificSpeedsPreciseShootingOI(topSpeed, bottomSpeed, coefficient, threshold));
   }
 
   // Called when the command is initially scheduled.

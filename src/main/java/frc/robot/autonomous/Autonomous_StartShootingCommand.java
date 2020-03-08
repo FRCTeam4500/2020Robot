@@ -11,6 +11,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.shooter.Shooter;
 
+/**
+ * @deprecated Use {@link frc.robot.autonomous.pshoot.Autonomous_PreciseShootingCommand Autonomous_PreciseShootingCommand} instead.
+ */
+@Deprecated
 public class Autonomous_StartShootingCommand extends CommandBase {
   /**
    * Creates a new Autonomous_StartShootingCommand.

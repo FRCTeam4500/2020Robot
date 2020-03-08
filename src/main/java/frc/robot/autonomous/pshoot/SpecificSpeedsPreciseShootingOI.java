@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.autonomous;
+package frc.robot.autonomous.pshoot;
 
 /**
  * Add your docs here.
