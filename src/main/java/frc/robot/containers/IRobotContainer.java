@@ -16,4 +16,7 @@ public interface IRobotContainer {
     default Command getAutonomousCommand(){
         return null;
     }
+    default void teleopInit(){
+        
+    }
 }

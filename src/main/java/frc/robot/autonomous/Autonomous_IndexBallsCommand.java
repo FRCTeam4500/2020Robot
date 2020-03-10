@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.indexer.Indexer;
 
-public class IndexBallsCommand extends CommandBase {
+public class Autonomous_IndexBallsCommand extends CommandBase {
 
   Indexer indexer;
   double indexerSpeed;
@@ -21,7 +21,7 @@ public class IndexBallsCommand extends CommandBase {
   /**
    * Creates a new Indexer.
    */
-  public IndexBallsCommand(Indexer indexer, Intake intake, double motorSpeed, double intakeSpeed) {
+  public Autonomous_IndexBallsCommand(Indexer indexer, Intake intake, double motorSpeed, double intakeSpeed) {
     this.indexer = indexer;
     this.indexerSpeed = motorSpeed;
     this.intake = intake;

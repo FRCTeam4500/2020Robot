@@ -8,9 +8,11 @@
 package frc.robot.autonomous;
 
 import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.subsystems.vision.VisionSubsystem;
+import frc.robot.utility.ExtendedMath;
 
 /**
  * Add your docs here.
@@ -26,9 +28,8 @@ public class VisionDistanceCalculator implements Sendable {
     public double getDistanceFromTargetMeters(){
         return (targetHeightMeters - cameraHeightMeters)/Math.tan(cameraPitchRadians + vision.getVerticalOffset());
     }
-    public double getDesiredTurretOffset(double turretAngle, double swerveAngle){
-        //TODO: The Do
-        return 0.0;
+    public double getDesiredTurretOffset(Translation2d turretTranslation, Translation2d visionTargetTranslation, Translation2d trueTargetTranslation){
+        return ExtendedMath.angleBetween(trueTargetTranslation.minus(turretTranslation),visionTargetTranslation.minus(turretTranslation));
     }
     @Override
     public void initSendable(SendableBuilder builder) {

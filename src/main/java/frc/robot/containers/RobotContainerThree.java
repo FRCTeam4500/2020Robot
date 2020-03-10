@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.autonomous.IndexBallsCommand;
+import frc.robot.autonomous.Autonomous_IndexBallsCommand;
 import frc.robot.components.hardware.LimelightVisionComponent;
 import frc.robot.components.hardware.TalonSRXComponent;
 import frc.robot.subsystems.Intake.Intake;
@@ -79,7 +79,7 @@ public class RobotContainerThree implements IRobotContainer {
             }
         },arm);
 
-        button2.whileHeld(new IndexBallsCommand(indexer, intake, 1.0,0.9));
+        button2.whileHeld(new Autonomous_IndexBallsCommand(indexer, intake, 1.0,0.9));
   
         swerve.setDefaultCommand(new FunctionalCommand(() -> swerve.enableWheelInversion(true),() -> {
             swerve.moveFieldCentric(

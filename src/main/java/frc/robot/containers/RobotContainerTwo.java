@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autonomous.GenericAutonUtilities;
-import frc.robot.autonomous.IndexBallsCommand;
+import frc.robot.autonomous.Autonomous_IndexBallsCommand;
 import frc.robot.components.hardware.LimelightVisionComponent;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.factory.HardwareIntakeFactory;
@@ -85,7 +85,7 @@ public class RobotContainerTwo implements IRobotContainer {
         button3.whenPressed(() -> intake.setSpeed(-1), intake);
         button3.whenReleased(() -> intake.setSpeed(0),intake);
         
-        j2button1.whenHeld(new IndexBallsCommand(indexer, intake, 1, 0.9));
+        j2button1.whenHeld(new Autonomous_IndexBallsCommand(indexer, intake, 1, 0.9));
         j2button1.whenPressed(() -> arm.setAngle(Math.PI/2.5), arm);
         j2button1.whenReleased(() -> arm.setAngle(0.0),arm);
 

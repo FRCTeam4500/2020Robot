@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autonomous.Autonomous_StartShootingCommand;
 import frc.robot.autonomous.Autonomous_StopShootingCommand;
-import frc.robot.autonomous.IndexBallsCommand;
+import frc.robot.autonomous.Autonomous_IndexBallsCommand;
 import frc.robot.components.hardware.SparkMaxComponent;
 import frc.robot.components.hardware.TalonSRXComponent;
 import frc.robot.subsystems.Intake.Intake;
@@ -77,7 +77,7 @@ public class AutonRobotContainer implements IRobotContainer{
         resetGyro.whenPressed(() -> swerve.resetPose(swerve.getCurrentPose().getTranslation()),swerve);
 
         indexCommand = new JoystickButton(joystick, 2);
-        indexCommand.whenHeld(new IndexBallsCommand(indexer, intake, 1,0.9));
+        indexCommand.whenHeld(new Autonomous_IndexBallsCommand(indexer, intake, 1,0.9));
         
         swerve.setDefaultCommand(new RunCommand(() -> {
             swerve.moveFieldCentric(
@@ -239,7 +239,7 @@ public class AutonRobotContainer implements IRobotContainer{
         .andThen(makeAdvancedMoveToTranslationCommand("CitrusCompatabile"))
         .andThen(() -> swerve.moveFieldCentric(0, 0, 0))
         .andThen(() -> arm.setAngle(Math.PI/2),arm)
-        .andThen(new IndexBallsCommand(indexer, intake, 1,0.9)).withTimeout(3)
+        .andThen(new Autonomous_IndexBallsCommand(indexer, intake, 1,0.9)).withTimeout(3)
         .andThen(new WaitCommand(3))
         .andThen(() -> arm.setAngle(0.0),arm)
         .andThen(makeAdvancedMoveToTranslationCommand("CitrusCompatibleComeBackPlease")));

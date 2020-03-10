@@ -20,8 +20,9 @@ import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autonomous.pshoot.Autonomous_PreciseShootingCommand;
+import frc.robot.autonomous.Autonomous_ForceIndexBallsCommand;
 import frc.robot.autonomous.GenericAutonUtilities;
-import frc.robot.autonomous.IndexBallsCommand;
+import frc.robot.autonomous.Autonomous_IndexBallsCommand;
 import frc.robot.autonomous.VisionDistanceCalculator;
 import frc.robot.autonomous.pshoot.VisionPreciseShootingOI;
 import frc.robot.components.hardware.LimelightVisionComponent;
@@ -81,6 +82,9 @@ public class DriverPracticeRobotContainer implements IRobotContainer {
             zDeadzone = 0.3;
 
     private double turretRadianOffset = 0.0;
+    private Translation2d 
+    visionTargetTranslation = new Translation2d(15.98, -5.85), 
+    innerTargetTranslation = new Translation2d(15.98 + 0.74,-5.85);
 
     public DriverPracticeRobotContainer() {
 
@@ -103,7 +107,7 @@ public class DriverPracticeRobotContainer implements IRobotContainer {
 
         configureAutonomous();
 
-        backupIndexer.whileHeld(new IndexBallsCommand(indexer, intake, 1, 0));
+        backupIndexer.whileHeld(new Autonomous_IndexBallsCommand(indexer, intake, 1, 0));
     }
 
     private double getTurretRadianOffset() {
@@ -154,7 +158,7 @@ public class DriverPracticeRobotContainer implements IRobotContainer {
                     .withEndRotation(new Rotation2d(7 * Math.PI / 6))
                     .buildController()))
             .andThen(() -> arm.setAngle(Math.PI / 2), arm)
-            .andThen(new IndexBallsCommand(indexer, intake, 1, 0.9).withTimeout(5))
+            .andThen(new Autonomous_IndexBallsCommand(indexer, intake, 1, 0.9).withTimeout(5))
             .andThen(() -> arm.setAngle(0), arm)
             .andThen(
                 new OdometricSwerve_AdvancedFollowTrajectoryCommand(
@@ -169,28 +173,33 @@ public class DriverPracticeRobotContainer implements IRobotContainer {
 
     private SequentialCommandGroup createTrenchCitrusCompatiblePartACommand() {
         return createTrenchCitrusPart1Command()
-        .andThen(createTrenchCitrusPart1Command())
         .andThen(new OdometricSwerve_AdvancedFollowTrajectoryCommand(
             swerve,
             createDefaultControllerBuilder()
             .withEndRotation(new Rotation2d(Math.PI))
             .withTrajectory(tryGetDeployedTrajectory("TrenchCitrusCompatiblePart2A"))
+            .withMaxVelocity(4.0)
             .buildController()))
+        .andThen(this::aimAtInnerPort, limelight, turret, swerve)
         .andThen(new Autonomous_PreciseShootingCommand(shooter, indexer, visionPreciseShootingOI).withTimeout(3));
     }
 
     private CommandGroupBase createTrenchCitrusPart1Command() {
-        return new InstantCommand(() -> swerve.resetPose(new Pose2d(12.565, -4.875, new Rotation2d(Math.PI))), swerve)
-            .andThen(() -> arm.setAngle(Math.PI / 2), arm)
+        return new InstantCommand(() -> swerve.resetPose(new Pose2d(13, -7.5, new Rotation2d(Math.PI))), swerve)
+            .andThen(this::aimAtInnerPort, turret, limelight, swerve)
+            .andThen(new Autonomous_PreciseShootingCommand(shooter, indexer, visionPreciseShootingOI).withTimeout(3))
             .andThen(
-                new IndexBallsCommand(indexer, intake, 1, 0.9).withTimeout(4)
-                .alongWith(new OdometricSwerve_AdvancedFollowTrajectoryCommand(
+                
+                (new OdometricSwerve_AdvancedFollowTrajectoryCommand(
                     swerve,
                     createDefaultControllerBuilder()
                     .withEndRotation(new Rotation2d(Math.PI))
+                    .with_kW(6)
+                    .withRotationsEnabled(true)
                     .withTrajectory(tryGetDeployedTrajectory("TrenchCitrusCompatiblePart1"))
-                    .buildController())))
-            .andThen(() -> arm.setAngle(0), arm);
+                    .withMaxVelocity(2.0)
+                    .buildController()))
+                .deadlineWith(new Autonomous_ForceIndexBallsCommand(indexer, intake, arm, 1, 0.9, Math.PI/2)));
     }
 
     private SequentialCommandGroup createCitrusCompatibleCommand() {
@@ -206,7 +215,7 @@ public class DriverPracticeRobotContainer implements IRobotContainer {
                 .buildController()))
             .andThen(() -> swerve.moveFieldCentric(0, 0, 0), swerve).andThen(() -> arm.setAngle(Math.PI / 2.1), arm)
             .andThen(
-                new IndexBallsCommand(indexer, intake, 1.0, 0.9)
+                new Autonomous_IndexBallsCommand(indexer, intake, 1.0, 0.9)
                 .raceWith(
                     new RunCommand(() -> swerve.moveFieldCentric(0.1, -0.25 * 2, 0), swerve)
                     .withTimeout(2)
@@ -286,7 +295,10 @@ public class DriverPracticeRobotContainer implements IRobotContainer {
                     .withTrajectory(tryGetDeployedTrajectory("CrossTheLine"))
                     .buildController()));
     }
-
+    @Override
+    public void teleopInit() {
+        turretRadianOffset = 0;
+    }
     private void configureShooter() {
         visionDistanceCalculator = GenericAutonUtilities.makeEntropyVisionDistanceCalculator(limelight);
         visionPreciseShootingOI = new VisionPreciseShootingOI(visionDistanceCalculator);
@@ -361,7 +373,7 @@ public class DriverPracticeRobotContainer implements IRobotContainer {
         mainIntakeButton
         .whileHeld(
             new ConditionalCommand(
-                new IndexBallsCommand(indexer, intake, 1, 0.9)
+                new Autonomous_IndexBallsCommand(indexer, intake, 1, 0.9)
                 .alongWith(
                     new FunctionalCommand(
                         () -> arm.setAngle(Math.PI / 2), 
@@ -419,5 +431,8 @@ public class DriverPracticeRobotContainer implements IRobotContainer {
     @Override
     public Command getAutonomousCommand() {
         return autonomousChooser.getSelected();
+    }
+    private void aimAtInnerPort(){
+        turretRadianOffset = visionDistanceCalculator.getDesiredTurretOffset(swerve.getCurrentPose().getTranslation(), visionTargetTranslation, innerTargetTranslation);
     }
 }
