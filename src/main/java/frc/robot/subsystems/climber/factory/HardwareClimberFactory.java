@@ -25,6 +25,7 @@ public class HardwareClimberFactory implements IClimberFactory {
                 builder.addBooleanProperty("reverseLimitEnabled", () -> motor.isSoftLimitEnabled(SoftLimitDirection.kReverse), null);
                 builder.addDoubleProperty("forwardLimit", (() -> motor.getSoftLimit(SoftLimitDirection.kForward)), null);
                 builder.addDoubleProperty("reverseLimit", () -> motor.getSoftLimit(SoftLimitDirection.kReverse), null);
+                builder.addDoubleProperty("measurement", () -> motor.getEncoder().getPosition(), null);
             }
         });
         Climber climber = new Climber(motor);
