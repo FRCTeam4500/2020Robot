@@ -37,7 +37,7 @@ import frc.robot.subsystems.swerve.odometric.command.AdvancedSwerveControllerBui
 import frc.robot.subsystems.swerve.odometric.command.OdometricSwerve_AdvancedFollowTrajectoryCommand;
 import frc.robot.subsystems.swerve.odometric.command.OdometricSwerve_FollowTrajecoryCommand;
 
-import static frc.robot.utility.ExtendedMath.withDeadzone;
+import static frc.robot.utility.ExtendedMath.withHardDeadzone;
 import static frc.robot.autonomous.ExtendedTrajectoryUtilities.tryGetDeployedTrajectory;
 
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -81,9 +81,9 @@ public class AutonRobotContainer implements IRobotContainer{
         
         swerve.setDefaultCommand(new RunCommand(() -> {
             swerve.moveFieldCentric(
-                withDeadzone(-joystick.getY()*2, 0.3*2),
-                withDeadzone(-joystick.getX()*2, 0.3*2),
-                withDeadzone(-joystick.getZ()*2, 0.3*2)
+                withHardDeadzone(-joystick.getY()*2, 0.3*2),
+                withHardDeadzone(-joystick.getX()*2, 0.3*2),
+                withHardDeadzone(-joystick.getZ()*2, 0.3*2)
             );
         }
         , swerve));

@@ -49,11 +49,20 @@ public class ExtendedMath {
     public static Translation2d normalize(Translation2d a){
         return a.div(a.getNorm());
     }
-    public static double withDeadzone(double value, double deadzone){
+    public static double withHardDeadzone(double value, double deadzone){
         if(Math.abs(value) < deadzone){
             return 0;
         }else{
             return value;
+        }
+    }
+    public static double withContinuousDeadzone(double input, double slope, double deadzone){
+        if(input <= -deadzone){
+            return (input + deadzone) * slope;
+        }else if(-deadzone < input && input < deadzone){
+            return 0;
+        }else{
+            return (input - deadzone) * slope;
         }
     }
         /**

@@ -27,7 +27,7 @@ import frc.robot.subsystems.turret.factory.HardwareTurretFactory;
 import frc.robot.subsystems.turret.factory.ITurretFactory;
 import frc.robot.subsystems.vision.VisionSubsystem;
 
-import static frc.robot.utility.ExtendedMath.withDeadzone;
+import static frc.robot.utility.ExtendedMath.withHardDeadzone;
 
 public class RobotContainerTwo implements IRobotContainer {
     private Turret turret;
@@ -129,9 +129,9 @@ public class RobotContainerTwo implements IRobotContainer {
   
         swerve.setDefaultCommand(new FunctionalCommand(() -> swerve.enableWheelInversion(true),() -> {
             swerve.moveFieldCentric(
-                withDeadzone(-joystick.getY()*1.5,0.3), 
-                withDeadzone(-joystick.getX()*1.5,0.3), 
-                withDeadzone(-joystick.getZ()*2.5, 0.3*2));
+                withHardDeadzone(-joystick.getY()*1.5,0.3), 
+                withHardDeadzone(-joystick.getX()*1.5,0.3), 
+                withHardDeadzone(-joystick.getZ()*2.5, 0.3*2));
         }, (interrupted) -> {
 
             swerve.enableWheelInversion(false);

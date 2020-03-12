@@ -9,7 +9,8 @@ package frc.robot.containers;
 
 import static frc.robot.autonomous.ExtendedTrajectoryUtilities.tryGetDeployedTrajectory;
 import static frc.robot.autonomous.GenericAutonUtilities.createDefaultControllerBuilder;
-import static frc.robot.utility.ExtendedMath.withDeadzone;
+import static frc.robot.utility.ExtendedMath.withHardDeadzone;
+import static frc.robot.utility.ExtendedMath.withContinuousDeadzone;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Sendable;
@@ -37,7 +38,9 @@ import frc.robot.subsystems.indexer.Indexer;
 import frc.robot.subsystems.indexer.factory.HardwareIndexerFactory;
 import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.shooter.factory.HardwareShooterFactory;
+import frc.robot.subsystems.swerve.ISwerveOI;
 import frc.robot.subsystems.swerve.TrackLoadingCommand;
+import frc.robot.subsystems.swerve.kinematic.command.KinematicSwerve_RampedDriveCommand;
 import frc.robot.subsystems.swerve.odometric.OdometricSwerve;
 import frc.robot.subsystems.swerve.odometric.OdometricSwerveDashboardUtility;
 import frc.robot.subsystems.swerve.odometric.command.OdometricSwerve_AdvancedFollowTrajectoryCommand;
@@ -46,6 +49,7 @@ import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.factory.HardwareTurretFactory;
 import frc.robot.subsystems.vision.CameraVisionSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
+import frc.robot.utility.OutputRamper;
 
 /**
  * Add your docs here.
@@ -403,18 +407,53 @@ public class DriverPracticeRobotContainer implements IRobotContainer {
     }
 
     private void configureSwerve() {
-        swerve.setDefaultCommand(new RunCommand(() -> {
-            var forwardSpeed = withDeadzone(-driveStick.getY(), yDeadzone) * ySensitivity;
-            var leftwardSpeed = withDeadzone(-driveStick.getX(), xDeadzone) * xSensitivity;
-            var counterClockwardSpeed = withDeadzone(-driveStick.getZ(), zDeadzone) * zSensitivity;
-
-            if (forwardSpeed == 0 && leftwardSpeed == 0 && counterClockwardSpeed == 0 && coastingEnabled) {
-                swerve.coast();
-            } else {
-                swerve.moveFieldCentric(forwardSpeed, leftwardSpeed, counterClockwardSpeed);
-            }
-        }, swerve));
+        swerve.setDefaultCommand(createHardDeadzoneSwerveCommand());
         alignToLoadButton.whenHeld(trackLoadingCommand);
+    }
+    private CommandBase createHardDeadzoneSwerveCommand(){
+        return new RunCommand(() -> {
+            var forwardSpeed = withHardDeadzone(-driveStick.getY(), yDeadzone) * ySensitivity;
+            var leftwardSpeed = withHardDeadzone(-driveStick.getX(), xDeadzone) * xSensitivity;
+            var counterClockwardSpeed = withHardDeadzone(-driveStick.getZ(), zDeadzone) * zSensitivity;
+            
+            swerve.moveFieldCentric(forwardSpeed, leftwardSpeed, counterClockwardSpeed);
+            
+        }, swerve);
+    }
+    private CommandBase createContinuousDeadzoneSwerveCommand(){
+        return new RunCommand(() -> {
+            var forwardSpeed = withContinuousDeadzone(-driveStick.getY(), 1/(1-yDeadzone), yDeadzone) * ySensitivity;
+            var leftwardSpeed = withContinuousDeadzone(-driveStick.getX(), 1/(1-xDeadzone), xDeadzone) * xSensitivity;
+            var counterClockwardSpeed = withContinuousDeadzone(-driveStick.getZ(), 1/(1-zDeadzone), zDeadzone) * zSensitivity;
+            
+            swerve.moveFieldCentric(forwardSpeed, leftwardSpeed, counterClockwardSpeed);
+        }, swerve);
+    }
+    private CommandBase createRampedContinuousDeadzoneSwerveCommand(){
+        double ramperPeriod = 0.2;
+        double maxAbsoluteRampingPerSecond = 2;
+        return new KinematicSwerve_RampedDriveCommand(
+            swerve, 
+            new OutputRamper(0, 0.2, maxAbsoluteRampingPerSecond * ramperPeriod, 0), 
+            new OutputRamper(0, 0.2, maxAbsoluteRampingPerSecond * ramperPeriod, 0), 
+            new OutputRamper(0, 0.2, maxAbsoluteRampingPerSecond * ramperPeriod, 0), 
+            new ISwerveOI(){
+            
+                @Override
+                public double getZ() {
+                    return withContinuousDeadzone(-driveStick.getZ(), 1/(1-zDeadzone), zDeadzone) * zSensitivity;
+                }
+            
+                @Override
+                public double getY() {
+                    return withContinuousDeadzone(-driveStick.getX(), 1/(1-xDeadzone), xDeadzone) * xSensitivity;
+                }
+            
+                @Override
+                public double getX() {
+                    return withContinuousDeadzone(-driveStick.getY(), 1/(1-yDeadzone), yDeadzone) * ySensitivity;
+                }
+            });
     }
 
     private void configureMainIntakeButton() {
