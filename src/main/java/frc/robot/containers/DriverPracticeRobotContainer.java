@@ -21,9 +21,11 @@ import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autonomous.pshoot.Autonomous_PreciseShootingCommand;
+import frc.robot.autonomous.Autonomous_FastIndexBallsCommand;
 import frc.robot.autonomous.Autonomous_ForceIndexBallsCommand;
 import frc.robot.autonomous.GenericAutonUtilities;
 import frc.robot.autonomous.Autonomous_IndexBallsCommand;
+import frc.robot.autonomous.Autonomous_SingleSensorIndexBallsCommand;
 import frc.robot.autonomous.VisionDistanceCalculator;
 import frc.robot.autonomous.pshoot.VisionPreciseShootingOI;
 import frc.robot.components.hardware.CameraVisionComponent;
@@ -103,7 +105,7 @@ public class DriverPracticeRobotContainer implements IRobotContainer {
 
         configureBasicOverrides();
 
-        configureMainIntakeButton();
+        alternateConfigureMainintakeButton();
 
         configureShooter();
 
@@ -353,7 +355,7 @@ public class DriverPracticeRobotContainer implements IRobotContainer {
     private void configureShooter() {
         visionDistanceCalculator = GenericAutonUtilities.makeEntropyVisionDistanceCalculator(limelight);
         visionPreciseShootingOI = new VisionPreciseShootingOI(visionDistanceCalculator);
-        var shootCommand = new Autonomous_PreciseShootingCommand(shooter, indexer, visionPreciseShootingOI);
+        var shootCommand = new Autonomous_PreciseShootingCommand(shooter, indexer, -500,-500,1,500);
 
         shootButton.whileHeld(shootCommand);
     }
@@ -399,7 +401,7 @@ public class DriverPracticeRobotContainer implements IRobotContainer {
     private void configureTurret() {
         turret.setDefaultCommand(
             new PIDCommand(
-                new PIDController(-3, 0, 0), 
+                new PIDController(-0, 0, 0), 
                 limelight::getHorizontalOffset,
                 this::getTurretRadianOffset, 
                 turret::setTurretOutput, 
@@ -483,6 +485,11 @@ public class DriverPracticeRobotContainer implements IRobotContainer {
                         () -> false, 
                         indexer, arm, intake), 
                 () -> useFancyIntakeCommand));
+    }
+    private void alternateConfigureMainintakeButton(){
+        mainIntakeButton
+        .whileHeld(new Autonomous_SingleSensorIndexBallsCommand(arm, intake, indexer, 0.0, 0.0, 1.0));
+        //.whileHeld(new Autonomous_FastIndexBallsCommand(0.001, intake, arm, indexer, 0.0, 0.0, 1.0));
     }
 
     private void configureBasicOverrides() {

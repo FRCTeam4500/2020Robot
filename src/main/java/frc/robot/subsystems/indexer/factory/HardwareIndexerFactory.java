@@ -8,7 +8,7 @@ public class HardwareIndexerFactory implements IIndexerFactory{
     /**
      *
      */
-    private static final int BALL_SENSOR_THRESHOLD = 45;
+    private static final int BALL_SENSOR_THRESHOLD = 40;
     /**
      *
      */
@@ -16,8 +16,8 @@ public class HardwareIndexerFactory implements IIndexerFactory{
     public Indexer makeIndexer(){
         return new Indexer(
             new TalonSRXComponent(INDEXER_MOTOR_PORT), 
-            new NetworkTableBallSensor("Sensor0", BALL_SENSOR_THRESHOLD), 
-            new NetworkTableBallSensor("Sensor1", BALL_SENSOR_THRESHOLD + 10), 
+            new NetworkTableBallSensor("Sensor0", BALL_SENSOR_THRESHOLD+5), 
+            new NetworkTableBallSensor("Sensor1", BALL_SENSOR_THRESHOLD+15), 
             new NetworkTableBallSensor("Sensor2", BALL_SENSOR_THRESHOLD), 
             new NetworkTableBallSensor("Sensor3", BALL_SENSOR_THRESHOLD), 
             new NetworkTableBallSensor("Sensor4", BALL_SENSOR_THRESHOLD), 

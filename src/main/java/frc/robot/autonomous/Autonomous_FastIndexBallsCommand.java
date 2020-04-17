@@ -26,7 +26,7 @@ public class Autonomous_FastIndexBallsCommand extends NotifierCommand {
         super.initialize();
         arm.setAngle(armAngle);
         intake.setSpeed(intakeSpeed);
-        indexer.setSpeed(indexerSpeed);
+        indexer.setSpeed(0.0);
     }
     @Override
     public void end(boolean interrupted) {
@@ -53,7 +53,7 @@ public class Autonomous_FastIndexBallsCommand extends NotifierCommand {
 
     public Autonomous_FastIndexBallsCommand(double period, Intake intake, Arm arm, Indexer indexer, double armAngle,
             double intakeSpeed, double indexerSpeed) {
-        super(null, period, arm, intake, indexer);
+        super(() -> {}, period, arm, intake, indexer);
         m_notifier.setHandler(this::notifierLoop);
         this.intake = intake;
         this.arm = arm;
